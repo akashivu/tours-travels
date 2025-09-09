@@ -1,10 +1,12 @@
 import QuickBookingForm from "../components/QuickBookingForm";
-
+import Navbar from "../components/Navbar";
 export default function Home() {
   return (
 
-      <div className="bg-blue-500 max-md:not-only-of-type:not-first:">
+      <div className="">
+        <Navbar/>
         <QuickBookingForm />
+
       </div>
     
   );

@@ -1,62 +1,163 @@
-import { MapPinIcon, Square2StackIcon } from '@heroicons/react/24/outline';
+import { useState } from "react";
 
 export default function QuickBookingForm() {
+  const [activeTab, setActiveTab] = useState("OUTSTATION");
+  const [tripType, setTripType] = useState("oneway");
+
   return (
-    <div className="flex flex-col md:flex-row min-h-screen w-full">
-      
-      {/* Form section */}
-      <div className="flex-1 flex items-center justify-center bg-white p-8">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md space-y-4">
-          <p className="text-xl font-bold text-black mb-2">
-            Adiyogi Travels
-          </p>
-          <h1 className="text-3xl font-bold text-black mb-2">
-            Book Your Journey
-          </h1>
-          <p className="text-sm text-gray-500 mb-4">
-            <span className="text-green-600 font-semibold">Up to 15% off</span> your first 5 Adiyogi travel rides. T&amp;Cs apply. *Valid within 15 days of signup.
-          </p>
-
-          {/* Input fields */}
-          <div className="space-y-4">
-            <div className="flex items-center border border-gray-300 rounded-lg p-3">
-              <MapPinIcon className="h-6 w-6 text-gray-400 mr-2" />
-              <input
-                type="text"
-                placeholder="Enter location"
-                className="w-full outline-none text-black"
-              />
-            </div>
-
-            <div className="flex items-center border border-gray-300 rounded-lg p-3">
-              <Square2StackIcon className="h-6 w-6 text-gray-400 mr-2" />
-              <input
-                type="text"
-                placeholder="Enter destination"
-                className="w-full outline-none text-black"
-              />
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 mt-4">
-            <button className="flex-1 bg-black text-white py-3 rounded-lg hover:bg-gray-900 transition duration-300">
-              See prices
-            </button>
-            <button className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition duration-300">
-              Book Now
-            </button>
-          </div>
-        </div>
+    <div className="relative min-h-screen w-screen pt-0">
+      {/* Full-screen background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')",
+        }}
+      >
+        {/* Optional overlay to make form readable */}
+        <div className="absolute inset-0 bg-black opacity-30"></div>
       </div>
 
-      {/* Image section */}
-      <div className="flex-1">
-        <img
-          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80"
-          alt="Travel"
-          className="w-full h-full object-cover"
-        />
+      {/* Form container */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
+        <div className="bg-white p-8 rounded-xl  shadow-lg w-full max-w-lg">
+          {/* Tabs */}
+          <div className="flex border-b mb-6 ">
+            {["OUTSTATION", "RENTAL", "AIRPORT"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`flex-1 text-center mr-2 text-white py-2 font-semibold ${
+                  activeTab === tab
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                } border-r last:border-r-11`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Conditional Fields */}
+          {activeTab === "OUTSTATION" && (
+            <>
+              <div className="flex gap-6 mb-4">
+                <label className="flex items-center gap-2 text-black">
+                  <input
+                    type="radio"
+                    name="tripType"
+                    value="oneway"
+                    checked={tripType === "oneway"}
+                    onChange={() => setTripType("oneway")}
+                    className="text-blue-600"
+                  />
+                  One Way
+                </label>
+                <label className="flex items-center gap-2 text-black">
+                  <input
+                    type="radio"
+                    name="tripType"
+                    value="roundtrip"
+                    checked={tripType === "roundtrip"}
+                    onChange={() => setTripType("roundtrip")}
+                    className="text-blue-600"
+                  />
+                  Round Trip
+                </label>
+              </div>
+
+              <div className="space-y-4 mb-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    From:
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Pick Up"
+                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    To:
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Drop"
+                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeTab === "RENTAL" && (
+            <>
+              <div className="space-y-4 mb-4 ">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Bangalore, Karnataka, India"
+                    className="w-full border border-gray-400  text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    Pick-Up Location
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter City"
+                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Common Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Pick-Up Date
+              </label>
+              <input
+                type="date"
+                className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Pick-Up Time
+              </label>
+              <select className="w-full border border-gray-400 rounded-md text-black px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400">
+                <option>Select Date First</option>
+                <option>06:00 AM</option>
+                <option>07:00 AM</option>
+                <option>08:00 AM</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Mobile No:
+            </label>
+            <input
+              type="tel"
+              placeholder="Contact Number"
+              className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition duration-300">
+            SEARCH TAXI
+          </button>
+        </div>
       </div>
     </div>
   );
