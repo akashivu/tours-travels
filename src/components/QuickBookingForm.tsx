@@ -1,32 +1,37 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 export default function QuickBookingForm() {
+  const location = useLocation();
+  const vehicle = location.state?.selectedVehicle;
+
+  const [fare, setFare] = useState<number>(vehicle?.oneWayRatePerKm || 0);
+  const [vehicleName] = useState(vehicle?.name || "");
+
   const [activeTab, setActiveTab] = useState("OUTSTATION");
   const [tripType, setTripType] = useState("oneway");
 
-  // Pickup & Drop inputs
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
-
-  // Estimate state
   const [estimate, setEstimate] = useState<{ distanceKm: number; fare: number } | null>(null);
 
-  // Handle fare estimation
   const handleEstimate = async () => {
     try {
       const res = await axios.post("http://localhost:8080/api/bookings/estimate", {
         pickup,
         dropoff: drop,
+        tripType,
+        vehicleId: vehicle?.id,
       });
       setEstimate(res.data);
+      setFare(res.data.fare);
     } catch (error) {
       console.error(error);
       alert("Error fetching estimate");
     }
   };
 
-  // Handle booking confirmation
   const handleConfirm = async () => {
     if (!estimate) return;
 
@@ -36,9 +41,10 @@ export default function QuickBookingForm() {
         dropoff: drop,
         distanceKm: estimate.distanceKm,
         fare: estimate.fare,
+        vehicleId: vehicle?.id,
       });
       alert(`Booking Confirmed! ID: ${res.data.id}`);
-      setEstimate(null); // reset estimate after confirm
+      setEstimate(null);
       setPickup("");
       setDrop("");
     } catch (error) {
@@ -49,21 +55,15 @@ export default function QuickBookingForm() {
 
   return (
     <div className="relative min-h-screen w-screen">
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')",
-        }}
+        style={{ backgroundImage: "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-30"></div>
       </div>
 
-      {/* Form Container */}
       <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
-          {/* Tabs */}
           <div className="flex border-b mb-6">
             {["OUTSTATION", "RENTAL", "AIRPORT"].map((tab) => (
               <button
@@ -71,8 +71,8 @@ export default function QuickBookingForm() {
                 onClick={() => setActiveTab(tab)}
                 className={`flex-1 text-center mr-2 py-2 font-semibold ${
                   activeTab === tab
-                    ? "bg-green-600 text-white"
-                    : "bg-green-200 text-white hover:bg-green-300"
+                    ? "bg-blue-600 text-white"
+                    : "bg-blue-200 text-white hover:bg-blue-300"
                 } border-r last:border-r-0`}
               >
                 {tab}
@@ -80,10 +80,12 @@ export default function QuickBookingForm() {
             ))}
           </div>
 
-          {/* OUTSTATION Form */}
+          {vehicle && (
+            <p className="text-lg font-semibold mb-2">Selected Vehicle: {vehicleName}</p>
+          )}
+
           {activeTab === "OUTSTATION" && (
             <>
-              {/* Trip Type */}
               <div className="flex gap-6 mb-4">
                 <label className="flex items-center gap-2 text-black">
                   <input
@@ -109,12 +111,9 @@ export default function QuickBookingForm() {
                 </label>
               </div>
 
-              {/* Pickup & Drop */}
               <div className="space-y-4 mb-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    From:
-                  </label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">From:</label>
                   <input
                     type="text"
                     placeholder="Pick Up"
@@ -123,11 +122,8 @@ export default function QuickBookingForm() {
                     className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    To:
-                  </label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">To:</label>
                   <input
                     type="text"
                     placeholder="Drop"
@@ -138,7 +134,6 @@ export default function QuickBookingForm() {
                 </div>
               </div>
 
-              {/* Estimate & Confirm */}
               <button
                 type="button"
                 onClick={handleEstimate}
@@ -150,7 +145,7 @@ export default function QuickBookingForm() {
               {estimate && (
                 <div className="space-y-2 mb-4">
                   <p className="text-gray-700">Distance: {estimate.distanceKm.toFixed(1)} km</p>
-                  <p className="text-green-700 font-semibold">Fare: ₹{estimate.fare.toFixed(0)}</p>
+                  <p className="text-green-700 font-semibold">Fare: ₹{fare.toFixed(0)}</p>
                   <button
                     type="button"
                     onClick={handleConfirm}
@@ -163,13 +158,10 @@ export default function QuickBookingForm() {
             </>
           )}
 
-          {/* RENTAL Form */}
           {activeTab === "RENTAL" && (
             <div className="space-y-4 mb-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  City
-                </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">City</label>
                 <input
                   type="text"
                   placeholder="Bangalore, Karnataka, India"
@@ -177,9 +169,7 @@ export default function QuickBookingForm() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Pick-Up Location
-                </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Pick-Up Location</label>
                 <input
                   type="text"
                   placeholder="Enter City"
@@ -189,21 +179,16 @@ export default function QuickBookingForm() {
             </div>
           )}
 
-          {/* Common Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
-                Pick-Up Date
-              </label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Pick-Up Date</label>
               <input
                 type="date"
                 className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
-                Pick-Up Time
-              </label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Pick-Up Time</label>
               <select className="w-full border border-gray-400 rounded-md text-black px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400">
                 <option>Select Date First</option>
                 <option>06:00 AM</option>
@@ -214,9 +199,7 @@ export default function QuickBookingForm() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Mobile No:
-            </label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Mobile No:</label>
             <input
               type="tel"
               placeholder="Contact Number"
