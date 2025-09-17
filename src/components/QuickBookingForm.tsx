@@ -22,16 +22,13 @@ export default function QuickBookingForm() {
   const [drop, setDrop] = useState("");
   const [quotes, setQuotes] = useState<Quote[]>([]);
 
-  // Step 1: Fetch multi-vehicle quotes
+  
   const handleEstimate = async () => {
     try {
       const res = await axios.post("http://localhost:8080/api/quotes", {
-        pickupLat: 0, // TODO: replace with real lat/lng
-        pickupLng: 0,
-        dropLat: 0,
-        dropLng: 0,
-        tripType,
-        distanceKm: 50, // TODO: later via Google Maps API
+         pickup,
+  dropoff: drop,
+  tripType
       });
       setQuotes(res.data);
     } catch (error) {
@@ -40,7 +37,7 @@ export default function QuickBookingForm() {
     }
   };
 
-  // Step 2: Confirm booking for selected vehicle
+  
   const handleConfirm = async (quote: Quote) => {
     try {
       const res = await axios.post("http://localhost:8080/api/bookings/confirm", {
@@ -62,7 +59,7 @@ export default function QuickBookingForm() {
 
   return (
     <div className="relative min-h-screen w-screen">
-      {/* Background */}
+     
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')" }}
@@ -70,10 +67,10 @@ export default function QuickBookingForm() {
         <div className="absolute inset-0 bg-black opacity-30"></div>
       </div>
 
-      {/* Content */}
+     
       <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
-          {/* Tabs */}
+         
           <div className="flex border-b mb-6">
             {["OUTSTATION", "RENTAL", "AIRPORT"].map((tab) => (
               <button
@@ -90,7 +87,7 @@ export default function QuickBookingForm() {
             ))}
           </div>
 
-          {/* Outstation Booking */}
+          
           {activeTab === "OUTSTATION" && (
             <>
               <div className="flex gap-6 mb-4">
@@ -147,7 +144,7 @@ export default function QuickBookingForm() {
                 Get Estimates
               </button>
 
-              {/* Multi-Vehicle Results */}
+              
               {quotes.length > 0 && (
                 <div className="space-y-4">
                   {quotes.map((q, i) => (
@@ -180,7 +177,7 @@ export default function QuickBookingForm() {
             </>
           )}
 
-          {/* Rental Booking */}
+          
           {activeTab === "RENTAL" && (
             <div className="space-y-4 mb-4">
               <div>
@@ -202,7 +199,7 @@ export default function QuickBookingForm() {
             </div>
           )}
 
-          {/* Common Fields */}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Pick-Up Date</label>
