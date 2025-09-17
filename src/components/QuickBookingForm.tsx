@@ -2,49 +2,56 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+type Quote = {
+  vehicleName: string;
+  capacity: number;
+  ac: boolean;
+  ratePerKm: number;
+  distanceKm: number;
+  totalFare: number;
+  imageUrl: string;
+  features: string;
+};
+
 export default function QuickBookingForm() {
   const location = useLocation();
-  const vehicle = location.state?.selectedVehicle;
-
-  const [fare, setFare] = useState<number>(vehicle?.oneWayRatePerKm || 0);
-  const [vehicleName] = useState(vehicle?.name || "");
-
   const [activeTab, setActiveTab] = useState("OUTSTATION");
   const [tripType, setTripType] = useState("oneway");
 
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
-  const [estimate, setEstimate] = useState<{ distanceKm: number; fare: number } | null>(null);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
 
+  // Step 1: Fetch multi-vehicle quotes
   const handleEstimate = async () => {
     try {
-      const res = await axios.post("http://localhost:8080/api/bookings/estimate", {
-        pickup,
-        dropoff: drop,
+      const res = await axios.post("http://localhost:8080/api/quotes", {
+        pickupLat: 0, // TODO: replace with real lat/lng
+        pickupLng: 0,
+        dropLat: 0,
+        dropLng: 0,
         tripType,
-        vehicleId: vehicle?.id,
+        distanceKm: 50, // TODO: later via Google Maps API
       });
-      setEstimate(res.data);
-      setFare(res.data.fare);
+      setQuotes(res.data);
     } catch (error) {
       console.error(error);
-      alert("Error fetching estimate");
+      alert("Error fetching estimates");
     }
   };
 
-  const handleConfirm = async () => {
-    if (!estimate) return;
-
+  // Step 2: Confirm booking for selected vehicle
+  const handleConfirm = async (quote: Quote) => {
     try {
       const res = await axios.post("http://localhost:8080/api/bookings/confirm", {
         pickup,
         dropoff: drop,
-        distanceKm: estimate.distanceKm,
-        fare: estimate.fare,
-        vehicleId: vehicle?.id,
+        distanceKm: quote.distanceKm,
+        fare: quote.totalFare,
+        vehicleName: quote.vehicleName,
       });
       alert(`Booking Confirmed! ID: ${res.data.id}`);
-      setEstimate(null);
+      setQuotes([]);
       setPickup("");
       setDrop("");
     } catch (error) {
@@ -55,6 +62,7 @@ export default function QuickBookingForm() {
 
   return (
     <div className="relative min-h-screen w-screen">
+      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')" }}
@@ -62,8 +70,10 @@ export default function QuickBookingForm() {
         <div className="absolute inset-0 bg-black opacity-30"></div>
       </div>
 
+      {/* Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+          {/* Tabs */}
           <div className="flex border-b mb-6">
             {["OUTSTATION", "RENTAL", "AIRPORT"].map((tab) => (
               <button
@@ -80,10 +90,7 @@ export default function QuickBookingForm() {
             ))}
           </div>
 
-          {vehicle && (
-            <p className="text-lg font-semibold mb-2">Selected Vehicle: {vehicleName}</p>
-          )}
-
+          {/* Outstation Booking */}
           {activeTab === "OUTSTATION" && (
             <>
               <div className="flex gap-6 mb-4">
@@ -94,7 +101,6 @@ export default function QuickBookingForm() {
                     value="oneway"
                     checked={tripType === "oneway"}
                     onChange={() => setTripType("oneway")}
-                    className="text-blue-600"
                   />
                   One Way
                 </label>
@@ -105,7 +111,6 @@ export default function QuickBookingForm() {
                     value="roundtrip"
                     checked={tripType === "roundtrip"}
                     onChange={() => setTripType("roundtrip")}
-                    className="text-blue-600"
                   />
                   Round Trip
                 </label>
@@ -119,7 +124,7 @@ export default function QuickBookingForm() {
                     placeholder="Pick Up"
                     value={pickup}
                     onChange={(e) => setPickup(e.target.value)}
-                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
                   />
                 </div>
                 <div>
@@ -129,7 +134,7 @@ export default function QuickBookingForm() {
                     placeholder="Drop"
                     value={drop}
                     onChange={(e) => setDrop(e.target.value)}
-                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
                   />
                 </div>
               </div>
@@ -139,25 +144,43 @@ export default function QuickBookingForm() {
                 onClick={handleEstimate}
                 className="w-full bg-green-600 text-white px-4 py-2 rounded-lg mb-4 hover:bg-green-700 transition"
               >
-                Get Estimate
+                Get Estimates
               </button>
 
-              {estimate && (
-                <div className="space-y-2 mb-4">
-                  <p className="text-gray-700">Distance: {estimate.distanceKm.toFixed(1)} km</p>
-                  <p className="text-green-700 font-semibold">Fare: ₹{fare.toFixed(0)}</p>
-                  <button
-                    type="button"
-                    onClick={handleConfirm}
-                    className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                  >
-                    Confirm Booking
-                  </button>
+              {/* Multi-Vehicle Results */}
+              {quotes.length > 0 && (
+                <div className="space-y-4">
+                  {quotes.map((q, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md cursor-pointer"
+                      onClick={() => handleConfirm(q)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={q.imageUrl}
+                          alt={q.vehicleName}
+                          className="w-16 h-16 rounded"
+                        />
+                        <div>
+                          <h3 className="font-bold">{q.vehicleName}</h3>
+                          <p className="text-sm text-gray-600">
+                            {q.features} • {q.capacity} seats {q.ac ? "• AC" : "• Non-AC"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-green-700 font-bold">₹{q.totalFare}</p>
+                        <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </>
           )}
 
+          {/* Rental Booking */}
           {activeTab === "RENTAL" && (
             <div className="space-y-4 mb-4">
               <div>
@@ -165,7 +188,7 @@ export default function QuickBookingForm() {
                 <input
                   type="text"
                   placeholder="Bangalore, Karnataka, India"
-                  className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
                 />
               </div>
               <div>
@@ -173,23 +196,24 @@ export default function QuickBookingForm() {
                 <input
                   type="text"
                   placeholder="Enter City"
-                  className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
                 />
               </div>
             </div>
           )}
 
+          {/* Common Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Pick-Up Date</label>
               <input
                 type="date"
-                className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
               />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Pick-Up Time</label>
-              <select className="w-full border border-gray-400 rounded-md text-black px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400">
+              <select className="w-full border border-gray-400 rounded-md text-black px-3 py-2">
                 <option>Select Date First</option>
                 <option>06:00 AM</option>
                 <option>07:00 AM</option>
@@ -203,13 +227,9 @@ export default function QuickBookingForm() {
             <input
               type="tel"
               placeholder="Contact Number"
-              className="w-full border border-gray-400 text-black rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
             />
           </div>
-
-          <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition duration-300">
-            SEARCH TAXI
-          </button>
         </div>
       </div>
     </div>
