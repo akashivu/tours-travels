@@ -145,35 +145,51 @@ export default function QuickBookingForm() {
               </button>
 
               
-              {quotes.length > 0 && (
-                <div className="space-y-4">
-                  {quotes.map((q, i) => (
-                    <div
-                      key={i}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md cursor-pointer"
-                      onClick={() => handleConfirm(q)}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={q.imageUrl}
-                          alt={q.vehicleName}
-                          className="w-16 h-16 rounded"
-                        />
-                        <div>
-                          <h3 className="font-bold">{q.vehicleName}</h3>
-                          <p className="text-sm text-gray-600">
-                            {q.features} • {q.capacity} seats {q.ac ? "• AC" : "• Non-AC"}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-green-700 font-bold">₹{q.totalFare}</p>
-                        <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+             {/* Multi-Vehicle Results Overlay */}
+{quotes.length > 0 && (
+  <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 relative">
+      {/* Close button */}
+      <button
+        onClick={() => setQuotes([])}
+        className="absolute top-4 right-4 text-gray-600 hover:text-red-600"
+      >
+        ✕
+      </button>
+
+      <h2 className="text-2xl font-bold mb-6 text-center">Available Vehicles</h2>
+
+      <div className="space-y-4">
+        {quotes.map((q, i) => (
+          <div
+            key={i}
+            className="flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md cursor-pointer"
+            onClick={() => handleConfirm(q)}
+          >
+            <div className="flex items-center space-x-3">
+              <img
+                src={q.imageUrl}
+                alt={q.vehicleName}
+                className="w-20 h-20 rounded object-cover"
+              />
+              <div>
+                <h3 className="font-bold">{q.vehicleName}</h3>
+                <p className="text-sm text-gray-600">
+                  {q.features} • {q.capacity} seats {q.ac ? "• AC" : "• Non-AC"}
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-green-700 font-bold text-lg">₹{q.totalFare}</p>
+              <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
             </>
           )}
 
