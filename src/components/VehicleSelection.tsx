@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 type Quote = {
@@ -12,175 +12,83 @@ type Quote = {
   features: string;
 };
 
-export default function QuickBookingForm() {
-  const [activeTab, setActiveTab] = useState("OUTSTATION");
-  const [tripType, setTripType] = useState("oneway");
+export default function VehicleSection() {
+  const location = useLocation();
+  const { quotes, pickup, drop, tripType, pickupDate, pickupTime, mobile } =
+    location.state || { quotes: [] };
 
-  const [pickup, setPickup] = useState("");
-  const [drop, setDrop] = useState("");
-  const [quotes, setQuotes] = useState<Quote[]>([]);
-
-  // Step 1: Fetch multi-vehicle quotes
-  const handleEstimate = async () => {
-    try {
-      const res = await axios.post("http://localhost:8080/api/quotes", {
-        pickupLat: 0,  // TODO: later integrate Google Maps
-        pickupLng: 0,
-        dropLat: 0,
-        dropLng: 0,
-        tripType,
-        distanceKm: 50 // hardcoded for now
-      });
-      setQuotes(res.data);
-    } catch (error) {
-      console.error(error);
-      alert("Error fetching estimates");
-    }
-  };
-
-  // Step 2: Confirm booking for selected vehicle
-  const handleConfirm = async (quote: Quote) => {
+  const handleBook = async (quote: Quote) => {
     try {
       const res = await axios.post("http://localhost:8080/api/bookings/confirm", {
         pickup,
         dropoff: drop,
         distanceKm: quote.distanceKm,
         fare: quote.totalFare,
-        vehicleName: quote.vehicleName
+        vehicleName: quote.vehicleName,
+        pickupDate,
+        pickupTime,
+        mobile,
       });
       alert(`Booking Confirmed! ID: ${res.data.id}`);
-      setQuotes([]);
-      setPickup("");
-      setDrop("");
-    } catch (error) {
-      console.error(error);
+    } catch {
       alert("Error confirming booking");
     }
   };
 
+  if (!quotes || quotes.length === 0) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-500 text-lg">No vehicles available</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative min-h-screen w-screen">
-      {/* Background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')" }}
-      >
-        <div className="absolute inset-0 bg-black opacity-30"></div>
+    <div className="min-h-screen bg-gray-50 py-10 px-6">
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
+        Available Vehicles
+      </h1>
+
+      <div className="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+          <p><span className="font-semibold">Pickup:</span> {pickup}</p>
+          <p><span className="font-semibold">Drop:</span> {drop}</p>
+          <p><span className="font-semibold">Trip Type:</span> {tripType}</p>
+          <p><span className="font-semibold">Date & Time:</span> {pickupDate} {pickupTime}</p>
+          <p><span className="font-semibold">Mobile:</span> {mobile}</p>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
-        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
-          {/* Tabs */}
-          <div className="flex border-b mb-6">
-            {["OUTSTATION", "RENTAL", "AIRPORT"].map((tab) => (
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {quotes.map((q: Quote, i: number) => (
+          <div
+            key={i}
+            className="bg-white rounded-2xl border shadow-sm hover:shadow-lg transition flex flex-col overflow-hidden"
+          >
+            <img
+              src={q.imageUrl}
+              alt={q.vehicleName}
+              className="w-full h-52 object-cover"
+            />
+            <div className="p-5 flex flex-col flex-grow">
+              <h3 className="text-lg font-semibold text-black ">{q.vehicleName}</h3>
+              <p className="text-gray-600 text-sm mt-1 mb-2">
+                {q.capacity} Seats • {q.ac ? "AC" : "Non-AC"}
+              </p>
+              <p className="text-gray-500 text-sm flex-grow">{q.features}</p>
+              <div className="mt-4">
+                <p className="text-indigo-600 font-bold text-xl">₹{q.totalFare}</p>
+                <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
+              </div>
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-1 text-center mr-2 py-2 font-semibold ${
-                  activeTab === tab
-                    ? "bg-blue-600 text-white"
-                    : "bg-blue-200 text-white hover:bg-blue-300"
-                } border-r last:border-r-0`}
+                onClick={() => handleBook(q)}
+                className="mt-5 py-2.5 rounded-xl bg-indigo-600 text-black font-medium hover:bg-indigo-700 transition"
               >
-                {tab}
+                Book Now
               </button>
-            ))}
+            </div>
           </div>
-
-          {/* Outstation Booking */}
-          {activeTab === "OUTSTATION" && (
-            <>
-              {/* Trip type */}
-              <div className="flex gap-6 mb-4">
-                <label className="flex items-center gap-2 text-black">
-                  <input
-                    type="radio"
-                    name="tripType"
-                    value="oneway"
-                    checked={tripType === "oneway"}
-                    onChange={() => setTripType("oneway")}
-                  />
-                  One Way
-                </label>
-                <label className="flex items-center gap-2 text-black">
-                  <input
-                    type="radio"
-                    name="tripType"
-                    value="roundtrip"
-                    checked={tripType === "roundtrip"}
-                    onChange={() => setTripType("roundtrip")}
-                  />
-                  Round Trip
-                </label>
-              </div>
-
-              {/* Pickup & Drop */}
-              <div className="space-y-4 mb-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">From:</label>
-                  <input
-                    type="text"
-                    placeholder="Pick Up"
-                    value={pickup}
-                    onChange={(e) => setPickup(e.target.value)}
-                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">To:</label>
-                  <input
-                    type="text"
-                    placeholder="Drop"
-                    value={drop}
-                    onChange={(e) => setDrop(e.target.value)}
-                    className="w-full border border-gray-400 text-black rounded-md px-3 py-2"
-                  />
-                </div>
-              </div>
-
-              {/* Get Estimates */}
-              <button
-                type="button"
-                onClick={handleEstimate}
-                className="w-full bg-green-600 text-white px-4 py-2 rounded-lg mb-4 hover:bg-green-700 transition"
-              >
-                Get Estimates
-              </button>
-
-              {/* Multi-Vehicle Results */}
-              {quotes.length > 0 && (
-                <div className="space-y-4">
-                  {quotes.map((q, i) => (
-                    <div
-                      key={i}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md cursor-pointer"
-                      onClick={() => handleConfirm(q)}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={q.imageUrl}
-                          alt={q.vehicleName}
-                          className="w-16 h-16 rounded"
-                        />
-                        <div>
-                          <h3 className="font-bold">{q.vehicleName}</h3>
-                          <p className="text-sm text-gray-600">
-                            {q.features} • {q.capacity} seats {q.ac ? "• AC" : "• Non-AC"}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-green-700 font-bold">₹{q.totalFare}</p>
-                        <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -145,11 +145,11 @@ export default function QuickBookingForm() {
               </button>
 
               
-             {/* Multi-Vehicle Results Overlay */}
+            
 {quotes.length > 0 && (
   <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
     <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 relative">
-      {/* Close button */}
+     
       <button
         onClick={() => setQuotes([])}
         className="absolute top-4 right-4 text-gray-600 hover:text-red-600"
@@ -157,7 +157,7 @@ export default function QuickBookingForm() {
         ✕
       </button>
 
-      <h2 className="text-2xl font-bold mb-6 text-center">Available Vehicles</h2>
+      <h2 className="text-2xl  text -black font-bold mb-6 text-center">Available Vehicles</h2>
 
       <div className="space-y-4">
         {quotes.map((q, i) => (
@@ -173,7 +173,7 @@ export default function QuickBookingForm() {
                 className="w-20 h-20 rounded object-cover"
               />
               <div>
-                <h3 className="font-bold">{q.vehicleName}</h3>
+                <h3 className="font-bold text-black">{q.vehicleName}</h3>
                 <p className="text-sm text-gray-600">
                   {q.features} • {q.capacity} seats {q.ac ? "• AC" : "• Non-AC"}
                 </p>
