@@ -12,7 +12,7 @@ type Quote = {
   features: string;
 };
 
-export default function VehicleSection() {
+export default function VehicleSelection() {
   const location = useLocation();
   const { quotes, pickup, drop, tripType, pickupDate, pickupTime, mobile } =
     location.state || { quotes: [] };
@@ -34,21 +34,32 @@ export default function VehicleSection() {
       alert("Error confirming booking");
     }
   };
-
+  console.log("Rendering VehicleSelection component");
   if (!quotes || quotes.length === 0) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500 text-lg">No vehicles available</p>
+        <p className="text-red-500 text-lg">No vehicles available</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-6">
-      <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
+   <div className="relative min-h-screen">
+ 
+    <div
+      className="absolute inset-0 bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')",
+      }}
+    >
+      <div className="absolute inset-0 bg-black opacity-30"></div>
+    </div>
+     <div className="relative z-10 py-10 px-6">
+     <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
         Available Vehicles
       </h1>
-
+   
       <div className="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-6 mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
           <p><span className="font-semibold">Pickup:</span> {pickup}</p>
@@ -59,7 +70,7 @@ export default function VehicleSection() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {quotes.map((q: Quote, i: number) => (
           <div
             key={i}
@@ -77,7 +88,7 @@ export default function VehicleSection() {
               </p>
               <p className="text-gray-500 text-sm flex-grow">{q.features}</p>
               <div className="mt-4">
-                <p className="text-indigo-600 font-bold text-xl">₹{q.totalFare}</p>
+                <p className="text-indigo-600 font-bold text-xl">₹{q.totalFare.toFixed(2)}</p>
                 <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
               </div>
               <button
@@ -90,6 +101,7 @@ export default function VehicleSection() {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 }
