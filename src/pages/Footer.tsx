@@ -65,9 +65,26 @@ export default function Footer() {
       </div>
 
       
-      <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm flex flex-col md:flex-row items-center justify-between px-6">
-        <p>Copyright © 2025 Vijay Tours & Travels. All rights reserved.</p>
-        <div className="flex gap-4 mt-4 md:mt-0">
+       <div className="border-t border-gray-700 mt-10 pt-6 text-sm flex flex-col md:flex-row items-center justify-between px-6">
+        
+        <p className="md:w-1/3 text-center md:text-left">
+          © 2025 Vijay Tours & Travels. All rights reserved.
+        </p>
+
+        
+        <p className="md:w-1/3 text-center my-2 md:my-0">
+          Developed by{" "}
+          <span className="font-semibold text-yellow-400">Akash Patil</span> –{" "}
+          <a
+            href="mailto:akashivu002@gmail.com"
+            className="hover:underline text-gray-300"
+          >
+            akashivu002@gmail.com
+          </a>
+        </p>
+
+       
+        <div className="md:w-1/3 flex justify-center md:justify-end gap-4">
           <FaFacebook className="h-5 w-5 cursor-pointer hover:text-yellow-400" />
           <FaInstagram className="h-5 w-5 cursor-pointer hover:text-yellow-400" />
         </div>
