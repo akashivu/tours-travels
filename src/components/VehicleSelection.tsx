@@ -45,21 +45,11 @@ export default function VehicleSelection() {
   }
 
   return (
-   <div className="relative min-h-screen">
- 
-    <div
-      className="absolute inset-0 bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg')",
-      }}
-    >
-      <div className="absolute inset-0 bg-black opacity-30"></div>
-    </div>
-     <div className="relative z-10 py-10 px-6">
-    
-      <div className="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-6 mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+    <div className="min-h-screen bg-gray-50 py-10 px-6">
+      {/* Booking Info Card */}
+      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6 mb-10 border border-gray-200">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Booking Details</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-sm">
           <p><span className="font-semibold">Pickup:</span> {pickup}</p>
           <p><span className="font-semibold">Drop:</span> {drop}</p>
           <p><span className="font-semibold">Trip Type:</span> {tripType}</p>
@@ -100,6 +90,6 @@ export default function VehicleSelection() {
         ))}
       </div>
     </div>
-    </div>
+    
   );
 }
