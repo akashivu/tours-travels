@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import AdminDashboard from "./components/AdminDashboard";
 import VehicleSelection from "./components/VehicleSelection";
 import QuickBookingForm from "./components/QuickBookingForm";
+import BookingConfirmation from "./components/BookingConfirmation";
+
 
 export default function App() {
   return (
@@ -12,6 +14,7 @@ export default function App() {
         <Route path="/bookingform" element={<QuickBookingForm/>}/>
          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/vehicles" element={<VehicleSelection />} />
+         <Route path="/confirmation" element={<BookingConfirmation/>}/>
       </Routes>
     </BrowserRouter>
   );

@@ -42,7 +42,7 @@ export default function QuickBookingForm() {
       className="relative min-h-screen bg-cover bg-center flex items-center"
       style={{
         backgroundImage:
-          "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')",
+          "url('https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg')",
       }}
     >
       <div className="absolute inset-0 bg-black opacity-40"></div>
@@ -227,7 +227,7 @@ export default function QuickBookingForm() {
         </div>
 
         <div className="hidden md:flex w-1/2 flex-col justify-center items-start pl-10 text-white">
-          <h2 className="text-3xl font-bold mb-4">
+          <h2 className="text-3xl text-white font-bold mb-4">
             Call Now To Book Your Ride
           </h2>
           <p className="mb-6">

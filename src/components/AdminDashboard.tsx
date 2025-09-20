@@ -13,7 +13,7 @@ type Booking = {
 export default function AdminDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  // Fetch bookings on component mount
+  
   useEffect(() => {
     fetchBookings();
   }, []);
@@ -27,21 +27,21 @@ export default function AdminDashboard() {
     }
   };
 
-  // Update booking status
+  
   const updateStatus = async (id: number, status: string) => {
     try {
       await axios.patch(`http://localhost:8080/api/admin/bookings/${id}/status`, { status });
-      fetchBookings(); // Refresh after update
+      fetchBookings(); 
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
 
-  // Delete booking
+ 
   const deleteBooking = async (id: number) => {
     try {
       await axios.delete(`http://localhost:8080/api/admin/bookings/${id}`);
-      fetchBookings(); // Refresh after delete
+      fetchBookings(); 
     } catch (error) {
       console.error("Error deleting booking:", error);
     }

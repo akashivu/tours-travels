@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 
 type Quote = {
@@ -14,6 +14,7 @@ type Quote = {
 
 export default function VehicleSelection() {
   const location = useLocation();
+   const navigate = useNavigate();
   const { quotes, pickup, drop, tripType, pickupDate, pickupTime, mobile } =
     location.state || { quotes: [] };
 
@@ -29,7 +30,7 @@ export default function VehicleSelection() {
         pickupTime,
         mobile,
       });
-      alert(`Booking Confirmed! ID: ${res.data.id}`);
+      navigate("/confirmation", { state: { booking: res.data } });
     } catch {
       alert("Error confirming booking");
     }
@@ -50,16 +51,13 @@ export default function VehicleSelection() {
       className="absolute inset-0 bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg')",
+          "url('https://wallpaperaccess.com/full/3101556.jpg')",
       }}
     >
       <div className="absolute inset-0 bg-black opacity-30"></div>
     </div>
      <div className="relative z-10 py-10 px-6">
-     <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
-        Available Vehicles
-      </h1>
-   
+    
       <div className="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-6 mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
           <p><span className="font-semibold">Pickup:</span> {pickup}</p>
@@ -88,7 +86,7 @@ export default function VehicleSelection() {
               </p>
               <p className="text-gray-500 text-sm flex-grow">{q.features}</p>
               <div className="mt-4">
-                <p className="text-indigo-600 font-bold text-xl">₹{q.totalFare.toFixed(2)}</p>
+                <p className="text-indigo-600 font-bold text-xl">₹{q.totalFare.toFixed(0)}</p>
                 <p className="text-xs text-gray-500">{q.distanceKm.toFixed(1)} km</p>
               </div>
               <button
