@@ -15,17 +15,8 @@ type Quote = {
 export default function VehicleSelection() {
   const location = useLocation();
    const navigate = useNavigate();
-    const {
-    quotes: rawQuotes,
-    pickup,
-    drop,
-    tripType,
-    pickupDate,
-    pickupTime,
-    mobile,
-  } = location.state || { quotes: [] };
-
-  const quotes: Quote[] = Array.isArray(rawQuotes) ? rawQuotes : [];
+  const { quotes, pickup, drop, tripType, pickupDate, pickupTime, mobile } =
+    location.state || { quotes: [] };
 
   const handleBook = async (quote: Quote) => {
     try {
@@ -60,7 +51,7 @@ export default function VehicleSelection() {
       className="absolute inset-0 bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('https://wallpaperaccess.com/full/3101556.jpg')",
+          "url('https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg')",
       }}
     >
       <div className="absolute inset-0 bg-black opacity-30"></div>

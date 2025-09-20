@@ -63,7 +63,7 @@ export default function OurVehicles() {
    <div
       className="relative min-h-screen py-10 px-6"
       style={{
-        backgroundImage: "url('https://wallpaperaccess.com/full/3101556.jpg')",
+        backgroundImage: "url('https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
