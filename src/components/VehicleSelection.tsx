@@ -15,8 +15,17 @@ type Quote = {
 export default function VehicleSelection() {
   const location = useLocation();
    const navigate = useNavigate();
-  const { quotes, pickup, drop, tripType, pickupDate, pickupTime, mobile } =
-    location.state || { quotes: [] };
+    const {
+    quotes: rawQuotes,
+    pickup,
+    drop,
+    tripType,
+    pickupDate,
+    pickupTime,
+    mobile,
+  } = location.state || { quotes: [] };
+
+  const quotes: Quote[] = Array.isArray(rawQuotes) ? rawQuotes : [];
 
   const handleBook = async (quote: Quote) => {
     try {
