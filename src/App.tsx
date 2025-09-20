@@ -4,6 +4,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import VehicleSelection from "./components/VehicleSelection";
 import QuickBookingForm from "./components/QuickBookingForm";
 import BookingConfirmation from "./components/BookingConfirmation";
+import HolidayPackages from "./pages/HolidayPackages";
 
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/vehicles" element={<VehicleSelection />} />
          <Route path="/confirmation" element={<BookingConfirmation/>}/>
+          <Route path="/holiday-packages" element={<HolidayPackages />} />
       </Routes>
     </BrowserRouter>
   );
