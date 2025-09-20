@@ -60,20 +60,12 @@ const vehicles: Vehicle[] = [
 
 export default function OurVehicles() {
   return (
-   <div
-      className="relative min-h-screen py-10 px-6"
-      style={{
-        backgroundImage: "url('https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+  <div
+      className="relative min-h-screen py-12 px-6 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200"
     >
-    
-      <div className="absolute inset-0 bg-black opacity-40"></div>
-
-      
+     
       <div className="relative z-10">
-      <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
+        <h1 className="text-4xl font-bold text-center text-gray-900 mb-12">
         Our Available Vehicles
       </h1>
 

@@ -16,7 +16,7 @@ const packages: Package[] = [
     title: "Ooty 3 Days 2 Nights",
     duration: "3D/2N",
     price: 7999,
-    imageUrl: "https://images.pexels.com/photos/35617/ooty-india-mountains.jpg",
+    imageUrl: "https://images.pexels.com/photos/32366710/pexels-photo-32366710.jpeg",
     inclusions: ["Hotel Stay", "Breakfast & Dinner", "Sightseeing", "Cab Transfers"],
     description: "Explore the Queen of Hills with visits to Botanical Garden, Ooty Lake, Dodabetta Peak and more."
   },
@@ -43,7 +43,7 @@ const packages: Package[] = [
   title: "Chikmagalur Coffee Retreat",
   duration: "3D/2N",
   price: 6999,
-  imageUrl: "https://images.pexels.com/photos/1098466/pexels-photo-1098466.jpeg",
+  imageUrl: "https://images.pexels.com/photos/29890282/pexels-photo-29890282.jpeg",
   inclusions: ["Homestay in Coffee Estate", "Meals Included", "Trekking", "Waterfalls Visit"],
   description: "Relax amidst coffee plantations, enjoy trekking, Mullayanagiri peak visit, and hidden waterfalls."
 },
@@ -70,7 +70,7 @@ const packages: Package[] = [
   title: "Hampi Heritage Trail",
   duration: "2D/1N",
   price: 5499,
-  imageUrl: "https://images.pexels.com/photos/356211/pexels-photo-356211.jpeg",
+  imageUrl: "https://images.pexels.com/photos/27719238/pexels-photo-27719238.jpeg",
   inclusions: ["Hotel Stay", "Meals", "Guided Temple Tour", "Transport"],
   description: "Explore the UNESCO World Heritage site with ancient ruins, Virupaksha temple, and coracle rides."
 }
