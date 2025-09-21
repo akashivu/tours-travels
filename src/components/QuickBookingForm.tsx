@@ -32,6 +32,11 @@ export default function QuickBookingForm() {
          
         },
       });
+     
+      setPickup("");
+      setDrop("");
+      setPickupDate("");
+      setPickupTime("");
     } catch {
       alert("Error fetching vehicles");
     }
