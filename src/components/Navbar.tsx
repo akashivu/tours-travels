@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import { FaFacebook, FaInstagram, FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import AccountModal from "./AccountModal";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -68,7 +69,9 @@ export default function Navbar() {
             <li><Link to="/about" className="hover:text-blue-600">ABOUT US</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600">CONTACT US</Link></li>
           </ul>
-
+        <div className="hidden md:block">
+  <AccountModal />
+</div>
           
           <button
             className="md:hidden text-gray-800"
@@ -90,6 +93,7 @@ export default function Navbar() {
               <li><Link to="/cars" onClick={() => setIsOpen(false)}>OUR CARS</Link></li>
               <li><Link to="/about" onClick={() => setIsOpen(false)}>ABOUT US</Link></li>
               <li><Link to="/contact" onClick={() => setIsOpen(false)}>CONTACT US</Link></li>
+              <li><AccountModal /></li>
             </ul>
           </div>
         )}

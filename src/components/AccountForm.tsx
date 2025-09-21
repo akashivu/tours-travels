@@ -1,0 +1,119 @@
+import { useState } from "react";
+import axios from "axios";
+
+export default function AccountForm() {
+  const [isLogin, setIsLogin] = useState(true); 
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      if (isLogin) {
+        const res = await axios.post("http://localhost:8080/api/account/login", {
+          email,
+          password,
+        });
+        localStorage.setItem("token", res.data);
+        alert("Login successful!");
+      } else {
+        await axios.post("http://localhost:8080/api/account/register", {
+          fullName,
+          email,
+          password,
+        });
+        alert("Registration successful! Please log in.");
+        setIsLogin(true);
+      }
+    } catch (error: any) {
+      alert("Error: " + (error.response?.data || "Something went wrong"));
+    }
+  };
+
+  return (
+   
+      <div className="flex w-full max-w-4xl  bg-white rounded-xl shadow-lg overflow-hidden">
+      
+        <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 text-white items-center justify-center p-10">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold">Signup to join the club of</h2>
+            <p className="text-3xl font-bold mt-2"> we have Happy Customers</p>
+          </div>
+        </div>
+
+        
+        <div className="w-full md:w-1/2 p-8">
+         
+          <div className="flex justify-center mb-6">
+            <button
+              onClick={() => setIsLogin(true)}
+              className={`px-6 py-2 font-semibold border-b-2 ${
+                isLogin ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500"
+              }`}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => setIsLogin(false)}
+              className={`ml-6 px-6 py-2 font-semibold border-b-2 ${
+                !isLogin ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500"
+              }`}
+            >
+              Register
+            </button>
+          </div>
+
+         
+          <div>
+            {!isLogin && (
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="border w-full p-3 mb-4 rounded-md focus:ring-2 focus:ring-indigo-400"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            )}
+            <input
+              type="email"
+              placeholder="Email Address"
+              className="border w-full p-3 mb-4 rounded-md focus:ring-2 focus:ring-indigo-400"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="border w-full p-3 mb-6 rounded-md focus:ring-2 focus:ring-indigo-400"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+              onClick={handleSubmit}
+              className="bg-indigo-600 hover:bg-indigo-700 w-full text-white py-3 rounded-md font-semibold transition"
+            >
+              {isLogin ? "Login" : "Register"}
+            </button>
+          </div>
+
+         
+          <p className="text-xs text-gray-500 mt-4 text-center">
+            By proceeding, you agree to our{" "}
+            <a href="#" className="text-indigo-600 underline">
+              Privacy Policy
+            </a>
+            ,{" "}
+            <a href="#" className="text-indigo-600 underline">
+              User Agreement
+            </a>{" "}
+            and{" "}
+            <a href="#" className="text-indigo-600 underline">
+              T&Cs
+            </a>
+          </p>
+        </div>
+      </div>
+   
+  );
+}
