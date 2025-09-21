@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountForm() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true); 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,7 +17,8 @@ export default function AccountForm() {
           password,
         });
         localStorage.setItem("token", res.data);
-        alert("Login successful!");
+        
+         navigate("/user");
       } else {
         await axios.post("http://localhost:8080/api/account/register", {
           fullName,

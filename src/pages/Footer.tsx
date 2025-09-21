@@ -73,7 +73,7 @@ export default function Footer() {
 
         
         <p className="md:w-1/3 text-center my-2 md:my-0">
-          Developed by{" "}
+          Design & Developed by{" "}
           <span className="font-semibold text-yellow-400">Akash Patil</span> –{" "}
           <a
             href="mailto:akashivu002@gmail.com"
