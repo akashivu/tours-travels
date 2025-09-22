@@ -23,7 +23,7 @@ export default function UserDashboardLayout() {
   return (
     <div className="flex min-h-screen bg-gray-50">
      
-      <aside className="w-72 bg-gradient-to-b from-indigo-700 via-indigo-800 to-indigo-900 text-white flex flex-col p-6 shadow-lg">
+     <aside className="w-72 bg-gradient-to-b from-indigo-700 via-indigo-800 to-indigo-900 text-white flex flex-col p-6 shadow-lg fixed top-0 left-0 h-full">
        
         <div className="flex items-center gap-3 mb-10">
           <div className="bg-white p-2 rounded-lg">
@@ -41,37 +41,37 @@ export default function UserDashboardLayout() {
             <HomeIcon className="h-5 w-5" /> Home
           </Link>
           <Link
-            to="/dashboard"
+            to="/user/dashboard"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
             <ChartBarIcon className="h-5 w-5" /> Dashboard
           </Link>
           <Link
-            to="/my-bookings"
+            to="/user/my-bookings"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
             <CalendarDaysIcon className="h-5 w-5" /> My Bookings
           </Link>
           <Link
-            to="/holiday-packages"
+            to="/user/holiday-packages"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
             <GiftIcon className="h-5 w-5" /> Holiday Packages
           </Link>
           <Link
-            to="/ourvehicles"
+            to="/user/vehicles"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
             <TruckIcon className="h-5 w-5" /> Our Vehicles
           </Link>
           <Link
-            to="user/local-packages"
+            to="/user/local-packages"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
             <InboxIcon className="h-5 w-5" /> Local Packages
           </Link>
           <Link
-            to="/contact"
+            to="/user/contact"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
             <PhoneIcon className="h-5 w-5" /> Help / Contact Us
@@ -85,19 +85,9 @@ export default function UserDashboardLayout() {
       </aside>
 
       
-    <main className="flex-1 p-8 bg-gradient-to-br from-indigo-100 via-white to-blue-50 flex flex-col items-center justify-center">
-  <div className="text-center">
-    <h1 className="text-4xl font-bold text-gray-900 mb-4">
-      Welcome Back, <span className="text-indigo-600">User!</span>
-    </h1>
-    <p className="text-gray-600 mb-8">Manage your bookings, explore packages, and enjoy the ride</p>
-    <img
-      src="https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?cs=srgb&dl=pexels-te-lensfix-380994-1371360.jpg&fm=jpg"
-      alt="Welcome Illustration"
-      className="max-w-lg mx-auto rounded-lg shadow-lg"
-    />
-  </div>
-</main>
+     <main className="flex-1 ml-72 p-8 overflow-y-auto bg-gradient-to-br from-indigo-100 via-white to-blue-50">
+        <Outlet />
+      </main>
 
     </div>
   );

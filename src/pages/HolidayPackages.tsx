@@ -108,7 +108,7 @@ export default function HolidayPackages() {
 
            
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex flex-col justify-end p-5">
-              <h3 className="text-xl font-bold text-white">{pkg.title}</h3>
+              <h3 className="text-xl font-bold text-blue">{pkg.title}</h3>
               <p className="text-gray-200 text-sm">{pkg.duration}</p>
               <p className="text-yellow-400 font-bold text-lg mt-1">
                 ₹{pkg.price}
