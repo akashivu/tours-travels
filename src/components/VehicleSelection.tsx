@@ -20,21 +20,38 @@ export default function VehicleSelection() {
 
   const handleBook = async (quote: Quote) => {
     try {
-      const res = await axios.post("http://localhost:8080/api/bookings/confirm", {
-        pickup,
-        dropoff: drop,
-        distanceKm: quote.distanceKm,
-        fare: quote.totalFare,
-        vehicleName: quote.vehicleName,
-        pickupDate,
-        pickupTime,
-        mobile,
-      });
+      const token = localStorage.getItem("token"); // ✅ must be set at login
+
+      const res = await axios.post(
+        "http://localhost:8080/api/bookings/confirm",
+        {
+          tripCategory: "OUTSTATION",
+          tripType,
+          fromLocation: pickup,
+          toLocation: drop,
+          city: "",
+          pickupLocation: pickup,
+          pickupDate,
+          pickupTime,
+          mobile,
+          vehicleName: quote.vehicleName,
+          distanceKm: quote.distanceKm,
+          fare: quote.totalFare,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+
       navigate("/confirmation", { state: { booking: res.data } });
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Error confirming booking");
     }
   };
+
   console.log("Rendering VehicleSelection component");
   if (!quotes || quotes.length === 0) {
     return (
@@ -46,7 +63,7 @@ export default function VehicleSelection() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
-      {/* Booking Info Card */}
+     
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6 mb-10 border border-gray-200">
         <h2 className="text-xl font-bold text-gray-800 mb-4">Booking Details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-sm">

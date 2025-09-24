@@ -9,24 +9,52 @@ export default function AccountForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async () => {
+const decodeToken = (token: string) => {
     try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch {
+      return null;
+    }
+  };
+  
+  const handleSubmit = async () => {
+     try {
       if (isLogin) {
+       
         const res = await axios.post("http://localhost:8080/api/account/login", {
           email,
           password,
         });
-        localStorage.setItem("token", res.data);
-        
-         navigate("/user");
+
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userId", res.data.userId);
+
+       
+         const payload = decodeToken(res.data.token);
+        if (payload) {
+          localStorage.setItem("email", payload.sub);
+        }
+
+        navigate("/user/dashboard");
       } else {
-        await axios.post("http://localhost:8080/api/account/register", {
+        
+        const res = await axios.post("http://localhost:8080/api/account/register", {
           fullName,
           email,
           password,
         });
-        alert("Registration successful! Please log in.");
-        setIsLogin(true);
+
+       
+        localStorage.setItem("token", res.data.token);
+localStorage.setItem("userId", res.data.userId);
+
+const payload = decodeToken(res.data.token);
+if (payload) {
+  localStorage.setItem("email", payload.sub);
+}
+
+alert("Registration successful!");
+navigate("/user/dashboard");
       }
     } catch (error: any) {
       alert("Error: " + (error.response?.data || "Something went wrong"));

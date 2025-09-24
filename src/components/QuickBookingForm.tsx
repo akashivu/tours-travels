@@ -20,7 +20,7 @@ export default function QuickBookingForm() {
         dropoff: drop,
         tripType,
       });
-
+       console.log("Quotes received:", res.data);
       navigate("/vehicles", {
         state: {
           quotes: res.data,
@@ -33,10 +33,6 @@ export default function QuickBookingForm() {
         },
       });
      
-      setPickup("");
-      setDrop("");
-      setPickupDate("");
-      setPickupTime("");
     } catch {
       alert("Error fetching vehicles");
     }

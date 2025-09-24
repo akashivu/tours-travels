@@ -44,7 +44,7 @@ export default function UserDashboardLayout() {
             to="/user/dashboard"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
-            <ChartBarIcon className="h-5 w-5" /> Dashboard
+            <ChartBarIcon className="h-5 w-5" /> Book Now
           </Link>
           <Link
             to="/user/my-bookings"
@@ -85,7 +85,7 @@ export default function UserDashboardLayout() {
       </aside>
 
       
-     <main className="flex-1 ml-72 p-8 overflow-y-auto bg-gradient-to-br from-indigo-100 via-white to-blue-50">
+     <main className="flex-1 ml-72  overflow-y-auto bg-gradient-to-br from-indigo-100 via-white to-blue-50">
         <Outlet />
       </main>
 
