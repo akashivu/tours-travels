@@ -19,23 +19,37 @@ export default function MyBookings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const userId = localStorage.getItem("userId"); 
-        const res = await fetch(`http://localhost:8080/api/bookings/user/${userId}`, {
-          credentials: "include",
-        });
-        const data = await res.json();
-        setBookings(data);
-      } catch (err) {
-        console.error("Error fetching bookings:", err);
-      } finally {
-        setLoading(false);
+  const fetchBookings = async () => {
+    try {
+      const token = localStorage.getItem("token"); 
+      if (!token) {
+        console.error("No token found, user not logged in");
+        return;
       }
-    };
 
-    fetchBookings();
-  }, []);
+      const res = await fetch("http://localhost:8080/api/bookings/my-bookings", {
+        headers: {
+          "Authorization": `Bearer ${token}`, 
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setBookings(data);
+
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchBookings();
+}, []);
 
   if (loading) return <p className="text-center mt-10">Loading bookings...</p>;
 

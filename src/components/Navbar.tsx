@@ -61,11 +61,11 @@ export default function Navbar() {
           
           <ul className="hidden md:flex gap-8 text-md font-semibold text-gray-800 tracking-wide">
             <li><Link to="/" className="hover:text-blue-600">HOME</Link></li>
-            <li><Link to="/airport" className="hover:text-blue-600">AIRPORT TAXI</Link></li>
-            <li><Link to="/outstation" className="hover:text-blue-600">OUTSTATION TAXI</Link></li>
+            <li><Link to="/" className="hover:text-blue-600">AIRPORT TAXI</Link></li>
+            <li><Link to="/" className="hover:text-blue-600">OUTSTATION TAXI</Link></li>
             <li><Link to="/local-package" className="hover:text-blue-600">LOCAL PACKAGE</Link></li>
             <li><Link to="/holiday-packages" className="hover:text-blue-600">HOLIDAY PACKAGES</Link></li>
-            <li><Link to="/cars" className="hover:text-blue-600">OUR CARS</Link></li>
+            <li><Link to="/vehicles" className="hover:text-blue-600">OUR CARS</Link></li>
             <li><Link to="/about" className="hover:text-blue-600">ABOUT US</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600">CONTACT US</Link></li>
           </ul>

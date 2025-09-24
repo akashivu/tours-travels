@@ -2,9 +2,9 @@ import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   HomeIcon,
-  ChartBarIcon,
   CalendarDaysIcon,
   GiftIcon,
+  UserCircleIcon,
   TruckIcon,
   InboxIcon,
   PhoneIcon,
@@ -26,11 +26,14 @@ export default function UserDashboardLayout() {
      <aside className="w-72 bg-gradient-to-b from-indigo-700 via-indigo-800 to-indigo-900 text-white flex flex-col p-6 shadow-lg fixed top-0 left-0 h-full">
        
         <div className="flex items-center gap-3 mb-10">
-          <div className="bg-white p-2 rounded-lg">
-            <TruckIcon className="h-7 w-7 text-indigo-700" />
-          </div>
-          <h2 className="text-2xl font-bold tracking-wide">welcome,{email}</h2>
-        </div>
+          <div className="flex flex-col bg-white p-2 rounded-lg">
+            <UserCircleIcon className="h-7 w-7 text-indigo-700" />
+         </div>
+  <div className="flex flex-col">
+    <h2 className="text-2xl font-bold tracking-wide">Welcome</h2>
+    <h2 className="text-sm font-medium text-gray-700">{email}</h2>
+  </div>
+</div>
 
         
         <nav className="flex flex-col space-y-3 text-sm font-medium">
@@ -44,7 +47,7 @@ export default function UserDashboardLayout() {
             to="/user/dashboard"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-600 transition"
           >
-            <ChartBarIcon className="h-5 w-5" /> Book Now
+            <CalendarDaysIcon className="h-5 w-5" /> Book Now
           </Link>
           <Link
             to="/user/my-bookings"

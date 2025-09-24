@@ -8,6 +8,7 @@ import BookingConfirmation from "./components/BookingConfirmation";
 import HolidayPackages from "./pages/HolidayPackages";
 import OurVehicles from "./pages/OurVehicles";
 import MyBooking from "./pages/MyBooking";
+import AboutUs from "./pages/AboutUs";
 
 export default function App() {
   return (
@@ -17,12 +18,12 @@ export default function App() {
         <Route path="/user" element={<UserDashboardLayout />}>
           <Route path="dashboard" element={<QuickBookingForm />} />
           <Route path="dashboard" element={<h1>Dashboard Content</h1>} />
-          <Route path="my-bookings" element={<h1>My Bookings Page</h1>} />
+          <Route path="my-bookings" element={<MyBooking/>} />
           <Route path="vehicles" element={<OurVehicles/>} />
           <Route path="holiday-packages" element={<HolidayPackages/>} />
           <Route path="local-packages" element={<h1>Local Packages</h1>} />
           <Route path="help" element={<h1>Help & Contact Page</h1>} />
-           
+          
         </Route>
         <Route path="/bookingform" element={<QuickBookingForm/>}/>
          <Route path="/admin" element={<AdminDashboard />} />
@@ -31,6 +32,8 @@ export default function App() {
           <Route path="/holiday-packages" element={<HolidayPackages />} />
           <Route path="/ourvehicles" element={<OurVehicles/>}/>
           <Route path="/my-bookings" element={<MyBooking />} />
+           <Route path="/about" element={<AboutUs />} />
+
       </Routes>
     </BrowserRouter>
   );
