@@ -9,6 +9,7 @@ import HolidayPackages from "./pages/HolidayPackages";
 import OurVehicles from "./pages/OurVehicles";
 import MyBooking from "./pages/MyBooking";
 import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
 
 export default function App() {
   return (
@@ -22,7 +23,7 @@ export default function App() {
           <Route path="vehicles" element={<OurVehicles/>} />
           <Route path="holiday-packages" element={<HolidayPackages/>} />
           <Route path="local-packages" element={<h1>Local Packages</h1>} />
-          <Route path="help" element={<h1>Help & Contact Page</h1>} />
+          <Route path="contact" element={<ContactUs/>} />
           
         </Route>
         <Route path="/bookingform" element={<QuickBookingForm/>}/>

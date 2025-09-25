@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
 
 export default function QuickBookingForm() {
@@ -107,20 +108,28 @@ export default function QuickBookingForm() {
 
           
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-end">
-            <input
-              type="text"
-              placeholder="From"
-              value={pickup}
-              onChange={(e) => setPickup(e.target.value)}
-              className="border p-3 rounded-lg"
-            />
-            <input
-              type="text"
-              placeholder="To"
-              value={drop}
-              onChange={(e) => setDrop(e.target.value)}
-              className="border p-3 rounded-lg"
-            />
+        <AddressAutocomplete
+  placeholder="Pickup location"
+  className="border p-3 rounded-lg"
+  value={pickup}
+  onChange={(val) => setPickup(val)}
+  onSelect={(address, lat, lng) => {
+    setPickup(address);
+    console.log("Pickup:", address, lat, lng);
+  }}
+/>
+
+<AddressAutocomplete
+  placeholder="Drop location"
+  className="border p-3 rounded-lg"
+  value={drop}
+  onChange={(val) => setDrop(val)}
+  onSelect={(address, lat, lng) => {
+    setDrop(address);
+    console.log("Drop:", address, lat, lng);
+  }}
+/>
+
             <input
               type="date"
               value={pickupDate}
