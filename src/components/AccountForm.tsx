@@ -67,8 +67,8 @@ navigate("/user/dashboard");
       
         <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 text-white items-center justify-center p-10">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold">Signup to join the club of</h2>
-            <p className="text-3xl font-bold mt-2"> we have Happy Customers</p>
+            <h2 className="text-2xl font-semibold">Signup and start your hassle-free travel</h2>
+            <p className="text-3xl font-bold mt-2"> Because every mile matters to us</p>
           </div>
         </div>
 

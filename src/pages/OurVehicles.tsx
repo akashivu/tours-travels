@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 type Vehicle = {
   vehicleName: string;
   capacity: number;
@@ -61,6 +62,10 @@ const vehicles: Vehicle[] = [
 ];
 
 export default function OurVehicles() {
+  const navigate = useNavigate();
+  const handleBook = (vehicle: Vehicle) => {
+  navigate("/login", { state: { selectedVehicle: vehicle } }); 
+};
   return (
     <div className="relative min-h-screen py-12 px-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="relative z-10">
@@ -90,7 +95,7 @@ export default function OurVehicles() {
               <p className="text-gray-400 text-sm mt-1">{v.features}</p>
 
              
-              <button className="mt-5 px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
+              <button   onClick={() => handleBook(v)} className="mt-5 px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
                 Book Now
               </button>
             </div>

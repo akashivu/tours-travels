@@ -10,6 +10,7 @@ import OurVehicles from "./pages/OurVehicles";
 import MyBooking from "./pages/MyBooking";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import AccountForm from "./components/AccountForm";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/ourvehicles" element={<OurVehicles/>}/>
           <Route path="/my-bookings" element={<MyBooking />} />
            <Route path="/about" element={<AboutUs />} />
+           <Route path ="/login" element={<AccountForm/>}/>
 
       </Routes>
     </BrowserRouter>

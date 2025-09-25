@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -12,7 +13,13 @@ import {
 
 export default function UserDashboardLayout() {
     const [email, setEmail] = useState<string | null>("");
+    const navigate = useNavigate();
 
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("email");
+  navigate("/"); 
+};
   useEffect(() => {
     
     const storedEmail = localStorage.getItem("email");
@@ -80,7 +87,12 @@ export default function UserDashboardLayout() {
             <PhoneIcon className="h-5 w-5" /> Help / Contact Us
           </Link>
         </nav>
-
+        <button
+           onClick={handleLogout}
+           className="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 transition text-white font-medium mt-6"
+            >
+             Logout
+             </button>
       
         <div className="mt-auto text-xs text-gray-300 text-center pt-6 border-t border-indigo-600">
           © 2025 Vijay Travels  
