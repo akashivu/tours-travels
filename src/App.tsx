@@ -11,32 +11,38 @@ import MyBooking from "./pages/MyBooking";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import AccountForm from "./components/AccountForm";
+import SiteLayout from "./layouts/SiteLayout"; 
 
 export default function App() {
   return (
-    <BrowserRouter>
+     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+       
+        <Route element={<SiteLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/vehicles" element={<VehicleSelection />} />
+          <Route path="/holiday-packages" element={<HolidayPackages />} />
+          <Route path="/ourvehicles" element={<OurVehicles />} />
+          <Route path="/my-bookings" element={<MyBooking />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
+        </Route>
+
+        
         <Route path="/user" element={<UserDashboardLayout />}>
           <Route path="dashboard" element={<QuickBookingForm />} />
-          <Route path="dashboard" element={<h1>Dashboard Content</h1>} />
-          <Route path="my-bookings" element={<MyBooking/>} />
-          <Route path="vehicles" element={<OurVehicles/>} />
-          <Route path="holiday-packages" element={<HolidayPackages/>} />
+          <Route path="my-bookings" element={<MyBooking />} />
+          <Route path="vehicles" element={<OurVehicles />} />
+          <Route path="holiday-packages" element={<HolidayPackages />} />
           <Route path="local-packages" element={<h1>Local Packages</h1>} />
-          <Route path="contact" element={<ContactUs/>} />
-          
+          <Route path="contact" element={<ContactUs />} />
         </Route>
-        <Route path="/bookingform" element={<QuickBookingForm/>}/>
-         <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/vehicles" element={<VehicleSelection />} />
-         <Route path="/confirmation" element={<BookingConfirmation/>}/>
-          <Route path="/holiday-packages" element={<HolidayPackages />} />
-          <Route path="/ourvehicles" element={<OurVehicles/>}/>
-          <Route path="/my-bookings" element={<MyBooking />} />
-           <Route path="/about" element={<AboutUs />} />
-           <Route path ="/login" element={<AccountForm/>}/>
 
+      
+        <Route path="/bookingform" element={<QuickBookingForm />} />
+        <Route path="/confirmation" element={<BookingConfirmation />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/login" element={<AccountForm />} />
       </Routes>
     </BrowserRouter>
   );
