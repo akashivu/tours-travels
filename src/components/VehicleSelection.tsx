@@ -90,7 +90,7 @@ export default function VehicleSelection() {
               
               <div className="flex flex-col md:flex-row">
                
-                <div className="flex p-4 w-full md:w-2/3">
+                <div className="flex p-4 w-full  md:w-2/3">
                   <img
                     src={q.imageUrl}
                     alt={q.vehicleName}
@@ -106,24 +106,24 @@ export default function VehicleSelection() {
                 </div>
 
                
-                <div className="bg-yellow-400 p-4 flex flex-col justify-between items-center md:w-1/3">
+                <div className="bg-slate-500 p-4 flex  justify-between items-center md:w-1/3">
                   <p className="text-2xl font-bold">₹{q.totalFare.toFixed(0)}</p>
-                  <p className="text-xs text-black">
-                    Includes {q.distanceKm.toFixed(0)} km
+                  <p className="text-md ml-1 text-black">
+                    INCLUDES {q.distanceKm.toFixed(0)} km
                   </p>
 
                   <button
-                    className="text-sm text-red-700 underline mt-1"
+                    className="text-sm text-white bg-green-800 ml-1 mt-1"
                     onClick={() =>
                       setExpanded(isOpen ? null : i)
                     }
                   >
-                    {isOpen ? "Hide Details ▲" : "Detail ▼"}
+                    {isOpen ? "CLOSE" : "DETAIL"}
                   </button>
 
                   <button
                     onClick={() => handleBook(q)}
-                    className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="mt-2 px-5 py-2 ml-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                   >
                     Select
                   </button>

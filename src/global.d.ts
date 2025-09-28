@@ -28,3 +28,4 @@ declare global {
     }
   }
 }
+declare module "swiper/css";
