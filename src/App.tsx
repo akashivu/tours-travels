@@ -12,6 +12,7 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import AccountForm from "./components/AccountForm";
 import SiteLayout from "./layouts/SiteLayout"; 
+import Booking from "./pages/Booking";
 
 export default function App() {
   return (
@@ -26,9 +27,10 @@ export default function App() {
           <Route path="/my-bookings" element={<MyBooking />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/booking" element={<Booking />} />
         </Route>
 
-        
+        <Route element={<SiteLayout />}>
         <Route path="/user" element={<UserDashboardLayout />}>
           <Route path="dashboard" element={<QuickBookingForm />} />
           <Route path="my-bookings" element={<MyBooking />} />
@@ -37,9 +39,10 @@ export default function App() {
           <Route path="local-packages" element={<h1>Local Packages</h1>} />
           <Route path="contact" element={<ContactUs />} />
         </Route>
-
+        </Route>
       
         <Route path="/bookingform" element={<QuickBookingForm />} />
+        <Route path="/booking" element={<Booking />} />
         <Route path="/confirmation" element={<BookingConfirmation />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<AccountForm />} />

@@ -9,8 +9,11 @@ export default function BookingPage() {
           Welcome To <span className="text-purple-700">VijayTravels</span>
         </h2>
         <p className="text-gray-700 max-w-3xl mx-auto leading-relaxed">
-         At VijayTravels, we’re committed to making every journey safe, comfortable, and stress-free. With reliable cabs, professional drivers, and a focus on punctuality, we ensure you reach your destination on time with ease. Whether it’s daily city rides, airport transfers, or long outstation trips, VijayTravels is here to provide you with a smooth and dependable travel experience.
-        </p>
+        At VijayTravels, we’re committed to making every journey safe, comfortable, and stress-free. With well-maintained vehicles, professional and courteous drivers, and a strong focus on punctuality, we ensure you reach your destination on time and with ease.
+
+Whether it’s daily city rides, airport transfers, corporate travel, weekend getaways, or long outstation trips, we’ve got you covered. Our transparent pricing, real-time ride tracking, and 24×7 customer support give you complete peace of mind throughout your journey.
+
+We believe travel should be simple, affordable, and reliable — that’s why we combine modern technology with personalized service to give you the best cab booking experience possible. Choose VijayTravels for hassle-free bookings, clean and comfortable rides, and a travel partner you can truly trust.</p>
       </section>
     </div>
   );

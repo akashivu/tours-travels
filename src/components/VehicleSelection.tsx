@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useState } from "react";
 
 type Quote = {
@@ -27,35 +26,20 @@ export default function VehicleSelection() {
     location.state || { quotes: [] };
 
   const [expanded, setExpanded] = useState<number | null>(null); 
-  const handleBook = async (quote: Quote) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await axios.post(
-        "http://localhost:8080/api/bookings/confirm",
-        {
-          tripCategory: "OUTSTATION",
-          tripType,
-          fromLocation: pickup,
-          toLocation: drop,
-          city: "",
-          pickupLocation: pickup,
-          pickupDate,
-          pickupTime,
-          mobile,
-          vehicleName: quote.vehicleName,
-          distanceKm: quote.distanceKm,
-          fare: quote.totalFare,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      navigate("/confirmation", { state: { booking: res.data } });
-    } catch (err) {
-      console.error(err);
-      alert("Error confirming booking");
+  const handleBook = (quote: Quote) => {
+  navigate("/booking", {
+    state: {
+      selectedVehicle: quote,
+      pickup,
+      drop,
+      tripType,
+      pickupDate,
+      pickupTime,
+      distanceKm: quote.distanceKm,
+      totalFare: quote.totalFare
     }
-  };
+  });
+};
 
   if (!quotes || quotes.length === 0) {
     return (

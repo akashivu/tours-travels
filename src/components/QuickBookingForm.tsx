@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
+
+const bgImages = [
+  "https://images.pexels.com/photos/12088465/pexels-photo-12088465.jpeg",
+  "https://images.pexels.com/photos/4606397/pexels-photo-4606397.jpeg",
+  "https://images.pexels.com/photos/3652766/pexels-photo-3652766.jpeg"
+];
 
 export default function QuickBookingForm() {
   const [activeTab, setActiveTab] = useState("outstation");
@@ -13,7 +19,15 @@ export default function QuickBookingForm() {
   const [mobile, setMobile] = useState("");
 
   const navigate = useNavigate();
+  const [activeBg, setActiveBg] = useState(0);
 
+  useEffect(() => {
+  const interval = setInterval(
+    () => setActiveBg((prev) => (prev + 1) % bgImages.length),
+    5000 
+    );
+    return () => clearInterval(interval);
+         }, []);
   const handleSearchRide = async () => {
     try {
       const res = await axios.post("http://localhost:8080/api/quotes", {
@@ -40,17 +54,26 @@ export default function QuickBookingForm() {
   };
 
   return (
-    <div
-      className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center text-center px-4"
-      style={{
-        backgroundImage:
-          "url('https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg?auto=compress&cs=tinysrgb&w=1600')",
-      }}
-    >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm "></div>
+     <div className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
+     
+      {bgImages.map((img, idx) => (
+        <div
+          key={idx}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            idx === activeBg ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            backgroundImage: `url(${img})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      ))}
+    
+      <div className="absolute inset-0 bg-black/10"></div>
 
       <div className="relative z-10 w-full max-w-3xl">
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-3">
+        <h2 className="text-3xl md:text-5xl font-bold text-yellow-400 mb-3">
           Experience Hassle-Free Online Cab Booking in{" "}
           <span className="text-yellow-400">INDIA</span>
         </h2>
@@ -58,7 +81,7 @@ export default function QuickBookingForm() {
           Fast, Easy & Reliable – Book Your Cab Now
         </p>
 
-        <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-xl p-6 border border-white/30">
+        <div className="bg-white backdrop-blur-lg rounded-2xl shadow-xl p-6 border border-white/30">
           
           <div className="flex justify-center gap-4 mb-4">
             {["airport", "outstation", "rental"].map((tab) => (
