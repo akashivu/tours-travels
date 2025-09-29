@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
-import { FaFacebook, FaInstagram, FaBars, FaTimes } from "react-icons/fa";
+import {  FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AccountModal from "./AccountModal";
 
@@ -18,27 +17,9 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50">
+    <header className="fixed top-0  left-0 w-full z-50">
       
-      {!isScrolled && (
-        <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 text-white text-sm flex justify-between items-center px-4 md:px-6 py-2 shadow-md transition-all duration-300">
-          <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm">
-            <div className="flex items-center gap-2 hover:text-yellow-400 cursor-pointer">
-              <PhoneIcon className="h-4 w-4 md:h-5 md:w-5 text-yellow-400" />
-              <span>+91 7022237255</span>
-            </div>
-            <div className="flex items-center gap-2 hover:text-yellow-400 cursor-pointer">
-              <EnvelopeIcon className="h-4 w-4 md:h-5 md:w-5 text-yellow-400" />
-              <span>vijaytourstravels6158@gmail.com</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <FaFacebook className="h-4 w-4 md:h-5 md:w-5 cursor-pointer hover:text-yellow-400" />
-            <FaInstagram className="h-4 w-4 md:h-5 md:w-5 cursor-pointer hover:text-yellow-400" />
-          </div>
-        </div>
-      )}
+      
 
       
       <nav

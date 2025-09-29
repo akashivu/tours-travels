@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
-
-const bgImages = [
-  "https://images.pexels.com/photos/12088465/pexels-photo-12088465.jpeg",
-  "https://images.pexels.com/photos/4606397/pexels-photo-4606397.jpeg",
-  "https://images.pexels.com/photos/3652766/pexels-photo-3652766.jpeg"
-];
+import { MapPin, Calendar, Clock, Phone, CheckCircle, Car, Plane, Building } from "lucide-react";
 
 export default function QuickBookingForm() {
   const [activeTab, setActiveTab] = useState<"airport" | "outstation" | "rental">("outstation");
@@ -16,21 +11,21 @@ export default function QuickBookingForm() {
   const [drop, setDrop] = useState("");
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [returnTime, setReturnTime] = useState("");
   const [mobile, setMobile] = useState("");
-
-  const [activeBg, setActiveBg] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+   
+  
   const navigate = useNavigate();
 
-  
-  useEffect(() => {
-    const interval = setInterval(
-      () => setActiveBg((prev) => (prev + 1) % bgImages.length),
-      5000
-    );
-    return () => clearInterval(interval);
-  }, []);
-
   const handleSearchRide = async () => {
+    if (!pickup || !drop || !pickupDate || !pickupTime || !mobile) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const res = await axios.post("http://localhost:8080/api/quotes", {
         pickup,
@@ -48,135 +43,232 @@ export default function QuickBookingForm() {
           mobile,
         },
       });
-    } catch {
-      alert("Error fetching vehicles");
+    } catch (error) {
+      alert("Unable to fetch vehicles. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const features = [
+    { icon: CheckCircle, text: "Free cancellations on most bookings" },
+    { icon: CheckCircle, text: "60,000+ locations across India" },
+    { icon: CheckCircle, text: "Customer support in 30+ languages" },
+  ];
+
+  const tabs: { id: "outstation" | "airport" | "rental"; label: string; icon: any }[] = [
+    { id: "outstation", label: "Outstation Cabs", icon: Car },
+    { id: "airport", label: "Airport Transfer", icon: Plane },
+    { id: "rental", label: "Hourly Rental", icon: Building },
+  ];
+
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden text-white">
-      
-      {bgImages.map((img, idx) => (
+    <>
+    
+      <section className="relative h-[420px]">
+       
         <div
-          key={idx}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            idx === activeBg ? "opacity-100" : "opacity-0"
-          }`}
+          className="absolute inset-0"
           style={{
-            backgroundImage: `url(${img})`,
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-      ))}
-      <div className="absolute inset-0 bg-black/40" />
-
-     
-      <div className="relative z-10 w-full max-w-5xl px-4 py-12 text-center">
-        <h3 className="text-2xl md:text-6xl font-bold mb-4">
-         Experince Hassle free Online Cab Booking in India
-        </h3>
-        <p className="text-sm md:text-lg text-gray-200 mb-8">
-         Fast, Easy & Reliable -Book your Cab Now
-        </p>
+      
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
 
        
-        <div className="bg-gray-800 bg-opacity-90 backdrop-blur-sm rounded-2xl  p-6 shadow-2xl border border-gray-700">
-         
-          <div className="flex justify-center gap-3 mb-6">
-            {["airport", "outstation", "rental"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={`flex items-center gap-2 px-6 py-2 rounded-xl font-semibold transition ${
-                  activeTab === tab
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
+        <div className="relative z-10 h-full flex flex-col justify-center px-4 max-w-6xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Book Your Ride — Reliable, Affordable & Hassle-Free
+          </h1>
+
+          <div className="flex flex-wrap gap-6 text-white text-sm">
+            {features.map((feature, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4" />
+                <span>{feature.text}</span>
+              </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      
+      <section className="relative max-w-6xl mx-auto -mt-20 px-4">
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        
+         <div className="flex border-b border-gray-200">
+  {tabs.map((tab) => (
+    <button
+      key={tab.id}
+      onClick={() => setActiveTab(tab.id)}
+      className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 font-semibold transition-all duration-300 ${
+        activeTab === tab.id
+          ? "bg-gray-800 text-white"
+          : "bg-white text-gray-700 hover:bg-gray-100"
+      }`}
+    >
+      <tab.icon className="w-5 h-5" />
+      <span className="hidden md:inline">{tab.label}</span>
+    </button>
+  ))}
+</div>
 
          
-          {activeTab === "outstation" && (
-            <div className="flex justify-center gap-4 mb-6">
-              <button
-                onClick={() => setTripType("oneway")}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
-                  tripType === "oneway"
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                One Way
-              </button>
-              <button
-                onClick={() => setTripType("roundtrip")}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
-                  tripType === "roundtrip"
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                Round Trip
-              </button>
-            </div>
-          )}
+          <div className="p-8">
+            
+            {activeTab === "outstation" && (
+              <div className="flex gap-3 mb-6">
+                <button
+                  onClick={() => setTripType("oneway")}
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
+                    tripType === "oneway"
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  One Way
+                </button>
+                <button
+                  onClick={() => setTripType("roundtrip")}
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
+                    tripType === "roundtrip"
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  Round Trip
+                </button>
+              </div>
+            )}
 
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-            <AddressAutocomplete
-              placeholder="Pickup location"
-              className="w-full border rounded-lg px-3 py-3 shadow-sm focus:ring-2 focus:ring-gray-900"
-              value={pickup}
-              onChange={(val) => setPickup(val)}
-              onSelect={(address) => setPickup(address)}
-            />
-            <AddressAutocomplete
-              placeholder="Drop location"
-              className="w-full border rounded-lg px-3 py-3 shadow-sm focus:ring-2 focus:ring-gray-900"
-              value={drop}
-              onChange={(val) => setDrop(val)}
-              onSelect={(address) => setDrop(address)}
-            />
-            <input
-              type="date"
-              value={pickupDate}
-              onChange={(e) => setPickupDate(e.target.value)}
-              className="w-full border rounded-lg px-3 py-3 shadow-sm focus:ring-2 focus:ring-gray-900"
-            />
-            <input
-              type="time"
-              value={pickupTime}
-              onChange={(e) => setPickupTime(e.target.value)}
-              className="w-full border rounded-lg px-3 py-3 shadow-sm focus:ring-2 focus:ring-gray-900"
-            />
-            <input
-              type="tel"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              placeholder="Mobile number"
-              className="w-full border rounded-lg px-3 py-3 shadow-sm focus:ring-2 focus:ring-gray-900"
-            />
-            <button
-              onClick={handleSearchRide}
-              className="bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition shadow-lg w-full"
-            >
-              Search Ride
-            </button>
+            
+            <div className="space-y-4">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <MapPin className="w-4 h-4" />
+                    Pick-up location
+                  </label>
+                  <AddressAutocomplete
+                    placeholder="Kalmar Airport, Kalmar, Sweden"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                    value={pickup}
+                    onChange={(val) => setPickup(val)}
+                    onSelect={(address) => setPickup(address)}
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <MapPin className="w-4 h-4" />
+                    Drop-off location
+                  </label>
+                  <AddressAutocomplete
+                    placeholder="Enter destination"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                    value={drop}
+                    onChange={(val) => setDrop(val)}
+                    onSelect={(address) => setDrop(address)}
+                  />
+                </div>
+              </div>
+
+              
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="md:col-span-2">
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <Calendar className="w-4 h-4" />
+                    Pick-up date
+                  </label>
+                  <input
+                    type="date"
+                    value={pickupDate}
+                    onChange={(e) => setPickupDate(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <Clock className="w-4 h-4" />
+                    Time
+                  </label>
+                  <input
+                    type="time"
+                    value={pickupTime}
+                    onChange={(e) => setPickupTime(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <Phone className="w-4 h-4" />
+                    Mobile
+                  </label>
+                  <input
+                    type="tel"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    placeholder="Phone number"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                  />
+                </div>
+              </div>
+
+              
+              {tripType === "roundtrip" && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                      <Calendar className="w-4 h-4" />
+                      Drop-off date
+                    </label>
+                    <input
+                      type="date"
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                      <Clock className="w-4 h-4" />
+                      Time
+                    </label>
+                    <input
+                      type="time"
+                      value={returnTime}
+                      onChange={(e) => setReturnTime(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+
+              
+              <div className="flex justify-center pt-4">
+                <button
+                  onClick={handleSearchRide}
+                  disabled={isLoading}
+                  className="bg-blue-600 text-white px-12 py-3.5 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  {isLoading ? "Searching..." : "Search Ride"}
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-
-       
-        <div className="flex flex-wrap justify-center gap-6 text-gray-100 mt-10 text-sm md:text-base font-medium">
-          <span className="flex items-center gap-1"> Hassle-Free Bookings</span>
-          <span className="flex items-center gap-1"> Best Cab Offers</span>
-          <span className="flex items-center gap-1"> 24×7 Customer Support</span>
-          <span className="flex items-center gap-1"> Free Cancellation</span>
-        </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
