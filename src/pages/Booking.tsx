@@ -61,7 +61,7 @@ export default function Booking() {
   
   
   return (
-    <div className="min-h-screen mt-10 bg-gray-50 flex flex-col mb-1 md:flex-row justify-center items-start px-4 md:px-10 py-10 gap-8">
+    <div className="min-h-screen mt-10 bg-gray-50 flex flex-col  md:flex-row justify-center items-start px-4 md:px-10 py-10 gap-8">
      
       <div className="bg-white rounded-2xl shadow-md w-full md:w-2/3 lg:w-1/2 p-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
@@ -75,7 +75,7 @@ export default function Booking() {
             </label>
             <input
               type="text"
-              placeholder="John Doe"
+              placeholder=""
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -88,7 +88,7 @@ export default function Booking() {
             </label>
             <input
               type="email"
-              placeholder="you@example.com"
+              placeholder=""
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +101,7 @@ export default function Booking() {
             </label>
             <input
               type="tel"
-              placeholder="+91 98765 43210"
+              placeholder="+91"
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}

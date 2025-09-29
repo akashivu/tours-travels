@@ -146,7 +146,32 @@ export default function OurVehicles() {
 
   return (
     <div className="max-w-7xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold text-center  mb-8">Our Vehicles</h2>
+      
+<div className="bg-gray-800 text-white rounded-xl px-6 py-6 mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+  <div className="mb-4 md:mb-0">
+    <h2 className="text-2xl font-bold">Book Your Ride Now</h2>
+    <p className="text-gray-300">
+     Explore with ease — book your perfect ride in minutes.
+    </p>
+  </div>
+
+  <div className="flex gap-4">
+    <a
+      href="tel:+923086209344"
+      className="flex items-center gap-2 bg-white text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition"
+    >
+      <span></span> (+91) 7022237255
+    </a>
+    <button
+      className="bg-white text-gray-900 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition flex items-center gap-2"
+      onClick={() => {
+       
+      }}
+    >
+      BOOK ONLINE <span></span>
+    </button>
+  </div>
+</div>
 
       <div
         ref={scrollContainerRef}
