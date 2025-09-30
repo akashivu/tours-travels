@@ -33,36 +33,40 @@ export default function Booking() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleConfirmBooking = async () => {
-    if (!name || !email || !mobile) {
-      alert("Please fill all contact details.");
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      await axios.post("http://localhost:8080/api/bookings/confirm", {
-        name,
-        email,
-        mobile,
-        fromLocation: pickup,
-        toLocation: drop,
-        pickupDate,
-        pickupTime,
-        tripType,
-        vehicleName: selectedVehicle.vehicleName,
-        distanceKm,
-        fare: totalFare,
-      });
-      alert("Booking confirmed! Details sent to admin.");
-      navigate("/confirmation");
-    } catch (err) {
-      console.error(err);
-      alert("Error confirming booking. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  if (!name || !email || !mobile) {
+    alert("Please fill all contact details.");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const booking = {
+      name,
+      email,
+      mobile,
+      fromLocation: pickup,
+      toLocation: drop,
+      pickupDate,
+      pickupTime,
+      tripType,
+      vehicleName: selectedVehicle.vehicleName,
+      distanceKm,
+      fare: totalFare,
+    };
+
+    await axios.post("http://localhost:8080/api/bookings/confirm", booking);
+
+    alert("Booking confirmed! Details sent to admin.");
+    navigate("/confirmation", { state: { booking } }); // ✅ pass the data
+  } catch (err) {
+    console.error(err);
+    alert("Error confirming booking. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 py-8 px-4 sm:px-6 lg:px-8">

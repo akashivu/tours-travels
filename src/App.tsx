@@ -23,23 +23,25 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/vehicles" element={<VehicleSelection />} />
           <Route path="/holiday-packages" element={<HolidayPackages />} />
-          <Route path="/ourvehicles" element={<OurVehicles />} />
+          <Route path="/vehicle" element={<OurVehicles />} />
           <Route path="/my-bookings" element={<MyBooking />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/confirmation" element={<BookingConfirmation />} />
+
         </Route>
 
-        <Route element={<SiteLayout />}>
+       
         <Route path="/user" element={<UserDashboardLayout />}>
           <Route path="dashboard" element={<QuickBookingForm />} />
           <Route path="my-bookings" element={<MyBooking />} />
-          <Route path="vehicles" element={<OurVehicles />} />
+          <Route path="vehicle" element={<OurVehicles />} />
           <Route path="holiday-packages" element={<HolidayPackages />} />
           <Route path="local-packages" element={<h1>Local Packages</h1>} />
           <Route path="contact" element={<ContactUs />} />
         </Route>
-        </Route>
+       
       
         <Route path="/bookingform" element={<QuickBookingForm />} />
         <Route path="/booking" element={<Booking />} />

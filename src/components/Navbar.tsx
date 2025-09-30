@@ -17,7 +17,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0  left-0 w-full z-50">
+    <header className="fixed top-0  left-0 w-full z-50 ">
       
       
 
@@ -42,17 +42,13 @@ export default function Navbar() {
           
           <ul className="hidden md:flex gap-8 text-md font-semibold text-gray-800 tracking-wide">
             <li><Link to="/" className="hover:text-blue-600">HOME</Link></li>
-            <li><Link to="/" className="hover:text-blue-600">AIRPORT TAXI</Link></li>
-            <li><Link to="/" className="hover:text-blue-600">OUTSTATION TAXI</Link></li>
-            <li><Link to="/local-package" className="hover:text-blue-600">LOCAL PACKAGE</Link></li>
             <li><Link to="/holiday-packages" className="hover:text-blue-600">HOLIDAY PACKAGES</Link></li>
-            <li><Link to="/vehicles" className="hover:text-blue-600">OUR CARS</Link></li>
+            <li><Link to="/vehicle" className="hover:text-blue-600">OUR CARS</Link></li>
             <li><Link to="/about" className="hover:text-blue-600">ABOUT US</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600">CONTACT US</Link></li>
+            <AccountModal />
           </ul>
-        <div className="hidden md:block">
-  <AccountModal />
-</div>
+          
           
           <button
             className="md:hidden text-gray-800"
@@ -67,11 +63,8 @@ export default function Navbar() {
           <div className="md:hidden bg-white/95 backdrop-blur-md shadow-lg px-6 py-4">
             <ul className="flex flex-col gap-4 text-gray-800 font-medium">
               <li><Link to="/" onClick={() => setIsOpen(false)}>HOME</Link></li>
-              <li><Link to="/airport" onClick={() => setIsOpen(false)}>AIRPORT TAXI</Link></li>
-              <li><Link to="/outstation" onClick={() => setIsOpen(false)}>OUTSTATION TAXI</Link></li>
-              <li><Link to="/local-package" onClick={() => setIsOpen(false)}>LOCAL PACKAGE</Link></li>
               <li><Link to="/holiday-packages" onClick={() => setIsOpen(false)}>HOLIDAY PACKAGES</Link></li>
-              <li><Link to="/cars" onClick={() => setIsOpen(false)}>OUR CARS</Link></li>
+              <li><Link to="/vehicle" onClick={() => setIsOpen(false)}>OUR CARS</Link></li>
               <li><Link to="/about" onClick={() => setIsOpen(false)}>ABOUT US</Link></li>
               <li><Link to="/contact" onClick={() => setIsOpen(false)}>CONTACT US</Link></li>
               <li><AccountModal /></li>
