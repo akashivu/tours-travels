@@ -13,6 +13,7 @@ import ContactUs from "./pages/ContactUs";
 import AccountForm from "./components/AccountForm";
 import SiteLayout from "./layouts/SiteLayout"; 
 import Booking from "./pages/Booking";
+import RoutesList from "./pages/RoutesList";
 
 export default function App() {
   return (
@@ -38,7 +39,7 @@ export default function App() {
           <Route path="my-bookings" element={<MyBooking />} />
           <Route path="vehicle" element={<OurVehicles />} />
           <Route path="holiday-packages" element={<HolidayPackages />} />
-          <Route path="local-packages" element={<h1>Local Packages</h1>} />
+          <Route path="local-packages" element={<RoutesList/>} />
           <Route path="contact" element={<ContactUs />} />
         </Route>
        

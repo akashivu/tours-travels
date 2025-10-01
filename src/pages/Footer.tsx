@@ -10,11 +10,9 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <div className="mb-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center">
-                  <span className="text-black text-2xl font-bold">🚗</span>
-                </div>
+                
                 <div>
-                  <h2 className="text-3xl font-bold tracking-wider">VIJAY</h2>
+                  <h2 className="text-3xl font-bold tracking-wider">ADIYOGI</h2>
                   <p className="text-sm tracking-widest">TOURS & TRAVELS</p>
                 </div>
               </div>
@@ -27,7 +25,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-3">
                 <MdPhone className="text-gray-400 mt-1 flex-shrink-0" size={20} />
-                <span className="text-sm text-gray-300">+91 9876543210</span>
+                <span className="text-sm text-gray-300">+91 7022237255</span>
               </div>
               <div className="flex items-start gap-3">
                 <MdLocationOn className="text-gray-400 mt-1 flex-shrink-0" size={20} />

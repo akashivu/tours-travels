@@ -50,7 +50,10 @@ export default function ContactForm() {
           "url('https://wallpaperaccess.com/full/627527.png')",
       }}
     >
-      
+        <form
+          onSubmit={handleSubmit}
+           className="bg-white rounded-2xl shadow-2xl p-6 md:p-8 lg:p-10"
+                ></form>
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/85 to-blue-900/90"></div>
 
       <div className="relative z-10 max-w-7xl w-full">
@@ -134,7 +137,7 @@ export default function ContactForm() {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder="John Doe"
+                            placeholder=""
                             required
                             className="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-slate-800"
                           />
@@ -193,7 +196,7 @@ export default function ContactForm() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="you@example.com"
+                            placeholder=""
                             required
                             className="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-slate-800"
                           />
