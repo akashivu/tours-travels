@@ -1,4 +1,4 @@
-
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 type Package = {
@@ -96,7 +96,7 @@ export default function HolidayPackages() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-16 px-6">
-      {/* Header Section */}
+     
       <div className="text-center mb-16">
         <div className="inline-flex items-center bg-black border-2 border-gray-800 rounded-full px-6 py-3 mb-6">
           <div className="flex items-center gap-2 mr-3">
@@ -117,7 +117,7 @@ export default function HolidayPackages() {
         </p>
       </div>
 
-      {/* Packages Grid */}
+      
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {packages.map((pkg) => (
           <div
@@ -125,14 +125,14 @@ export default function HolidayPackages() {
             className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer group border border-gray-200"
             onClick={() => setSelected(pkg)}
           >
-            {/* Image Container */}
+            
             <div className="relative overflow-hidden h-64">
               <img
                 src={pkg.imageUrl}
                 alt={pkg.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              {/* Duration Badge */}
+              
               <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
                 <span className="text-gray-900 font-bold text-sm flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,13 +141,13 @@ export default function HolidayPackages() {
                   {pkg.duration}
                 </span>
               </div>
-              {/* Gradient Overlay */}
+              
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
             </div>
 
-            {/* Content */}
+           
             <div className="p-6">
-              {/* Title & Rating */}
+              
               <div className="mb-3">
                 <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors">
                   {pkg.title}
@@ -169,12 +169,12 @@ export default function HolidayPackages() {
                 </div>
               </div>
 
-              {/* Description */}
+              
               <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                 {pkg.description}
               </p>
 
-              {/* Inclusions */}
+              
               <div className="flex flex-wrap gap-2 mb-4">
                 {pkg.inclusions.slice(0, 3).map((inc, i) => (
                   <span
@@ -191,7 +191,7 @@ export default function HolidayPackages() {
                 )}
               </div>
 
-              {/* Price & Button */}
+              
               <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                 <div>
                   <p className="text-sm text-gray-500">Starting from</p>
@@ -206,11 +206,11 @@ export default function HolidayPackages() {
         ))}
       </div>
 
-      {/* Modal */}
+     
       {selected && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            {/* Close Button */}
+            
             <button
               onClick={() => setSelected(null)}
               className="absolute top-4 right-4 bg-white rounded-full p-2 text-gray-600 hover:text-black hover:bg-gray-100 transition-colors shadow-lg z-10"
@@ -220,7 +220,7 @@ export default function HolidayPackages() {
               </svg>
             </button>
 
-            {/* Modal Image */}
+           
             <div className="relative h-72">
               <img
                 src={selected.imageUrl}
@@ -246,15 +246,15 @@ export default function HolidayPackages() {
               </div>
             </div>
 
-            {/* Modal Content */}
+            
             <div className="p-8">
-              {/* Description */}
+             
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">About This Package</h3>
                 <p className="text-gray-600 leading-relaxed">{selected.description}</p>
               </div>
 
-              {/* Inclusions */}
+             
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-3">What's Included</h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -269,7 +269,7 @@ export default function HolidayPackages() {
                 </div>
               </div>
 
-              {/* Duration & Price */}
+             
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl mb-6">
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Duration</p>
@@ -281,7 +281,7 @@ export default function HolidayPackages() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+            
               <div className="flex gap-4">
                 <button
                   onClick={() => setSelected(null)}
@@ -289,7 +289,15 @@ export default function HolidayPackages() {
                 >
                   Cancel
                 </button>
-                <button className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all font-semibold shadow-lg hover:shadow-xl">
+                <button
+                   onClick={() =>
+                   toast.success(
+                       "Contact us: vijaytourstravels6158@gmail.com | +91 7022237255",
+                      { duration: 10000 } 
+                        )
+                            }
+                     className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all font-semibold shadow-lg hover:shadow-xl"
+                      >
                   Book Now
                 </button>
               </div>

@@ -1,7 +1,7 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaGoogle, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import { useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
-
+import toast from "react-hot-toast";
 export default function ContactUs() {
   const [formData, setFormData] = useState({
     name: "",
@@ -9,11 +9,36 @@ export default function ContactUs() {
     message: ""
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Thank you for your message! We'll get back to you soon.");
-    setFormData({ name: "", email: "", message: "" });
+
+    try {
+      
+      const res = await fetch("http://localhost:8080/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        toast.success("Message sent successfully! We’ll get back to you soon.", {
+          style: {
+            background: "#16a34a",
+            color: "#fff",
+            fontSize: "15px",
+            fontWeight: "500",
+            borderRadius: "8px",
+            padding: "12px 16px",
+          },
+        });
+        setFormData({ name: "", email: "", message: "" }); 
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Server error. Please try again.");
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -156,12 +181,14 @@ export default function ContactUs() {
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:from-indigo-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-300"
-                >
-                  Send Message
-                </button>
+               
+                            <button
+                        type="submit"
+                       className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:from-indigo-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-300"
+                           >
+                           Send Message
+                        </button>
+                         
 
                 <p className="text-sm text-gray-500 text-center">
                   By submitting this form, you agree to our privacy policy and terms of service.

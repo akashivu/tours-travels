@@ -134,7 +134,7 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
           <div className="p-8">
             
           
-           {/* ===== OUTSTATION ===== */}
+          
 {activeTab === "outstation" && (
   <>
     <div className="flex gap-3 mb-6">
@@ -162,11 +162,11 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
   </>
 )}
 
-{/* ===== AIRPORT ===== */}
+
 {activeTab === "airport" && (
   <>
-    <p className="text-gray-600 mb-6">✈️ Airport Transfer selected</p>
-    {/* Airport specific extra field */}
+    <p className="text-gray-600 mb-6">Airport Transfer selected</p>
+    
     <div className="mb-4">
       <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
         <MapPin className="w-4 h-4" />
@@ -183,11 +183,11 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
   </>
 )}
 
-{/* ===== RENTAL ===== */}
+
 {activeTab === "rental" && (
   <>
     <p className="text-gray-600 mb-6">🕒 Hourly Rental selected</p>
-    {/* Rental specific extra field */}
+   
     <div className="mb-4">
       <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
         <Clock className="w-4 h-4" />

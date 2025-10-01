@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-// Layouts
+
 import SiteLayout from "./layouts/SiteLayout";
 import UserDashboardLayout from "./pages/UserDashboardLayout";
 
-// Public pages
+
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
@@ -13,7 +13,7 @@ import OurVehicles from "./pages/OurVehicles";
 import Booking from "./pages/Booking";
 import RoutesList from "./pages/RoutesList";
 
-// Components / features
+
 import VehicleSelection from "./components/VehicleSelection";
 import QuickBookingForm from "./components/QuickBookingForm";
 import BookingConfirmation from "./components/BookingConfirmation";
