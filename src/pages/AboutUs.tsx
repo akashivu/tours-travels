@@ -4,9 +4,9 @@ export default function AboutUsSection() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
-          {/* Left Content */}
+         
           <div className="text-white space-y-6">
-            {/* About Us Badge */}
+           
             <div className="inline-flex items-center bg-black border-2 border-white rounded-full px-6 py-2">
               <div className="flex items-center gap-2 mr-3">
                 <div className="w-6 h-0.5 bg-white"></div>
@@ -22,17 +22,17 @@ export default function AboutUsSection() {
               <span className="font-semibold text-lg">About Us</span>
             </div>
 
-            {/* Main Heading */}
+           
             <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
               Luxury Car Rental with Excellence in Service & Quality
             </h2>
 
-            {/* Description */}
+            
             <p className="text-gray-300 text-lg leading-relaxed">
               We specialize in premium car rentals across India, offering both residents and visitors an unparalleled driving experience. Our fleet features the latest models, meticulously selected to provide ultimate comfort and style. Whether you're a resident or a visitor seeking a seamless and luxurious transport solution, we ensure a smooth rental process from booking to delivery, so you can enjoy your journey with ease.
             </p>
 
-            {/* Buttons */}
+            
             <div className="flex flex-wrap gap-4 pt-4">
               <button className="bg-white text-black font-bold px-8 py-3 rounded-lg hover:bg-gray-200 transition-all duration-200 flex items-center gap-2 shadow-lg">
                 BOOK YOUR CAR
@@ -50,9 +50,9 @@ export default function AboutUsSection() {
             </div>
           </div>
 
-          {/* Right Content - Image & Stats */}
+          
           <div className="relative">
-            {/* Main Image */}
+           
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
@@ -60,15 +60,15 @@ export default function AboutUsSection() {
                 className="w-full h-[500px] object-cover"
               />
               
-              {/* Overlay gradient */}
+             
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>
 
-            {/* Stats Card - Happy Clients */}
+           
             <div className="absolute bottom-8 left-8 bg-white rounded-2xl p-6 shadow-2xl">
               <div className="text-center">
                 <div className="text-5xl font-bold text-gray-900 mb-2">
-                  798+
+                  320+
                 </div>
                 <div className="text-gray-600 font-semibold">
                   Happy Clients
@@ -76,14 +76,14 @@ export default function AboutUsSection() {
               </div>
             </div>
 
-            {/* Decorative Circle - Key Image */}
+            
             <div className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full shadow-xl flex items-center justify-center">
               <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
               </svg>
             </div>
 
-            {/* Additional Stats - Optional */}
+            
             <div className="absolute top-8 -left-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-4 shadow-xl">
               <div className="text-white text-center">
                 <div className="text-2xl font-bold">24/7</div>
@@ -92,7 +92,7 @@ export default function AboutUsSection() {
             </div>
           </div>
         </div>
-        {/* 🚀 Removed the bottom stats row */}
+       
       </div>
     </section>
   );

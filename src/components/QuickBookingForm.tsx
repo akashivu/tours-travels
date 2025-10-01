@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
 import { MapPin, Calendar, Clock, Phone, CheckCircle, Car, Plane, Building } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function QuickBookingForm() {
   const [activeTab, setActiveTab] = useState<"airport" | "outstation" | "rental">("outstation");
@@ -20,10 +21,18 @@ export default function QuickBookingForm() {
   const navigate = useNavigate();
 
   const handleSearchRide = async () => {
-    if (!pickup || !drop || !pickupDate || !pickupTime || !mobile) {
-      alert("Please fill in all required fields");
-      return;
-    }
+    if (activeTab === "outstation" && (!pickup || !drop || !pickupDate || !pickupTime || !mobile)) {
+  toast.error("Please fill all required fields for Outstation booking");
+  return;
+}
+if (activeTab === "airport" && (!pickup || !pickupDate || !pickupTime || !mobile)) {
+  toast.error("Please fill all required fields for Airport transfer");
+  return;
+}
+if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)) {
+  toast.error("Please fill all required fields for Rental booking");
+  return;
+}
 
     setIsLoading(true);
     try {
@@ -53,7 +62,7 @@ export default function QuickBookingForm() {
   const features = [
     { icon: CheckCircle, text: "Free cancellations on most bookings" },
     { icon: CheckCircle, text: "60,000+ locations across India" },
-    { icon: CheckCircle, text: "Customer support in 30+ languages" },
+    { icon: CheckCircle, text: "Customer support" },
   ];
 
   const tabs: { id: "outstation" | "airport" | "rental"; label: string; icon: any }[] = [
@@ -97,14 +106,18 @@ export default function QuickBookingForm() {
       </section>
 
       
-      <section className="relative max-w-6xl mx-auto -mt-20 px-4">
+     <section className="relative max-w-6xl mx-auto -mt-20 px-4 z-20">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
         
          <div className="flex border-b border-gray-200">
   {tabs.map((tab) => (
     <button
       key={tab.id}
-      onClick={() => setActiveTab(tab.id)}
+      
+     onClick={() => {
+    
+    setActiveTab(tab.id);
+  }}
       className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 font-semibold transition-all duration-300 ${
         activeTab === tab.id
           ? "bg-gray-800 text-white"
@@ -120,30 +133,75 @@ export default function QuickBookingForm() {
          
           <div className="p-8">
             
-            {activeTab === "outstation" && (
-              <div className="flex gap-3 mb-6">
-                <button
-                  onClick={() => setTripType("oneway")}
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
-                    tripType === "oneway"
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  One Way
-                </button>
-                <button
-                  onClick={() => setTripType("roundtrip")}
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
-                    tripType === "roundtrip"
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  Round Trip
-                </button>
-              </div>
-            )}
+          
+           {/* ===== OUTSTATION ===== */}
+{activeTab === "outstation" && (
+  <>
+    <div className="flex gap-3 mb-6">
+      <button
+        onClick={() => setTripType("oneway")}
+        className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
+          tripType === "oneway"
+            ? "bg-gray-900 text-white"
+            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+        }`}
+      >
+        One Way
+      </button>
+      <button
+        onClick={() => setTripType("roundtrip")}
+        className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
+          tripType === "roundtrip"
+            ? "bg-gray-900 text-white"
+            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+        }`}
+      >
+        Round Trip
+      </button>
+    </div>
+  </>
+)}
+
+{/* ===== AIRPORT ===== */}
+{activeTab === "airport" && (
+  <>
+    <p className="text-gray-600 mb-6">✈️ Airport Transfer selected</p>
+    {/* Airport specific extra field */}
+    <div className="mb-4">
+      <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+        <MapPin className="w-4 h-4" />
+        Airport Name
+      </label>
+      <AddressAutocomplete
+        placeholder="e.g. Kempegowda International Airport"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+        value={pickup}
+        onChange={(val) => setPickup(val)}
+        onSelect={(address) => setPickup(address)}
+      />
+    </div>
+  </>
+)}
+
+{/* ===== RENTAL ===== */}
+{activeTab === "rental" && (
+  <>
+    <p className="text-gray-600 mb-6">🕒 Hourly Rental selected</p>
+    {/* Rental specific extra field */}
+    <div className="mb-4">
+      <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+        <Clock className="w-4 h-4" />
+        Number of Hours
+      </label>
+      <input
+        type="number"
+        placeholder="Enter hours"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+      />
+    </div>
+  </>
+)}
+
 
             
             <div className="space-y-4">
@@ -222,7 +280,7 @@ export default function QuickBookingForm() {
               </div>
 
               
-              {tripType === "roundtrip" && (
+              {activeTab === "outstation" && tripType === "roundtrip" && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="md:col-span-2">
                     <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
