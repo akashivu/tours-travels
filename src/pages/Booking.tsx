@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2, MapPin, Calendar, Clock, Car, Navigation } from "lucide-react";
-
+import toast from "react-hot-toast";
 export default function Booking() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,7 +34,17 @@ export default function Booking() {
 
   const handleConfirmBooking = async () => {
   if (!name || !email || !mobile) {
-    alert("Please fill all contact details.");
+    toast.error("Please fill all contact details.", {
+  duration: 4000,
+  style: {
+    background: "#dc2626", 
+    color: "#fff",
+    fontSize: "15px",
+    fontWeight: "500",
+    borderRadius: "8px",
+    padding: "12px 16px",
+  },
+});
     return;
   }
 
@@ -57,11 +67,31 @@ export default function Booking() {
 
     await axios.post("http://localhost:8080/api/bookings/confirm", booking);
 
-    alert("Booking confirmed! Details sent to admin.");
-    navigate("/confirmation", { state: { booking } }); // ✅ pass the data
+    toast.success("Booking confirmed! Details sent to admin.", {
+  duration: 4000, 
+  style: {
+    background: "#16a34a", 
+    color: "#fff",
+    fontSize: "15px",
+    fontWeight: "500",
+    borderRadius: "8px",
+    padding: "12px 16px",
+  },
+});
+    navigate("/confirmation", { state: { booking } });
   } catch (err) {
     console.error(err);
-    alert("Error confirming booking. Please try again.");
+    toast.error("❌ Error confirming booking. Please try again.", {
+  duration: 4000,
+  style: {
+    background: "#dc2626", 
+    color: "#fff",
+    fontSize: "15px",
+    fontWeight: "500",
+    borderRadius: "8px",
+    padding: "12px 16px",
+  },
+});
   } finally {
     setIsLoading(false);
   }

@@ -53,7 +53,17 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
         },
       });
     } catch (error) {
-      alert("Unable to fetch vehicles. Please try again.");
+      toast.error("🚗 Unable to fetch vehicles. Please try again.", {
+  duration: 4000,
+  style: {
+    background: "#dc2626", 
+    color: "#fff",
+    fontSize: "15px",
+    fontWeight: "500",
+    borderRadius: "8px",
+    padding: "12px 16px",
+  },
+});
     } finally {
       setIsLoading(false);
     }

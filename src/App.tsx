@@ -52,7 +52,27 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<AccountForm />} />
       </Routes>
-      <Toaster position="top-center" />
+     <Toaster
+  position="top-center"
+  toastOptions={{
+    duration: 4000,
+    style: {
+      background: "#333",       
+      color: "#fff",           
+      fontSize: "15px",
+      fontWeight: "500",
+      borderRadius: "8px",
+      padding: "12px 16px",
+    },
+    success: {
+      style: { background: "#16a34a" }, 
+    },
+    error: {
+      style: { background: "#dc2626" },
+    },
+  }}
+/>
+
     </BrowserRouter>
   );
 }
