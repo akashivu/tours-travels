@@ -1,36 +1,41 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Layouts
+import SiteLayout from "./layouts/SiteLayout";
 import UserDashboardLayout from "./pages/UserDashboardLayout";
+
+// Public pages
 import Home from "./pages/Home";
-import AdminDashboard from "./components/AdminDashboard";
-import VehicleSelection from "./components/VehicleSelection";
-import QuickBookingForm from "./components/QuickBookingForm";
-import BookingConfirmation from "./components/BookingConfirmation";
-import HolidayPackages from "./pages/HolidayPackages";
-import OurVehicles from "./pages/OurVehicles";
-import MyBooking from "./pages/MyBooking";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
-import AccountForm from "./components/AccountForm";
-import SiteLayout from "./layouts/SiteLayout"; 
+import HolidayPackages from "./pages/HolidayPackages";
+import OurVehicles from "./pages/OurVehicles";
 import Booking from "./pages/Booking";
 import RoutesList from "./pages/RoutesList";
 
+// Components / features
+import VehicleSelection from "./components/VehicleSelection";
+import QuickBookingForm from "./components/QuickBookingForm";
+import BookingConfirmation from "./components/BookingConfirmation";
+import AdminDashboard from "./components/AdminDashboard";
+import AccountForm from "./components/AccountForm";
+import MyBooking from "./pages/MyBooking";
+
 export default function App() {
   return (
-     <BrowserRouter>
+    <BrowserRouter>
       <Routes>
        
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/vehicles" element={<VehicleSelection />} />
-          <Route path="/holiday-packages" element={<HolidayPackages />} />
-          <Route path="/vehicle" element={<OurVehicles />} />
-          <Route path="/my-bookings" element={<MyBooking />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/holiday-packages" element={<HolidayPackages />} />
+          <Route path="/vehicles" element={<VehicleSelection />} />
+          <Route path="/vehicle" element={<OurVehicles />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/bookingform" element={<QuickBookingForm />} />
           <Route path="/confirmation" element={<BookingConfirmation />} />
-
         </Route>
 
        
@@ -39,14 +44,11 @@ export default function App() {
           <Route path="my-bookings" element={<MyBooking />} />
           <Route path="vehicle" element={<OurVehicles />} />
           <Route path="holiday-packages" element={<HolidayPackages />} />
-          <Route path="local-packages" element={<RoutesList/>} />
+          <Route path="local-packages" element={<RoutesList />} />
           <Route path="contact" element={<ContactUs />} />
         </Route>
-       
-      
-        <Route path="/bookingform" element={<QuickBookingForm />} />
-        <Route path="/booking" element={<Booking />} />
-        <Route path="/confirmation" element={<BookingConfirmation />} />
+
+        
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<AccountForm />} />
       </Routes>

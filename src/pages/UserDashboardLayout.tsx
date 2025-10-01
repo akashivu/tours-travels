@@ -13,7 +13,6 @@ import {
   XMarkIcon,
   BellIcon,
   MagnifyingGlassIcon,
-  Cog6ToothIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 
@@ -40,7 +39,7 @@ export default function UserDashboardLayout() {
   const menuItems = [
     { path: "/", icon: HomeIcon, label: "Home", badge: null },
     { path: "/user/dashboard", icon: CalendarDaysIcon, label: "Book Now", badge: null },
-    { path: "/user/my-bookings", icon: CalendarDaysIcon, label: "My Bookings", badge: "3" },
+    { path: "/user/my-bookings", icon: CalendarDaysIcon, label: "My Bookings", badge: null },
     { path: "/user/holiday-packages", icon: GiftIcon, label: "Holiday Packages", badge: null },
     { path: "/user/vehicle", icon: TruckIcon, label: "Our Fleet", badge: null },
     { path: "/user/local-packages", icon: InboxIcon, label: "Local Packages", badge: null },
@@ -53,6 +52,37 @@ export default function UserDashboardLayout() {
   if (!email) return "U";
   return email.charAt(0).toUpperCase();
 };
+
+const [query, setQuery] = useState("");
+const [filteredMenu, setFilteredMenu] = useState(menuItems);
+
+const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setQuery(value);
+
+  if (value.trim() === "") {
+    setFilteredMenu(menuItems);
+  } else {
+    const lower = value.toLowerCase();
+    const filtered = menuItems.filter((item) =>
+      item.label.toLowerCase().includes(lower)
+    );
+    setFilteredMenu(filtered);
+  }
+};
+
+useEffect(() => {
+  const onKeyDown = (e: KeyboardEvent) => {
+    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    if ((isMac && e.metaKey && e.key === "k") || (!isMac && e.ctrlKey && e.key === "k")) {
+      e.preventDefault();
+     
+      document.getElementById("dashboard-search")?.focus();
+    }
+  };
+  window.addEventListener("keydown", onKeyDown);
+  return () => window.removeEventListener("keydown", onKeyDown);
+}, []);
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -105,57 +135,47 @@ export default function UserDashboardLayout() {
        
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
           <div className="space-y-1">
-            {menuItems.map((item) => {
-              const active = isActive(item.path);
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsSidebarOpen(false)}
-                  className={`
-                    flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group relative
-                    ${active 
-                      ? "bg-indigo-50 text-indigo-700 shadow-sm" 
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                    }
-                  `}
-                >
-                  <div className="flex items-center gap-3">
-                    <item.icon 
-                      className={`h-5 w-5 transition-colors ${
-                        active ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-600"
-                      }`} 
-                    />
-                    <span className={`text-sm font-medium ${active ? "font-semibold" : ""}`}>
-                      {item.label}
-                    </span>
-                  </div>
-                  {item.badge && (
-                    <span className="px-2 py-0.5 text-xs font-semibold bg-indigo-600 text-white rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                  {active && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-600 rounded-r-full" />
-                  )}
-                </Link>
-              );
-            })}
+            {filteredMenu.map((item) => {
+  const active = isActive(item.path);
+  return (
+    <Link
+      key={item.path}
+      to={item.path}
+      onClick={() => setIsSidebarOpen(false)}
+      className={`
+        flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group relative
+        ${active 
+          ? "bg-indigo-50 text-indigo-700 shadow-sm" 
+          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+        }
+      `}
+    >
+      <div className="flex items-center gap-3">
+        <item.icon 
+          className={`h-5 w-5 transition-colors ${
+            active ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-600"
+          }`} 
+        />
+        <span className={`text-sm font-medium ${active ? "font-semibold" : ""}`}>
+          {item.label}
+        </span>
+      </div>
+      {item.badge && (
+        <span className="px-2 py-0.5 text-xs font-semibold bg-indigo-600 text-white rounded-full">
+          {item.badge}
+        </span>
+      )}
+      {active && (
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-600 rounded-r-full" />
+      )}
+    </Link>
+  );
+})}
+
           </div>
 
           
-          <div className="mt-6 pt-6 border-t border-slate-200/80">
-            <p className="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-              Settings
-            </p>
-            <Link
-              to="/user/settings"
-              className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200 group"
-            >
-              <Cog6ToothIcon className="h-5 w-5 text-slate-400 group-hover:text-slate-600" />
-              <span className="text-sm font-medium">Preferences</span>
-            </Link>
-          </div>
+          
         </nav>
 
        
@@ -188,16 +208,19 @@ export default function UserDashboardLayout() {
               </button>
 
               
-              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-xl w-80 group focus-within:bg-white focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-                <MagnifyingGlassIcon className="h-5 w-5 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search bookings, packages..."
-                  className="flex-1 bg-transparent text-sm text-slate-900 placeholder-slate-400 outline-none"
-                />
-                <kbd className="hidden xl:inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-slate-500 bg-white border border-slate-200 rounded">
-                  ⌘K
-                </kbd>
+                 <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-xl w-80 group focus-within:bg-white focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+             <MagnifyingGlassIcon className="h-5 w-5 text-slate-400" />
+                 <input
+                    id="dashboard-search"
+                    type="text"
+                    value={query}
+                    onChange={handleSearchChange}
+                    placeholder="Search bookings, packages..."
+                    className="flex-1 bg-transparent text-sm text-slate-900 placeholder-slate-400 outline-none"
+                       />
+                     <kbd className="hidden xl:inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-slate-500 bg-white border border-slate-200 rounded">
+                     search
+                       </kbd>
               </div>
             </div>
 

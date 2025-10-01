@@ -1,5 +1,6 @@
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { FaTwitter, FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className="bg-zinc-900 text-white pt-16 pb-6">
@@ -36,30 +37,55 @@ export default function Footer() {
 
           
           <div className="lg:col-span-3">
-            <h3 className="text-xl font-semibold mb-6 border-b border-gray-700 pb-3">Quick Links</h3>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer transition-colors">
-                <span className="text-gray-500">»</span>
-                <span className="text-sm">Home</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer transition-colors">
-                <span className="text-gray-500">»</span>
-                <span className="text-sm">About Us</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer transition-colors">
-                <span className="text-gray-500">»</span>
-                <span className="text-sm">Our Fleet</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer transition-colors">
-                <span className="text-gray-500">»</span>
-                <span className="text-sm">Our Services</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer transition-colors">
-                <span className="text-gray-500">»</span>
-                <span className="text-sm">Contact Us</span>
-              </li>
-            </ul>
-          </div>
+  <h3 className="text-xl font-semibold mb-6 border-b border-gray-700 pb-3">Quick Links</h3>
+  <ul className="space-y-3">
+    <li>
+      <Link
+        to="/"
+        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+      >
+        <span className="text-gray-500">»</span>
+        <span className="text-sm">Home</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/about"
+        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+      >
+        <span className="text-gray-500">»</span>
+        <span className="text-sm">About Us</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/vehicle"
+        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+      >
+        <span className="text-gray-500">»</span>
+        <span className="text-sm">Our Fleet</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/holiday-packages"
+        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+      >
+        <span className="text-gray-500">»</span>
+        <span className="text-sm">Our Services</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/contact"
+        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+      >
+        <span className="text-gray-500">»</span>
+        <span className="text-sm">Contact Us</span>
+      </Link>
+    </li>
+  </ul>
+</div>
 
          
           <div className="lg:col-span-4">
