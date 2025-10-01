@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { Toaster } from "react-hot-toast";
 // Layouts
 import SiteLayout from "./layouts/SiteLayout";
 import UserDashboardLayout from "./pages/UserDashboardLayout";
@@ -52,6 +52,7 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<AccountForm />} />
       </Routes>
+      <Toaster position="top-center" />
     </BrowserRouter>
   );
 }
