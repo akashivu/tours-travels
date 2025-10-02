@@ -36,7 +36,7 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
 
     setIsLoading(true);
     try {
-      const res = await axios.post("http://localhost:8080/api/quotes", {
+      const res = await axios.post("https://adiyogi-travels.onrender.com/api/quotes", {
         pickup,
         dropoff: drop,
         tripType,
@@ -53,7 +53,7 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
         },
       });
     } catch (error) {
-      toast.error("🚗 Unable to fetch vehicles. Please try again.", {
+      toast.error("Unable to fetch vehicles. Please try again.", {
   duration: 4000,
   style: {
     background: "#dc2626", 

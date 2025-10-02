@@ -21,7 +21,7 @@ const decodeToken = (token: string) => {
      try {
       if (isLogin) {
        
-        const res = await axios.post("http://localhost:8080/api/account/login", {
+        const res = await axios.post("https://adiyogi-travels.onrender.com/api/account/login", {
           email,
           password,
         });
@@ -38,7 +38,7 @@ const decodeToken = (token: string) => {
         navigate("/user/dashboard");
       } else {
         
-        const res = await axios.post("http://localhost:8080/api/account/register", {
+        const res = await axios.post("https://adiyogi-travels.onrender.com/api/account/register", {
           fullName,
           email,
           password,

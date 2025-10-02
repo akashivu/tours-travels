@@ -65,7 +65,7 @@ export default function Booking() {
       fare: totalFare,
     };
 
-    await axios.post("http://localhost:8080/api/bookings/confirm", booking);
+    await axios.post("https://adiyogi-travels.onrender.com/api/bookings/confirm", booking);
 
     toast.success("Booking confirmed! Details sent to admin.", {
   duration: 4000, 
@@ -81,7 +81,7 @@ export default function Booking() {
     navigate("/confirmation", { state: { booking } });
   } catch (err) {
     console.error(err);
-    toast.error("❌ Error confirming booking. Please try again.", {
+    toast.error("Error confirming booking. Please try again.", {
   duration: 4000,
   style: {
     background: "#dc2626", 

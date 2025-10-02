@@ -60,7 +60,7 @@ export default function VehicleSelection() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
-      {/* Trip Summary Bar */}
+      
       <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -99,7 +99,7 @@ export default function VehicleSelection() {
         </div>
       </div>
 
-      {/* Vehicle Grid */}
+      
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Select Your Vehicle</h1>
@@ -160,7 +160,7 @@ export default function VehicleSelection() {
         </div>
       </div>
 
-      {/* Modal */}
+     
       <AnimatePresence>
         {selectedVehicle && (
           <>
@@ -178,7 +178,7 @@ export default function VehicleSelection() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="fixed inset-4 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-3xl bg-white rounded-3xl shadow-2xl z-50 overflow-hidden max-h-[90vh] flex flex-col"
             >
-              {/* Header */}
+              
               <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
                 <button 
                   onClick={() => setSelectedVehicle(null)} 
@@ -213,9 +213,9 @@ export default function VehicleSelection() {
                 </div>
               </div>
 
-              {/* Content */}
+              
               <div className="flex-1 overflow-y-auto p-6">
-                {/* Fare Breakdown */}
+               
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 mb-6">
                   <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Info className="w-5 h-5 text-blue-600" />
@@ -247,7 +247,7 @@ export default function VehicleSelection() {
                   </div>
                 </div>
 
-                {/* Inclusion/Exclusion */}
+                
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-green-50 rounded-2xl p-5">
                     <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
@@ -281,7 +281,7 @@ export default function VehicleSelection() {
                 </div>
               </div>
 
-              {/* Footer */}
+             
               <div className="border-t border-gray-200 p-6 bg-gray-50">
                 <button 
                   onClick={() => handleBook(selectedVehicle)}
