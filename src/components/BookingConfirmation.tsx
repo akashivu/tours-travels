@@ -1,9 +1,14 @@
-import { useLocation, Link } from "react-router-dom";
+
 import { CheckCircle, MapPin, Calendar, Car, Phone, CreditCard, Shield, X } from "lucide-react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 export default function BookingConfirmation() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { booking } = location.state || {};
+
 
   if (!booking) {
     return (
@@ -20,6 +25,15 @@ export default function BookingConfirmation() {
       </div>
     );
   }
+  const handleCancelBooking = async () => {
+    try {
+      await axios.put(`http://localhost:8080/api/bookings/${booking.id}/cancel`);
+      toast.success("Your booking has been cancelled");
+      navigate("/"); 
+    } catch (err) {
+      toast.error("Failed to cancel booking. Please try again.");
+    }
+  };
 
   const gst = Math.round(booking.fare * 0.18);
   const discount = 100;
@@ -39,13 +53,13 @@ export default function BookingConfirmation() {
               <p className="text-green-100 text-sm">Your ride is all set</p>
             </div>
           </div>
-          <Link
-            to="/"
+          <button
+            onClick={handleCancelBooking}
             className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30"
           >
             <X className="w-4 h-4" />
             Cancel Request
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -162,13 +176,13 @@ export default function BookingConfirmation() {
             </div>
 
             
-            <Link
-              to="/"
-              className="md:hidden flex items-center justify-center gap-2 bg-white text-red-600 border-2 border-red-600 px-5 py-3 rounded-xl font-semibold hover:bg-red-50 transition duration-300 shadow-md"
-            >
-              <X className="w-5 h-5" />
-              Cancel Request
-            </Link>
+           <button
+            onClick={handleCancelBooking}
+            className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30"
+          >
+            <X className="w-4 h-4" />
+            Cancel Request
+          </button>
           </div>
 
           

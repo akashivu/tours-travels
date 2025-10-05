@@ -24,12 +24,12 @@ export default function AboutUsSection() {
 
            
             <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-              Luxury Car Rental with Excellence in Service & Quality
+             Your Trusted Partner for Airport, Rental & Outstation Cab Services
             </h2>
 
             
             <p className="text-gray-300 text-lg leading-relaxed">
-              We specialize in premium car rentals across India, offering both residents and visitors an unparalleled driving experience. Our fleet features the latest models, meticulously selected to provide ultimate comfort and style. Whether you're a resident or a visitor seeking a seamless and luxurious transport solution, we ensure a smooth rental process from booking to delivery, so you can enjoy your journey with ease.
+             We specialize in premium cab services across India, offering airport transfers, hourly rentals, and outstation trips with unmatched comfort and reliability. Our fleet features the latest, well-maintained vehicles to ensure a smooth and luxurious travel experience. Whether you’re heading to the airport, planning a city ride, or embarking on a long journey, we make booking effortless and deliver a seamless ride from pickup to drop-off.
             </p>
 
             
@@ -55,7 +55,7 @@ export default function AboutUsSection() {
            
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src="https://media.istockphoto.com/id/1323994547/photo/chic-young-asian-man-using-mobile-app-device-on-smartphone-to-order-a-taxi-pick-up-service-by.jpg?b=1&s=612x612&w=0&k=20&c=0JapAxdlVPqXX4wsQrmd67AmbYiJhtULMKMVImpP7JI="
                 alt="Professional businessman"
                 className="w-full h-[500px] object-cover"
               />
