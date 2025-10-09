@@ -84,7 +84,7 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
   return (
     <>
     
-      <section className="relative h-[420px]">
+      <section className="relative h-[420px] -mt-[64px]">
        
         <div
           className="absolute inset-0"

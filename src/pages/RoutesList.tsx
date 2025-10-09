@@ -114,7 +114,7 @@ export default function RoutesList() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      {/* Header */}
+      
       <div className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
@@ -147,7 +147,7 @@ export default function RoutesList() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {/* Hero Section */}
+           
             <div className="text-center mb-10">
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
                 Choose Your Destination
@@ -157,7 +157,7 @@ export default function RoutesList() {
               </p>
             </div>
 
-            {/* Search Bar */}
+            
             <div className="max-w-2xl mx-auto mb-10">
               <div className="relative">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -171,7 +171,7 @@ export default function RoutesList() {
               </div>
             </div>
 
-            {/* Routes Grid */}
+           
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filteredRoutes.map((route, idx) => (
                 <motion.button
@@ -219,7 +219,7 @@ export default function RoutesList() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {/* Route Header */}
+              
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                 <button
                   onClick={() => setSelectedRoute(null)}
@@ -239,7 +239,7 @@ export default function RoutesList() {
                 <p className="text-slate-600 mt-2">Select your preferred vehicle from our fleet</p>
               </div>
 
-              {/* Vehicles Grid */}
+              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {vehicles.map((vehicle, i) => (
                   <motion.div
@@ -250,7 +250,7 @@ export default function RoutesList() {
                     whileHover={{ y: -8 }}
                     className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all duration-300"
                   >
-                    {/* Vehicle Image */}
+                   
                     <div className="relative h-52 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
                       <img
                         src={vehicle.img}
@@ -262,13 +262,13 @@ export default function RoutesList() {
                       </div>
                     </div>
 
-                    {/* Vehicle Details */}
+                    
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-slate-900 mb-3">
                         {vehicle.name}
                       </h3>
 
-                      {/* Features */}
+                      
                       <div className="flex flex-wrap gap-2 mb-4">
                         {vehicle.features.map((feature, idx) => (
                           <span key={idx} className="bg-slate-100 text-slate-700 text-xs px-3 py-1 rounded-full font-medium">
@@ -277,7 +277,7 @@ export default function RoutesList() {
                         ))}
                       </div>
 
-                      {/* Pricing */}
+                      
                       <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 mb-4">
                         <div className="flex items-baseline gap-2 mb-2">
                           <IndianRupee className="w-5 h-5 text-amber-600 mt-1" />
@@ -297,13 +297,13 @@ export default function RoutesList() {
                         </div>
                       </div>
 
-                      {/* Additional Info */}
+                     
                       <div className="flex items-start gap-2 text-xs text-slate-500 mb-4 bg-slate-50 p-3 rounded-lg">
                         <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
                         <span>Includes driver allowance & GST. Toll & parking charges extra.</span>
                       </div>
 
-                      {/* Book Button */}
+                     
                       <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02]">
                         Book Now
                       </button>

@@ -78,17 +78,7 @@ const packages: Package[] = [
       "Experience serene backwaters of Alleppey in a traditional houseboat with authentic Kerala cuisine.",
     rating: 4.9,
   },
-  {
-    id: 7,
-    title: "Hampi Heritage Trail",
-    duration: "2D/1N",
-    price: 5499,
-    imageUrl: "https://images.pexels.com/photos/27719238/pexels-photo-27719238.jpeg",
-    inclusions: ["Hotel Stay", "Meals", "Guided Temple Tour", "Transport"],
-    description:
-      "Explore the UNESCO World Heritage site with ancient ruins, Virupaksha temple, and coracle rides.",
-    rating: 4.7,
-  },
+  
 ];
 
 export default function HolidayPackages() {

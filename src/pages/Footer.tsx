@@ -124,7 +124,7 @@ export default function Footer() {
         
         <div className="border-t border-gray-800 pt-6 text-center">
           <p className="text-sm text-gray-400">
-            ©2024 Vijay Tours & Travels – All Rights Reserved
+            ©2025 Vijay Tours & Travels – All Rights Reserved
           </p>
           <p className="text-xs text-gray-500 mt-2">
             Designed & Developed by <span className="text-gray-300">Akash Patil</span> – 

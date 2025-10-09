@@ -23,8 +23,8 @@ export default function Navbar() {
 
       
       <nav
-        className={`backdrop-blur-md bg-white/70 shadow-md transition-all duration-300 ${
-          isScrolled ? "py-2" : "py-4"
+        className={`backdrop-blur-md bg-yellow-200 shadow-md transition-all duration-300 ${
+          isScrolled ? "py-1" : "py-2"
         }`}
       >
         <div className="container mx-auto flex justify-between items-center px-4 md:px-6">
@@ -36,7 +36,9 @@ export default function Navbar() {
               className={`transition-all duration-300 ${
                 isScrolled ? "h-10" : "h-14"
               } w-auto drop-shadow-md`}
-            />
+            />      <span className="font-bold text-xl text-gray-800 tracking-wide">
+                 Adiyogicabz
+                    </span>
           </div>
 
           
