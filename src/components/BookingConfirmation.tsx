@@ -3,11 +3,15 @@ import { CheckCircle, MapPin, Calendar, Car, Phone, CreditCard, Shield, X } from
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 
 export default function BookingConfirmation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { booking } = location.state || {};
+  const [isCancelling, setIsCancelling] = useState(false);
+
 
 
   if (!booking) {
@@ -25,15 +29,28 @@ export default function BookingConfirmation() {
       </div>
     );
   }
-  const handleCancelBooking = async () => {
-    try {
-      await axios.put(`http://localhost:8080/api/bookings/${booking.id}/cancel`);
-      toast.success("Your booking has been cancelled");
-      navigate("/"); 
-    } catch (err) {
-      toast.error("Failed to cancel booking. Please try again.");
-    }
-  };
+ const handleCancelBooking = async () => {
+  if (!booking?.id) {
+    toast.error("Booking ID not found!");
+    console.error("Booking object missing ID:", booking);
+    return;
+  }
+
+  setIsCancelling(true);
+  try {
+    const res = await axios.put(
+      `https://adiyogi-travels.onrender.com/api/bookings/${booking.id}/cancel`
+    );
+    toast.success(res.data.message || "Your booking has been cancelled");
+    navigate("/");
+  } catch (err) {
+    console.error("Cancel error:", err);
+    toast.error("Failed to cancel booking. Please try again.");
+  } finally {
+    setIsCancelling(false);
+  }
+};
+
 
   const gst = Math.round(booking.fare * 0.18);
   const discount = 100;
@@ -177,12 +194,26 @@ export default function BookingConfirmation() {
 
             
            <button
-            onClick={handleCancelBooking}
-            className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30"
-          >
-            <X className="w-4 h-4" />
-            Cancel Request
-          </button>
+  onClick={handleCancelBooking}
+  disabled={isCancelling}
+  className={`hidden md:flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30
+    ${isCancelling
+      ? "bg-white/20 cursor-not-allowed"
+      : "bg-white/10 hover:bg-white/20 text-white"}`}
+>
+  {isCancelling ? (
+    <>
+      <X className="w-4 h-4 animate-spin" />
+      Cancelling...
+    </>
+  ) : (
+    <>
+      <X className="w-4 h-4" />
+      Cancel Request
+    </>
+  )}
+</button>
+
           </div>
 
           
