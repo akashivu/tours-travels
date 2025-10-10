@@ -183,12 +183,11 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
         Airport Name
       </label>
       <AddressAutocomplete
-        placeholder="e.g. Kempegowda International Airport"
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
-        value={pickup}
-        onChange={(val) => setPickup(val)}
-        onSelect={(address) => setPickup(address)}
-      />
+                    placeholder="e.g. Kempegowda International Airport"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                    value={pickup}
+                    onChange={(val) => setPickup(val)}
+                    onSelect={(address) => setPickup(address)} apiKey={""}      />
     </div>
   </>
 )}
@@ -227,8 +226,7 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
                     value={pickup}
                     onChange={(val) => setPickup(val)}
-                    onSelect={(address) => setPickup(address)}
-                  />
+                    onSelect={(address) => setPickup(address)} apiKey={""}                  />
                 </div>
 
                 <div>
@@ -241,8 +239,7 @@ if (activeTab === "rental" && (!pickup || !pickupDate || !pickupTime || !mobile)
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
                     value={drop}
                     onChange={(val) => setDrop(val)}
-                    onSelect={(address) => setDrop(address)}
-                  />
+                    onSelect={(address) => setDrop(address)} apiKey={""}                  />
                 </div>
               </div>
 
