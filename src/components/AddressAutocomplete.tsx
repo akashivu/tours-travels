@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   placeholder?: string;
@@ -6,239 +6,126 @@ type Props = {
   value?: string;
   onChange?: (val: string) => void;
   onSelect?: (address: string, lat: number, lng: number) => void;
-  apiKey: string;
 };
-
-let isScriptLoaded = false;
-let isScriptLoading = false;
-const scriptCallbacks: (() => void)[] = [];
 
 export default function AddressAutocomplete({
   placeholder = "Enter location",
   className,
-  value,
+  value = "",
   onChange,
   onSelect,
-  apiKey,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const placeAutocompleteRef = useRef<any>(null);
+  const autocompleteRef = useRef<any>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      return new Promise<void>((resolve) => {
-        if (isScriptLoaded && window.google?.maps?.places?.PlaceAutocompleteElement) {
-          resolve();
-          return;
-        }
-
-        if (isScriptLoading) {
-          scriptCallbacks.push(resolve);
-          return;
-        }
-
-        const existingScript = document.querySelector(
-          `script[src*="maps.googleapis.com"]`
-        );
-        
-        if (existingScript) {
-          isScriptLoaded = true;
-          resolve();
-          return;
-        }
-
-        isScriptLoading = true;
-        const script = document.createElement("script");
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA2cFuK7PcvkCnGBxbkKVstFb0vP1Ue6i4&libraries=places&v=weekly`;
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-          isScriptLoaded = true;
-          isScriptLoading = false;
-          resolve();
-          scriptCallbacks.forEach(cb => cb());
-          scriptCallbacks.length = 0;
-        };
-        script.onerror = () => {
-          isScriptLoading = false;
-          console.error("Failed to load Google Maps script");
-        };
-        document.head.appendChild(script);
-      });
-    };
-
-    loadGoogleMapsScript().then(() => {
-      if (!containerRef.current || !window.google?.maps?.places?.PlaceAutocompleteElement) {
-        return;
+    // Wait for Google Maps API to load
+    const checkGoogle = setInterval(() => {
+      if (window.google?.maps?.places) {
+        clearInterval(checkGoogle);
+        setIsReady(true);
       }
+    }, 100);
 
-      const placeAutocomplete = document.createElement(
-        "gmp-place-autocomplete"
-      ) as any;
-      
-      placeAutocomplete.style.width = "100%";
-      placeAutocomplete.style.display = "block";
-      
-     
-      placeAutocomplete.style.colorScheme = "light";
-      
-      if (containerRef.current) {
-        containerRef.current.innerHTML = "";
-        containerRef.current.appendChild(placeAutocomplete);
-      }
+    return () => clearInterval(checkGoogle);
+  }, []);
 
-      placeAutocompleteRef.current = placeAutocomplete;
+  useEffect(() => {
+    if (!inputRef.current || !isReady) return;
 
-     
-      const forceInputStyles = () => {
-        const inputElement = placeAutocomplete.querySelector("input");
-        if (inputElement) {
-         
-          inputElement.removeAttribute("style");
-          
-          
-         const styleString = `
-  width: 100% !important;
-  padding: 12px !important;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #d1d5db !important;
-  border-radius: 6px !important;
-  font-size: 16px !important;
-  outline: none !important;
-  box-sizing: border-box !important;
-  color-scheme: light !important;
-  -webkit-text-fill-color: #000000 !important;
-  box-shadow: none !important;
-`;
-          
-          inputElement.setAttribute("style", styleString);
-          
-          if (placeholder) {
-            inputElement.placeholder = placeholder;
-          }
-          if (className) {
-            inputElement.className = className;
-          }
-
-          
-          const focusHandler = () => {
-  inputElement.setAttribute("style", styleString + `
-    border: 1px solid #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-  `);
-};
-          
-          const blurHandler = () => {
-            inputElement.setAttribute("style", styleString);
-          };
-          
-          inputElement.removeEventListener("focus", focusHandler);
-          inputElement.removeEventListener("blur", blurHandler);
-          inputElement.addEventListener("focus", focusHandler);
-          inputElement.addEventListener("blur", blurHandler);
-
-         
-          const inputHandler = (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            onChange?.(target.value);
-          };
-          
-          inputElement.removeEventListener("input", inputHandler);
-          inputElement.addEventListener("input", inputHandler);
-
-          return true;
+    try {
+      // Initialize Autocomplete with the new API
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(
+        inputRef.current,
+        {
+          componentRestrictions: { country: "in" },
+          fields: ["formatted_address", "geometry", "name"],
         }
-        return false;
-      };
+      );
 
-     
-      const attemptStyling = () => {
-        let attempts = 0;
-        const maxAttempts = 20;
-        
-        const tryStyle = () => {
-          if (forceInputStyles()) {
-            return; 
+      // Listen for place selection
+      const listener = autocompleteRef.current.addListener(
+        "place_changed",
+        () => {
+          const place = autocompleteRef.current.getPlace();
+
+          if (!place || !place.geometry || !place.geometry.location) {
+            console.log("No valid place selected");
+            return;
           }
-          
-          attempts++;
-          if (attempts < maxAttempts) {
-            setTimeout(tryStyle, 100);
+
+          const address = place.formatted_address || place.name || "";
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+
+          if (inputRef.current) {
+            inputRef.current.value = address;
           }
-        };
-        
-        tryStyle();
-      };
 
-      
-      attemptStyling();
-
-      
-      const observer = new MutationObserver(() => {
-        forceInputStyles();
-      });
-
-      observer.observe(placeAutocomplete, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["style"],
-      });
-
-      const handlePlaceSelect = async (event: any) => {
-        const place = event.place;
-        
-        if (!place) {
-          console.error("No place details found");
-          return;
+          onChange?.(address);
+          onSelect?.(address, lat, lng);
         }
-
-        await place.fetchFields({
-          fields: ["displayName", "formattedAddress", "location"],
-        });
-
-        const address = place.formattedAddress || place.displayName || "";
-        const lat = place.location?.lat() ?? 0;
-        const lng = place.location?.lng() ?? 0;
-
-        onSelect?.(address, lat, lng);
-        onChange?.(address);
-        
-        
-        setTimeout(forceInputStyles, 100);
-      };
-
-      placeAutocomplete.addEventListener("gmp-placeselect", handlePlaceSelect);
+      );
 
       return () => {
-        observer.disconnect();
-        if (placeAutocomplete) {
-          placeAutocomplete.removeEventListener("gmp-placeselect", handlePlaceSelect);
+        if (listener) {
+          window.google.maps.event.removeListener(listener);
         }
       };
-    });
-  }, [apiKey, onSelect, onChange, placeholder, className]);
+    } catch (error) {
+      console.error("Error initializing AddressAutocomplete:", error);
+    }
+  }, [isReady, onChange, onSelect]);
 
+  // Update input value when prop changes
   useEffect(() => {
-    if (placeAutocompleteRef.current && value !== undefined) {
-      const inputElement = placeAutocompleteRef.current.querySelector("input");
-      if (inputElement) {
-        inputElement.value = value;
-      }
+    if (inputRef.current && value !== undefined) {
+      inputRef.current.value = value;
     }
   }, [value]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e.target.value);
+  };
+
   return (
-    <div 
-      ref={containerRef} 
-      style={{ 
-        width: "100%",
-        backgroundColor: "#ffffff",
-        border: "1px solid #d1d5db",
-        colorScheme: "light",
-      }} 
-    />
+    <div ref={containerRef} className={className} style={{ width: "100%" }}>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder={placeholder}
+        defaultValue={value}
+        onChange={handleInputChange}
+        disabled={!isReady}
+        className="w-full"
+        style={{
+          width: "100%",
+          padding: "12px",
+          border: "1px solid #d1d5db",
+          borderRadius: "8px",
+          fontSize: "16px",
+          color: "#000",
+          backgroundColor: isReady ? "#fff" : "#f3f4f6",
+          outline: "none",
+          transition: "all 0.2s ease",
+          boxSizing: "border-box",
+        }}
+        onFocus={(e) => {
+          e.target.style.borderColor = "#3b82f6";
+          e.target.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)";
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = "#d1d5db";
+          e.target.style.boxShadow = "none";
+        }}
+      />
+      {!isReady && (
+        <div style={{ fontSize: "12px", color: "#6b7280", marginTop: "4px" }}>
+          Loading...
+        </div>
+      )}
+    </div>
   );
 }
