@@ -30,16 +30,17 @@ interface BookingState {
 export default function QuickBookingForm() {
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState<"outstation" | "airport" | "rental">("outstation");
+  const [activeTab, setActiveTab] = useState<
+    "outstation" | "airport" | "rental"
+  >("outstation");
   const [tripType, setTripType] = useState<"oneway" | "roundtrip">("oneway");
 
-  // ✅ Location states
   const [outstationPickup, setOutstationPickup] = useState("");
   const [outstationDrop, setOutstationDrop] = useState("");
   const [airportPickup, setAirportPickup] = useState("");
+  const [airportDrop, setAirportDrop] = useState("");
   const [rentalPickup, setRentalPickup] = useState("");
 
-  // ✅ Common form states
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -48,7 +49,6 @@ export default function QuickBookingForm() {
   const [rentalHours, setRentalHours] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Get today's date in YYYY-MM-DD format
   const getTodayDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -68,10 +68,16 @@ export default function QuickBookingForm() {
   };
 
   const getCurrentDrop = () => {
-    return activeTab === "outstation" ? outstationDrop : "";
+    switch (activeTab) {
+      case "outstation":
+        return outstationDrop;
+      case "airport":
+        return airportDrop;
+      default:
+        return "";
+    }
   };
 
-  // ✅ Validation Logic
   const validateForm = (): boolean => {
     const pickup = getCurrentPickup();
     const drop = getCurrentDrop();
@@ -102,13 +108,11 @@ export default function QuickBookingForm() {
         toast.error("Please enter mobile number");
         return false;
       }
-
       const mobileDigits = mobile.replace(/\D/g, "");
       if (!/^\d{10}$/.test(mobileDigits)) {
         toast.error("Enter a valid 10-digit mobile number");
         return false;
       }
-
       if (tripType === "roundtrip") {
         if (!returnDate) {
           toast.error("Please select return date");
@@ -125,7 +129,11 @@ export default function QuickBookingForm() {
       }
     } else if (activeTab === "airport") {
       if (!pickup.trim()) {
-        toast.error("Please enter airport/location");
+        toast.error("Please enter pick-up location");
+        return false;
+      }
+      if (!drop.trim()) {
+        toast.error("Please enter drop-off location");
         return false;
       }
       if (!pickupDate) {
@@ -144,7 +152,6 @@ export default function QuickBookingForm() {
         toast.error("Please enter mobile number");
         return false;
       }
-
       const mobileDigits = mobile.replace(/\D/g, "");
       if (!/^\d{10}$/.test(mobileDigits)) {
         toast.error("Enter a valid 10-digit mobile number");
@@ -159,13 +166,11 @@ export default function QuickBookingForm() {
         toast.error("Please enter number of hours");
         return false;
       }
-
       const hours = parseInt(rentalHours, 10);
       if (isNaN(hours) || hours < 1) {
         toast.error("Rental hours must be at least 1");
         return false;
       }
-
       if (!pickupDate) {
         toast.error("Please select pick-up date");
         return false;
@@ -182,7 +187,6 @@ export default function QuickBookingForm() {
         toast.error("Please enter mobile number");
         return false;
       }
-
       const mobileDigits = mobile.replace(/\D/g, "");
       if (!/^\d{10}$/.test(mobileDigits)) {
         toast.error("Enter a valid 10-digit mobile number");
@@ -193,7 +197,6 @@ export default function QuickBookingForm() {
     return true;
   };
 
-  // ✅ Search Ride Handler
   const handleSearchRide = async () => {
     if (!validateForm()) return;
 
@@ -227,22 +230,10 @@ export default function QuickBookingForm() {
         bookingState.rentalHours = rentalHours;
       }
 
-      navigate("/vehicles", {
-        state: bookingState,
-      });
+      navigate("/vehicles", { state: bookingState });
     } catch (error) {
       console.error("Error fetching vehicles:", error);
-      toast.error("Unable to fetch vehicles. Please try again.", {
-        duration: 4000,
-        style: {
-          background: "#dc2626",
-          color: "#fff",
-          fontSize: "15px",
-          fontWeight: "500",
-          borderRadius: "8px",
-          padding: "12px 16px",
-        },
-      });
+      toast.error("Unable to fetch vehicles. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -264,7 +255,7 @@ export default function QuickBookingForm() {
 
   return (
     <>
-      {/* 🧭 Hero Section */}
+      {/* Hero */}
       <section className="relative h-[420px] -mt-[64px]">
         <div
           className="absolute inset-0"
@@ -276,7 +267,6 @@ export default function QuickBookingForm() {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-
         <div className="relative z-10 h-full flex flex-col justify-center px-4 max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Book Your Ride — Reliable, Affordable & Hassle-Free
@@ -292,7 +282,7 @@ export default function QuickBookingForm() {
         </div>
       </section>
 
-      {/* 🧾 Booking Form */}
+      {/* Booking Form */}
       <section className="relative max-w-6xl mx-auto -mt-20 px-4 z-20">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Tabs */}
@@ -313,8 +303,8 @@ export default function QuickBookingForm() {
             ))}
           </div>
 
-          {/* Form Fields */}
           <div className="p-8">
+            {/* Outstation Section */}
             {activeTab === "outstation" && (
               <>
                 <div className="flex gap-3 mb-6">
@@ -340,7 +330,6 @@ export default function QuickBookingForm() {
                   </button>
                 </div>
 
-                {/* Pickup / Drop */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
@@ -371,21 +360,44 @@ export default function QuickBookingForm() {
               </>
             )}
 
+            {/* Airport Section */}
             {activeTab === "airport" && (
-              <div className="mb-4">
-                <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                  <MapPin className="w-4 h-4" />
-                  Airport/Location
-                </label>
-                <AddressAutocomplete
-                  placeholder="e.g. Kempegowda International Airport"
-                  value={airportPickup}
-                  onChange={setAirportPickup}
-                  onSelect={(address) => setAirportPickup(address)}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <MapPin className="w-4 h-4" />
+                    Pick-up location
+                  </label>
+                  <AddressAutocomplete
+                    placeholder="Enter pick-up location (e.g. Airport or City)"
+                    value={airportPickup}
+                    onChange={setAirportPickup}
+                    onSelect={(address) => setAirportPickup(address)}
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <MapPin className="w-4 h-4" />
+                    Drop-off location
+                  </label>
+                  <AddressAutocomplete
+                    placeholder="Enter drop location (e.g. City or Airport)"
+                    value={airportDrop}
+                    onChange={setAirportDrop}
+                    onSelect={(address) => setAirportDrop(address)}
+                  />
+                </div>
+
+                <div className="col-span-full">
+                  <p className="text-sm text-gray-500 mt-2">
+                    ₹26 per km (excluding toll and parking charges)
+                  </p>
+                </div>
               </div>
             )}
 
+            {/* Rental Section */}
             {activeTab === "rental" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -459,12 +471,12 @@ export default function QuickBookingForm() {
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
                     placeholder="Phone number"
-                   
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
                   />
                 </div>
               </div>
 
+              {/* Return fields for outstation */}
               {activeTab === "outstation" && tripType === "roundtrip" && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="md:col-span-2">
@@ -496,7 +508,6 @@ export default function QuickBookingForm() {
                 </div>
               )}
 
-              {/* Submit */}
               <div className="flex justify-center pt-4">
                 <button
                   onClick={handleSearchRide}
@@ -526,3 +537,4 @@ export default function QuickBookingForm() {
     </>
   );
 }
+
