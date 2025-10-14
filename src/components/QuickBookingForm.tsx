@@ -41,6 +41,12 @@ export default function QuickBookingForm() {
   const [airportDrop, setAirportDrop] = useState("");
   const [rentalPickup, setRentalPickup] = useState("");
 
+  
+  const [pickupLat, setPickupLat] = useState<number | null>(null);
+  const [pickupLng, setPickupLng] = useState<number | null>(null);
+  const [dropLat, setDropLat] = useState<number | null>(null);
+  const [dropLng, setDropLng] = useState<number | null>(null);
+
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -84,42 +90,25 @@ export default function QuickBookingForm() {
     const today = getTodayDate();
 
     if (activeTab === "outstation") {
-      if (!pickup.trim()) {
-        toast.error("Please enter pick-up location");
+      if (!pickup.trim() || !drop.trim()) {
+        toast.error("Please enter both pickup and drop locations");
         return false;
       }
-      if (!drop.trim()) {
-        toast.error("Please enter drop-off location");
-        return false;
-      }
-      if (!pickupDate) {
-        toast.error("Please select pick-up date");
-        return false;
-      }
-      if (pickupDate < today) {
-        toast.error("Pick-up date cannot be in the past");
+      if (!pickupDate || pickupDate < today) {
+        toast.error("Please select a valid pickup date");
         return false;
       }
       if (!pickupTime) {
-        toast.error("Please select pick-up time");
+        toast.error("Please select pickup time");
         return false;
       }
-      if (!mobile.trim()) {
-        toast.error("Please enter mobile number");
-        return false;
-      }
-      const mobileDigits = mobile.replace(/\D/g, "");
-      if (!/^\d{10}$/.test(mobileDigits)) {
+      if (!/^\d{10}$/.test(mobile.replace(/\D/g, ""))) {
         toast.error("Enter a valid 10-digit mobile number");
         return false;
       }
       if (tripType === "roundtrip") {
-        if (!returnDate) {
-          toast.error("Please select return date");
-          return false;
-        }
-        if (returnDate <= pickupDate) {
-          toast.error("Return date must be after pick-up date");
+        if (!returnDate || returnDate <= pickupDate) {
+          toast.error("Please select a valid return date");
           return false;
         }
         if (!returnTime) {
@@ -127,68 +116,45 @@ export default function QuickBookingForm() {
           return false;
         }
       }
-    } else if (activeTab === "airport") {
-      if (!pickup.trim()) {
-        toast.error("Please enter pick-up location");
+    }
+
+    if (activeTab === "airport") {
+      if (!pickup.trim() || !drop.trim()) {
+        toast.error("Please enter both pickup and drop locations");
         return false;
       }
-      if (!drop.trim()) {
-        toast.error("Please enter drop-off location");
-        return false;
-      }
-      if (!pickupDate) {
-        toast.error("Please select pick-up date");
-        return false;
-      }
-      if (pickupDate < today) {
-        toast.error("Pick-up date cannot be in the past");
+      if (!pickupDate || pickupDate < today) {
+        toast.error("Please select a valid pickup date");
         return false;
       }
       if (!pickupTime) {
-        toast.error("Please select pick-up time");
+        toast.error("Please select pickup time");
         return false;
       }
-      if (!mobile.trim()) {
-        toast.error("Please enter mobile number");
-        return false;
-      }
-      const mobileDigits = mobile.replace(/\D/g, "");
-      if (!/^\d{10}$/.test(mobileDigits)) {
+      if (!/^\d{10}$/.test(mobile.replace(/\D/g, ""))) {
         toast.error("Enter a valid 10-digit mobile number");
         return false;
       }
-    } else if (activeTab === "rental") {
+    }
+
+    if (activeTab === "rental") {
       if (!pickup.trim()) {
-        toast.error("Please enter pick-up location");
+        toast.error("Please enter pickup location");
         return false;
       }
-      if (!rentalHours.trim()) {
-        toast.error("Please enter number of hours");
+      if (!rentalHours.trim() || parseInt(rentalHours) < 1) {
+        toast.error("Enter valid rental hours");
         return false;
       }
-      const hours = parseInt(rentalHours, 10);
-      if (isNaN(hours) || hours < 1) {
-        toast.error("Rental hours must be at least 1");
-        return false;
-      }
-      if (!pickupDate) {
-        toast.error("Please select pick-up date");
-        return false;
-      }
-      if (pickupDate < today) {
-        toast.error("Pick-up date cannot be in the past");
+      if (!pickupDate || pickupDate < today) {
+        toast.error("Please select a valid pickup date");
         return false;
       }
       if (!pickupTime) {
-        toast.error("Please select pick-up time");
+        toast.error("Please select pickup time");
         return false;
       }
-      if (!mobile.trim()) {
-        toast.error("Please enter mobile number");
-        return false;
-      }
-      const mobileDigits = mobile.replace(/\D/g, "");
-      if (!/^\d{10}$/.test(mobileDigits)) {
+      if (!/^\d{10}$/.test(mobile.replace(/\D/g, ""))) {
         toast.error("Enter a valid 10-digit mobile number");
         return false;
       }
@@ -203,13 +169,34 @@ export default function QuickBookingForm() {
     const pickup = getCurrentPickup();
     const drop = getCurrentDrop();
 
+    console.log("📍 Sending to backend:", {
+      pickup,
+      drop,
+      pickupLat,
+      pickupLng,
+      dropLat,
+      dropLng,
+    });
+
     setIsLoading(true);
     try {
-      const res = await axios.post("https://adiyogi-travels.onrender.com/api/quotes", {
-        pickup,
-        dropoff: drop,
-        tripType,
-      });
+      const res = await axios.post(
+        "https://adiyogi-travels.onrender.com/api/quotes",
+        {
+          pickup,
+          dropoff: drop,
+          tripType,
+          pickupLat,
+          pickupLng,
+          dropLat,
+          dropLng,
+        }
+      );
+      if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
+  toast.error("Please select locations from Google suggestions for accurate distance.");
+  console.log("⚠️ Missing coordinates:", { pickupLat, pickupLng, dropLat, dropLng });
+  return;
+}
 
       const bookingState: BookingState = {
         quotes: res.data,
@@ -255,7 +242,7 @@ export default function QuickBookingForm() {
 
   return (
     <>
-      {/* Hero */}
+     
       <section className="relative h-[420px] -mt-[64px]">
         <div
           className="absolute inset-0"
@@ -282,10 +269,10 @@ export default function QuickBookingForm() {
         </div>
       </section>
 
-      {/* Booking Form */}
+     
       <section className="relative max-w-6xl mx-auto -mt-20 px-4 z-20">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-          {/* Tabs */}
+         
           <div className="flex border-b border-gray-200">
             {tabs.map((tab) => (
               <button
@@ -304,7 +291,7 @@ export default function QuickBookingForm() {
           </div>
 
           <div className="p-8">
-            {/* Outstation Section */}
+           
             {activeTab === "outstation" && (
               <>
                 <div className="flex gap-3 mb-6">
@@ -340,7 +327,11 @@ export default function QuickBookingForm() {
                       placeholder="Enter pick-up location"
                       value={outstationPickup}
                       onChange={setOutstationPickup}
-                      onSelect={(address) => setOutstationPickup(address)}
+                      onSelect={(address, lat, lng) => {
+                        setOutstationPickup(address);
+                        setPickupLat(lat);
+                        setPickupLng(lng);
+                      }}
                     />
                   </div>
 
@@ -353,14 +344,18 @@ export default function QuickBookingForm() {
                       placeholder="Enter destination"
                       value={outstationDrop}
                       onChange={setOutstationDrop}
-                      onSelect={(address) => setOutstationDrop(address)}
+                      onSelect={(address, lat, lng) => {
+                        setOutstationDrop(address);
+                        setDropLat(lat);
+                        setDropLng(lng);
+                      }}
                     />
                   </div>
                 </div>
               </>
             )}
 
-            {/* Airport Section */}
+           
             {activeTab === "airport" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -372,7 +367,11 @@ export default function QuickBookingForm() {
                     placeholder="Enter pick-up location (e.g. Airport or City)"
                     value={airportPickup}
                     onChange={setAirportPickup}
-                    onSelect={(address) => setAirportPickup(address)}
+                    onSelect={(address, lat, lng) => {
+                      setAirportPickup(address);
+                      setPickupLat(lat);
+                      setPickupLng(lng);
+                    }}
                   />
                 </div>
 
@@ -385,7 +384,11 @@ export default function QuickBookingForm() {
                     placeholder="Enter drop location (e.g. City or Airport)"
                     value={airportDrop}
                     onChange={setAirportDrop}
-                    onSelect={(address) => setAirportDrop(address)}
+                    onSelect={(address, lat, lng) => {
+                      setAirportDrop(address);
+                      setDropLat(lat);
+                      setDropLng(lng);
+                    }}
                   />
                 </div>
 
@@ -397,7 +400,7 @@ export default function QuickBookingForm() {
               </div>
             )}
 
-            {/* Rental Section */}
+           
             {activeTab === "rental" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -409,7 +412,11 @@ export default function QuickBookingForm() {
                     placeholder="Enter pick-up location"
                     value={rentalPickup}
                     onChange={setRentalPickup}
-                    onSelect={(address) => setRentalPickup(address)}
+                    onSelect={(address, lat, lng) => {
+                      setRentalPickup(address);
+                      setPickupLat(lat);
+                      setPickupLng(lng);
+                    }}
                   />
                 </div>
 
@@ -431,7 +438,7 @@ export default function QuickBookingForm() {
               </div>
             )}
 
-            {/* Common Fields */}
+            
             <div className="space-y-4 mt-4">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="md:col-span-2">
@@ -476,7 +483,7 @@ export default function QuickBookingForm() {
                 </div>
               </div>
 
-              {/* Return fields for outstation */}
+              
               {activeTab === "outstation" && tripType === "roundtrip" && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="md:col-span-2">
@@ -508,6 +515,7 @@ export default function QuickBookingForm() {
                 </div>
               )}
 
+             
               <div className="flex justify-center pt-4">
                 <button
                   onClick={handleSearchRide}
@@ -537,4 +545,3 @@ export default function QuickBookingForm() {
     </>
   );
 }
-
