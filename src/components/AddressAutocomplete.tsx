@@ -1,3 +1,4 @@
+/// <reference types="google.maps" />
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
@@ -16,7 +17,7 @@ export default function AddressAutocomplete({
   onSelect,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<any>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
 
@@ -28,14 +29,15 @@ export default function AddressAutocomplete({
     onSelectRef.current = onSelect;
   }, [onChange, onSelect]);
 
+  
   useEffect(() => {
-    if (window.google?.maps?.places) {
+    if ((window as any).google?.maps?.places) {
       setIsReady(true);
       return;
     }
 
     const checkInterval = setInterval(() => {
-      if (window.google?.maps?.places) {
+      if ((window as any).google?.maps?.places) {
         clearInterval(checkInterval);
         setIsReady(true);
       }
@@ -51,55 +53,48 @@ export default function AddressAutocomplete({
     };
   }, []);
 
+ 
   useEffect(() => {
-    if (!isReady || !inputRef.current || autocompleteRef.current) {
-      return;
-    }
+    if (!isReady || !inputRef.current || autocompleteRef.current) return;
 
     try {
-      const autocomplete = new window.google.maps.places.Autocomplete(
-        inputRef.current,
-        {
-          componentRestrictions: { country: "in" },
-          fields: ["formatted_address", "geometry", "name"],
-          types: ["geocode", "establishment"],
-        }
-      );
+      const g = (window as any).google as typeof google;
+      const autocomplete = new g.maps.places.Autocomplete(inputRef.current, {
+        componentRestrictions: { country: "in" },
+        fields: ["formatted_address", "geometry", "name", "place_id"],
+        types: ["geocode", "establishment"],
+      });
 
       autocompleteRef.current = autocomplete;
 
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-
-        if (!place || !place.geometry || !place.geometry.location) {
-          return;
-        }
+        if (!place?.geometry?.location) return;
 
         const address = place.formatted_address || place.name || "";
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
 
-        if (inputRef.current) {
-          inputRef.current.value = address;
-        }
-
-        if (onChangeRef.current) {
-          onChangeRef.current(address);
-        }
-        if (onSelectRef.current) {
-          onSelectRef.current(address, lat, lng);
-        }
+        if (inputRef.current) inputRef.current.value = address;
+        onChangeRef.current?.(address);
+        onSelectRef.current?.(address, lat, lng);
       });
-    } catch (err) {}
+    } catch (e) {
+     
+      console.error(e);
+      
+    }
 
     return () => {
       if (autocompleteRef.current) {
-        window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        const g = (window as any).google as typeof google | undefined;
+        g?.maps?.event.clearInstanceListeners(autocompleteRef.current);
         autocompleteRef.current = null;
       }
     };
   }, [isReady]);
 
+  
   useEffect(() => {
     if (inputRef.current && value !== undefined) {
       inputRef.current.value = value;
@@ -107,10 +102,7 @@ export default function AddressAutocomplete({
   }, [value]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    if (onChangeRef.current) {
-      onChangeRef.current(newValue);
-    }
+    onChangeRef.current?.(e.target.value);
   };
 
   const handleUseCurrentLocation = () => {
@@ -125,42 +117,33 @@ export default function AddressAutocomplete({
         const { latitude, longitude } = position.coords;
 
         try {
-          const apiKey = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+         
+          const apiKey = import.meta.env.VITE_GOOGLE_MAPS_KEY; 
           const res = await fetch(
             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
           );
           const data = await res.json();
 
-          if (data.status === "OK" && data.results[0]) {
+          if (data.status === "OK" && data.results?.[0]) {
             const address = data.results[0].formatted_address;
-
-            if (inputRef.current) {
-              inputRef.current.value = address;
-            }
-            if (onChangeRef.current) {
-              onChangeRef.current(address);
-            }
-            if (onSelectRef.current) {
-              onSelectRef.current(address, latitude, longitude);
-            }
+            if (inputRef.current) inputRef.current.value = address;
+            onChangeRef.current?.(address);
+            onSelectRef.current?.(address, latitude, longitude);
           } else {
             alert("Unable to get address. Please try again.");
           }
-        } catch (err) {
+        } catch {
+         
           alert("Error getting address. Please try again.");
         } finally {
           setIsLocating(false);
         }
       },
-      (error) => {
+      () => {
         alert("Unable to get location. Please enable location permissions.");
         setIsLocating(false);
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
 
@@ -172,9 +155,7 @@ export default function AddressAutocomplete({
         placeholder={placeholder}
         onChange={handleInputChange}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-          }
+          if (e.key === "Enter") e.preventDefault();
         }}
         disabled={!isReady}
         autoComplete="off"
@@ -221,13 +202,7 @@ export default function AddressAutocomplete({
       </button>
 
       {!isReady && (
-        <div
-          style={{
-            fontSize: "12px",
-            color: "#6b7280",
-            marginTop: "4px",
-          }}
-        >
+        <div style={{ fontSize: "12px", color: "#6b7280", marginTop: "4px" }}>
           Loading Google Maps...
         </div>
       )}
