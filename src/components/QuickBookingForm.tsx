@@ -65,7 +65,7 @@ const [rentalCity, setRentalCity] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
   const [mobile, setMobile] = useState("");
-  const [rentalHours, setRentalHours] = useState("");
+  const [rentalHours] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const getTodayDate = () => {
