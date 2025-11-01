@@ -29,11 +29,25 @@ interface BookingState {
 
 export default function QuickBookingForm() {
   const navigate = useNavigate();
+const [rentalCity, setRentalCity] = useState("");
 
   const [activeTab, setActiveTab] = useState<
     "outstation" | "airport" | "rental"
   >("outstation");
   const [tripType, setTripType] = useState<"oneway" | "roundtrip">("oneway");
+
+
+ const handleTabChange = (tab: "outstation" | "airport" | "rental") => {
+  setActiveTab(tab);
+  setPickupLat(null);
+  setPickupLng(null);
+  setDropLat(null);
+  setDropLng(null);
+
+  if (tab === "airport") {
+    navigate("/airport");
+  }
+};
 
   const [outstationPickup, setOutstationPickup] = useState("");
   const [outstationDrop, setOutstationDrop] = useState("");
@@ -41,7 +55,6 @@ export default function QuickBookingForm() {
   const [airportDrop, setAirportDrop] = useState("");
   const [rentalPickup, setRentalPickup] = useState("");
 
-  
   const [pickupLat, setPickupLat] = useState<number | null>(null);
   const [pickupLng, setPickupLng] = useState<number | null>(null);
   const [dropLat, setDropLat] = useState<number | null>(null);
@@ -164,67 +177,102 @@ export default function QuickBookingForm() {
   };
 
   const handleSearchRide = async () => {
-    if (!validateForm()) return;
+  if (activeTab === "rental") {
+   
+    if (!rentalPickup.trim()) {
+      toast.error("Please enter pickup location");
+      return;
+    }
+    if (!pickupDate) {
+      toast.error("Please select pickup date");
+      return;
+    }
+    if (!pickupTime) {
+      toast.error("Please select pickup time");
+      return;
+    }
+    if (!/^\d{10}$/.test(mobile.replace(/\D/g, ""))) {
+      toast.error("Enter a valid 10-digit mobile number");
+      return;
+    }
 
-    const pickup = getCurrentPickup();
-    const drop = getCurrentDrop();
+   
+    navigate("/rental-cars", {
+      state: {
+        pickup: rentalPickup,
+        pickupDate,
+        pickupTime,
+        mobile,
+        rentalHours,
+      },
+    });
+    return;
+  }
 
-    console.log("📍 Sending to backend:", {
+
+if (activeTab === "airport") {
+ 
+  navigate("/airport", {
+    state: {
+      pickup: airportPickup,
+      drop: airportDrop,
+      pickupDate,
+      pickupTime,
+      mobile,
+    },
+  });
+  return;
+}
+
+
+
+
+  
+  if (!validateForm()) return;
+
+  const pickup = getCurrentPickup();
+  const drop = getCurrentDrop();
+
+  if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
+    toast.error("Please select locations from Google suggestions for accurate distance.");
+    return;
+  }
+
+  setIsLoading(true);
+  try {
+    const res = await axios.post("https://adiyogi-travels.onrender.com/api/quotes", {
       pickup,
-      drop,
+      dropoff: drop,
+      tripType,
       pickupLat,
       pickupLng,
       dropLat,
       dropLng,
     });
 
-    setIsLoading(true);
-    try {
-      const res = await axios.post(
-        "https://adiyogi-travels.onrender.com/api/quotes",
-        {
-          pickup,
-          dropoff: drop,
-          tripType,
-          pickupLat,
-          pickupLng,
-          dropLat,
-          dropLng,
-        }
-      );
-      if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
-  toast.error("Please select locations from Google suggestions for accurate distance.");
-  console.log("⚠️ Missing coordinates:", { pickupLat, pickupLng, dropLat, dropLng });
-  return;
-}
+    const bookingState: BookingState = {
+      quotes: res.data,
+      pickup,
+      drop,
+      tripType,
+      pickupDate,
+      pickupTime,
+      mobile,
+    };
 
-      const bookingState: BookingState = {
-        quotes: res.data,
-        pickup,
-        drop,
-        tripType,
-        pickupDate,
-        pickupTime,
-        mobile,
-      };
-
-      if (activeTab === "outstation" && tripType === "roundtrip") {
-        bookingState.returnDate = returnDate;
-        bookingState.returnTime = returnTime;
-      }
-
-      if (activeTab === "rental") {
-        bookingState.rentalHours = rentalHours;
-      }
-
-      navigate("/vehicles", { state: bookingState });
-    } catch (error) {
-      console.error("Error fetching vehicles:", error);
-      toast.error("Unable to fetch vehicles. Please try again.");
-    } finally {
-      setIsLoading(false);
+    if (activeTab === "outstation" && tripType === "roundtrip") {
+      bookingState.returnDate = returnDate;
+      bookingState.returnTime = returnTime;
     }
-  };
+
+    navigate("/vehicles", { state: bookingState });
+  } catch (error) {
+    console.error("Error fetching vehicles:", error);
+    toast.error("Unable to fetch vehicles. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const features = [
     { icon: CheckCircle, text: "Free cancellations on most bookings" },
@@ -248,7 +296,7 @@ export default function QuickBookingForm() {
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600)",
+              "url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -269,15 +317,15 @@ export default function QuickBookingForm() {
         </div>
       </section>
 
-     
+      
       <section className="relative max-w-6xl mx-auto -mt-20 px-4 z-20">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-         
+          
           <div className="flex border-b border-gray-200">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 font-semibold transition-all duration-300 ${
                   activeTab === tab.id
                     ? "bg-gray-800 text-white"
@@ -291,7 +339,7 @@ export default function QuickBookingForm() {
           </div>
 
           <div className="p-8">
-           
+            
             {activeTab === "outstation" && (
               <>
                 <div className="flex gap-3 mb-6">
@@ -355,7 +403,7 @@ export default function QuickBookingForm() {
               </>
             )}
 
-           
+            
             {activeTab === "airport" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -402,41 +450,35 @@ export default function QuickBookingForm() {
 
            
             {activeTab === "rental" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <MapPin className="w-4 h-4" />
-                    Pick-up location
-                  </label>
-                  <AddressAutocomplete
-                    placeholder="Enter pick-up location"
-                    value={rentalPickup}
-                    onChange={setRentalPickup}
-                    onSelect={(address, lat, lng) => {
-                      setRentalPickup(address);
-                      setPickupLat(lat);
-                      setPickupLng(lng);
-                    }}
-                  />
-                </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div>
+  <label className="text-sm text-gray-600 mb-1 block">City</label>
+  <input
+    type="text"
+    placeholder="Enter City"
+    value={rentalCity}
+    onChange={(e) => setRentalCity(e.target.value)}
+    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+  />
+</div>
 
-                <div>
-                  <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <Clock className="w-4 h-4" />
-                    Number of Hours
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="Enter hours"
-                    value={rentalHours}
-                    onChange={(e) => setRentalHours(e.target.value)}
-                    min="1"
-                    step="1"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
-                  />
-                </div>
-              </div>
-            )}
+
+    <div>
+      <label className="text-sm text-gray-600 mb-1 block">Pick-Up Location</label>
+      <AddressAutocomplete
+        placeholder="Enter pickup location"
+        value={rentalPickup}
+        onChange={setRentalPickup}
+        onSelect={(address, lat, lng) => {
+          setRentalPickup(address);
+          setPickupLat(lat);
+          setPickupLng(lng);
+        }}
+      />
+    </div>
+  </div>
+)}
+
 
             
             <div className="space-y-4 mt-4">

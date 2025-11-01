@@ -1,5 +1,5 @@
 
-import { CheckCircle, MapPin, Calendar, Car, Phone, CreditCard, Shield, X } from "lucide-react";
+import { CheckCircle, MapPin, Calendar, Car, Phone, CreditCard, Shield, X, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLocation, Link, useNavigate } from "react-router-dom";
@@ -71,12 +71,26 @@ export default function BookingConfirmation() {
             </div>
           </div>
           <button
-            onClick={handleCancelBooking}
-            className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30"
-          >
-            <X className="w-4 h-4" />
-            Cancel Request
-          </button>
+  onClick={handleCancelBooking}
+  disabled={isCancelling}
+  className={`hidden md:flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30
+    ${isCancelling
+      ? "bg-white/20 cursor-not-allowed"
+      : "bg-white/10 hover:bg-white/20 text-white"}`}
+>
+  {isCancelling ? (
+    <>
+      <Loader2 className="w-4 h-4 animate-spin" />
+      Cancelling...
+    </>
+  ) : (
+    <>
+      <X className="w-4 h-4" />
+      Cancel Request
+    </>
+  )}
+</button>
+
         </div>
       </div>
 
@@ -193,26 +207,7 @@ export default function BookingConfirmation() {
             </div>
 
             
-           <button
-  onClick={handleCancelBooking}
-  disabled={isCancelling}
-  className={`hidden md:flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30
-    ${isCancelling
-      ? "bg-white/20 cursor-not-allowed"
-      : "bg-white/10 hover:bg-white/20 text-white"}`}
->
-  {isCancelling ? (
-    <>
-      <X className="w-4 h-4 animate-spin" />
-      Cancelling...
-    </>
-  ) : (
-    <>
-      <X className="w-4 h-4" />
-      Cancel Request
-    </>
-  )}
-</button>
+          
 
           </div>
 

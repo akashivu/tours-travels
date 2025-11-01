@@ -1,5 +1,4 @@
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
-import { FaTwitter, FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 export default function Footer() {
   return (
@@ -101,22 +100,7 @@ export default function Footer() {
               </button>
             </div>
 
-            <div className="mt-8">
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex gap-4">
-                <a href="" className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                  <FaTwitter size={18} />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                  <FaFacebookF size={18} />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                  <FaLinkedinIn size={18} />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                  <FaInstagram size={18} />
-                </a>
-              </div>
+            
             </div>
           </div>
         </div>
@@ -133,7 +117,7 @@ export default function Footer() {
             </a>
           </p>
         </div>
-      </div>
+      
     </footer>
   );
 }

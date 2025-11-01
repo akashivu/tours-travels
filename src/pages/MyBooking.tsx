@@ -27,7 +27,7 @@ export default function MyBookings() {
         return;
       }
 
-      const res = await fetch("http://localhost:8080/api/bookings/my-bookings", {
+      const res = await fetch("https://adiyogi-travels.onrender.com/api/bookings/my-bookings", {
         headers: {
           "Authorization": `Bearer ${token}`, 
           "Content-Type": "application/json",

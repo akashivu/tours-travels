@@ -1,78 +1,121 @@
 import { useState, useEffect } from "react";
-import {  FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
 import AccountModal from "./AccountModal";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
-    <header className="fixed top-0  left-0 w-full z-50 ">
-      
-      
+  const isActive = (path: string) => location.pathname === path;
 
-      
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/holiday-packages", label: "Holiday Packages" },
+    { path: "/vehicle", label: "Our Cars" },
+    { path: "/about", label: "About Us" },
+    { path: "/contact", label: "Contact Us" },
+  ];
+
+  return (
+    <header className="fixed top-0 left-0 w-full z-50">
       <nav
-        className={`backdrop-blur-md bg-yellow-200 shadow-md transition-all duration-300 ${
-          isScrolled ? "py-1" : "py-2"
+        className={`backdrop-blur-lg bg-white/95 shadow-sm transition-all duration-300 ${
+          isScrolled ? "py-3" : "py-4"
         }`}
       >
-        <div className="container mx-auto flex justify-between items-center px-4 md:px-6">
-          
-          <div className="flex items-center gap-2 transition-all duration-300">
-            <img
-              src="https://marketplace.canva.com/EAFvvrEdW20/2/0/1600w/canva-blue-and-yellow-illustrative-travel-agency-logo-8fYWV8dFqJw.jpg"
-              alt="Logo"
-              className={`transition-all duration-300 ${
-                isScrolled ? "h-10" : "h-14"
-              } w-auto drop-shadow-md`}
-            />      <span className="font-bold text-xl text-gray-800 tracking-wide">
-                 Adiyogicabz
-                    </span>
-          </div>
+        <div className="container mx-auto flex justify-between items-center px-4 lg:px-8">
+          {/* Logo Section */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <img
+                src="https://marketplace.canva.com/EAFvvrEdW20/2/0/1600w/canva-blue-and-yellow-illustrative-travel-agency-logo-8fYWV8dFqJw.jpg"
+                alt="Adiyogicabz Logo"
+                className={`transition-all duration-300 ${
+                  isScrolled ? "h-11" : "h-14"
+                } w-auto rounded-lg shadow-sm group-hover:shadow-md`}
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-xl text-slate-800 tracking-tight">
+                Adiyogicabz
+              </span>
+              <span className="text-xs text-slate-500 font-medium">
+                Premium Airport Transfers
+              </span>
+            </div>
+          </Link>
 
-          
-          <ul className="hidden md:flex gap-8 text-md font-semibold text-gray-800 tracking-wide">
-            <li><Link to="/" className="hover:text-blue-600">HOME</Link></li>
-            <li><Link to="/holiday-packages" className="hover:text-blue-600">HOLIDAY PACKAGES</Link></li>
-            <li><Link to="/vehicle" className="hover:text-blue-600">OUR CARS</Link></li>
-            <li><Link to="/about" className="hover:text-blue-600">ABOUT US</Link></li>
-            <li><Link to="/contact" className="hover:text-blue-600">CONTACT US</Link></li>
-            <AccountModal />
+          {/* Desktop Navigation */}
+          <ul className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <Link
+                  to={link.path}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                    isActive(link.path)
+                      ? "text-blue-600 bg-blue-50"
+                      : "text-slate-700 hover:text-blue-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <li className="ml-2">
+              <AccountModal />
+            </li>
           </ul>
-          
-          
+
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-gray-800"
+            className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
-            {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+            {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
 
-       
-        {isOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md shadow-lg px-6 py-4">
-            <ul className="flex flex-col gap-4 text-gray-800 font-medium">
-              <li><Link to="/" onClick={() => setIsOpen(false)}>HOME</Link></li>
-              <li><Link to="/holiday-packages" onClick={() => setIsOpen(false)}>HOLIDAY PACKAGES</Link></li>
-              <li><Link to="/vehicle" onClick={() => setIsOpen(false)}>OUR CARS</Link></li>
-              <li><Link to="/about" onClick={() => setIsOpen(false)}>ABOUT US</Link></li>
-              <li><Link to="/contact" onClick={() => setIsOpen(false)}>CONTACT US</Link></li>
-              <li><AccountModal /></li>
+        {/* Mobile Navigation */}
+        <div
+          className={`lg:hidden overflow-hidden transition-all duration-300 ${
+            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="container mx-auto px-4 py-4 border-t border-slate-200 mt-2">
+            <ul className="flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`block px-4 py-3 rounded-lg text-sm font-semibold transition-all ${
+                      isActive(link.path)
+                        ? "text-blue-600 bg-blue-50"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li className="pt-2 border-t border-slate-200">
+                <AccountModal />
+              </li>
             </ul>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

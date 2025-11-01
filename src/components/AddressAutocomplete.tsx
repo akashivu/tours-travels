@@ -20,105 +20,102 @@ export default function AddressAutocomplete({
   const [isReady, setIsReady] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
 
-  
+  const onChangeRef = useRef(onChange);
+  const onSelectRef = useRef(onSelect);
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    onChangeRef.current = onChange;
+    onSelectRef.current = onSelect;
+  }, [onChange, onSelect]);
+
+  useEffect(() => {
+    if (window.google?.maps?.places) {
+      setIsReady(true);
+      return;
+    }
+
+    const checkInterval = setInterval(() => {
       if (window.google?.maps?.places) {
-        clearInterval(interval);
+        clearInterval(checkInterval);
         setIsReady(true);
       }
     }, 100);
-    return () => clearInterval(interval);
+
+    const timeout = setTimeout(() => {
+      clearInterval(checkInterval);
+    }, 10000);
+
+    return () => {
+      clearInterval(checkInterval);
+      clearTimeout(timeout);
+    };
   }, []);
 
-  
   useEffect(() => {
-    if (!isReady || !inputRef.current) return;
-
-    
-    if (autocompleteRef.current) {
-      window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
-      autocompleteRef.current = null;
+    if (!isReady || !inputRef.current || autocompleteRef.current) {
+      return;
     }
 
-    
     try {
       const autocomplete = new window.google.maps.places.Autocomplete(
-        inputRef.current!,
+        inputRef.current,
         {
           componentRestrictions: { country: "in" },
-          fields: ["formatted_address", "geometry", "name", "vicinity"],
+          fields: ["formatted_address", "geometry", "name"],
+          types: ["geocode", "establishment"],
         }
       );
 
       autocompleteRef.current = autocomplete;
 
-      const handlePlaceSelect = async () => {
+      autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-        if (!place) {
-          console.warn("No place found yet");
+
+        if (!place || !place.geometry || !place.geometry.location) {
           return;
         }
 
-        let address = place.formatted_address || place.name || "";
-        let lat = place.geometry?.location?.lat() ?? null;
-        let lng = place.geometry?.location?.lng() ?? null;
+        const address = place.formatted_address || place.name || "";
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
 
-        
-        if ((!lat || !lng) && address) {
-          try {
-            const encoded = encodeURIComponent(address);
-            const res = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?address=${encoded}&key=${
-                import.meta.env.VITE_GOOGLE_MAPS_KEY
-              }`
-            );
-            const data = await res.json();
-            if (data.status === "OK" && data.results[0]) {
-              const loc = data.results[0].geometry.location;
-              lat = loc.lat;
-              lng = loc.lng;
-              console.log("Fallback geocode used:", lat, lng);
-            }
-          } catch (err) {
-            console.error("Geocode fallback error:", err);
-          }
+        if (inputRef.current) {
+          inputRef.current.value = address;
         }
 
-        if (inputRef.current) inputRef.current.value = address;
-        onChange?.(address);
-
-        if (lat && lng) {
-          onSelect?.(address, lat, lng);
-          console.log("Location selected:", address, lat, lng);
-        } else {
-          console.warn("No coordinates found for:", address);
+        if (onChangeRef.current) {
+          onChangeRef.current(address);
         }
-      };
+        if (onSelectRef.current) {
+          onSelectRef.current(address, lat, lng);
+        }
+      });
+    } catch (err) {}
 
-      
-      autocomplete.addListener("place_changed", handlePlaceSelect);
-    } catch (err) {
-      console.error("Error initializing Google Autocomplete:", err);
-    }
-  }, [isReady, onChange, onSelect]);
+    return () => {
+      if (autocompleteRef.current) {
+        window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        autocompleteRef.current = null;
+      }
+    };
+  }, [isReady]);
 
-  
   useEffect(() => {
     if (inputRef.current && value !== undefined) {
       inputRef.current.value = value;
     }
   }, [value]);
 
-  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e.target.value);
+    const newValue = e.target.value;
+    if (onChangeRef.current) {
+      onChangeRef.current(newValue);
+    }
   };
 
- 
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation not supported in your browser.");
+      alert("Geolocation is not supported by your browser.");
       return;
     }
 
@@ -128,32 +125,41 @@ export default function AddressAutocomplete({
         const { latitude, longitude } = position.coords;
 
         try {
+          const apiKey = import.meta.env.VITE_GOOGLE_MAPS_KEY;
           const res = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
-              import.meta.env.VITE_GOOGLE_MAPS_KEY
-            }`
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
           );
           const data = await res.json();
 
           if (data.status === "OK" && data.results[0]) {
             const address = data.results[0].formatted_address;
-            if (inputRef.current) inputRef.current.value = address;
-            onChange?.(address);
-            onSelect?.(address, latitude, longitude);
-            console.log("📍 Current location selected:", address);
+
+            if (inputRef.current) {
+              inputRef.current.value = address;
+            }
+            if (onChangeRef.current) {
+              onChangeRef.current(address);
+            }
+            if (onSelectRef.current) {
+              onSelectRef.current(address, latitude, longitude);
+            }
           } else {
-            alert("Unable to get address. Try again.");
+            alert("Unable to get address. Please try again.");
           }
         } catch (err) {
-          console.error("Reverse geocode error:", err);
+          alert("Error getting address. Please try again.");
         } finally {
           setIsLocating(false);
         }
       },
       (error) => {
-        console.error("Location error:", error);
-        alert("Enable location permissions and try again.");
+        alert("Unable to get location. Please enable location permissions.");
         setIsLocating(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   };
@@ -164,9 +170,14 @@ export default function AddressAutocomplete({
         ref={inputRef}
         type="text"
         placeholder={placeholder}
-        defaultValue={value}
         onChange={handleInputChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
         disabled={!isReady}
+        autoComplete="off"
         className="w-full"
         style={{
           width: "100%",
@@ -181,27 +192,26 @@ export default function AddressAutocomplete({
           boxSizing: "border-box",
         }}
         onFocus={(e) => {
-          e.target.style.borderColor = "#3b82f6";
-          e.target.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)";
+          e.currentTarget.style.borderColor = "#3b82f6";
+          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)";
         }}
         onBlur={(e) => {
-          e.target.style.borderColor = "#d1d5db";
-          e.target.style.boxShadow = "none";
+          e.currentTarget.style.borderColor = "#d1d5db";
+          e.currentTarget.style.boxShadow = "none";
         }}
       />
 
-      
       <button
         onClick={handleUseCurrentLocation}
         type="button"
-        disabled={isLocating}
+        disabled={isLocating || !isReady}
         style={{
           marginTop: "6px",
           fontSize: "14px",
-          color: "#2563eb",
+          color: isLocating || !isReady ? "#9ca3af" : "#2563eb",
           textDecoration: "underline",
-          cursor: isLocating ? "not-allowed" : "pointer",
-          opacity: isLocating ? 0.6 : 1,
+          cursor: isLocating || !isReady ? "not-allowed" : "pointer",
+          opacity: isLocating || !isReady ? 0.6 : 1,
           background: "none",
           border: "none",
           padding: "0",

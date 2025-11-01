@@ -25,7 +25,7 @@ export default function AdminDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/admin/bookings");
+      const res = await axios.get("https://adiyogi-travels.onrender.com/api/admin/bookings");
       setBookings(res.data);
     } catch (error) {
       console.error("Error fetching bookings:", error);
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
   
   const updateStatus = async (id: number, status: string) => {
     try {
-      await axios.patch(`http://localhost:8080/api/admin/bookings/${id}/status`, { status });
+      await axios.patch(`https://adiyogi-travels.onrender.com/api/admin/bookings/${id}/status`, { status });
       fetchBookings(); 
     } catch (error) {
       console.error("Error updating status:", error);
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
  
   const deleteBooking = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/admin/bookings/${id}`);
+      await axios.delete(`https://adiyogi-travels.onrender.com/api/admin/bookings/${id}`);
       fetchBookings(); 
     } catch (error) {
       console.error("Error deleting booking:", error);

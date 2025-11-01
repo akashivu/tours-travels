@@ -78,7 +78,6 @@ const packages: Package[] = [
       "Experience serene backwaters of Alleppey in a traditional houseboat with authentic Kerala cuisine.",
     rating: 4.9,
   },
-  
 ];
 
 export default function HolidayPackages() {

@@ -7,7 +7,7 @@ export default function ServiceSection() {
         <FaCar className="text-gray-400 text-[300px]" />
       </div>
       <div className="relative z-10 max-w-7xl mx-auto text-center">
-        {/* Title */}
+       
         <h2 className="text-4xl font-bold mb-12">
           Services <span className="text-blue-600">We Offer</span>
         </h2>
