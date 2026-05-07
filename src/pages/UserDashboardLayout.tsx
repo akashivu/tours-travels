@@ -107,7 +107,7 @@ useEffect(() => {
               <span className="text-white text-lg font-bold">V</span>
             </div>
             <div>
-              <span className="text-lg font-bold text-slate-900 tracking-tight">Vijay Travels</span>
+              <span className="text-lg font-bold text-slate-900 tracking-tight">AdiyogiCabz</span>
               <p className="text-xs text-slate-500">Dashboard</p>
             </div>
           </div>
@@ -188,7 +188,7 @@ useEffect(() => {
             Sign Out
           </button>
           <p className="text-xs text-slate-400 text-center mt-3">
-            © 2025 Vijay Travels. All rights reserved.
+            © 2025 AdiyogiCabz. All rights reserved.
           </p>
         </div>
       </aside>
