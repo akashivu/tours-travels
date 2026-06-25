@@ -1,300 +1,305 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Users, Briefcase, DoorOpen, Snowflake, Settings2, CheckCircle2, Info } from "lucide-react";
 
+type Package = {
+  l: string;
+  p: string;
+};
 
-type PackageItem = {
-  hours?: string;
-  km?: string;
-  price?: string;
-  extra?: string;
-  note?: string;
+type TripData = {
+  pkgs: Package[];
+  extra: string;
+  extraHr?: string;
+  note: string;
 };
 
 type Vehicle = {
   name: string;
+  type: string;
   image: string;
-  offer?: string;
-  offerText?: string;
-  localPackages: PackageItem[];
-  outstation: PackageItem[];
+  seats: number;
+  bags: number;
+  doors: number;
+  tags: string[];
+  local: TripData;
+  out: TripData;
 };
-
 
 const vehicles: Vehicle[] = [
   {
     name: "Toyota Etios",
-    image:
-      "https://www.usedrive.in/upload/car/WhatsApp%20Image%202024-03-15%20at%206.30.40%20PM.jpeg",
-    offer: "LOCAL",
-    offerText: "Hourly rental packages",
-    localPackages: [
-      { hours: "4 hr / 40 km", price: "₹1200" },
-      { hours: "8 hr / 80 km", price: "₹2000" },
-      { hours: "12 hr / 120 km", price: "₹3000" },
-      { extra: "Extra km ₹20 / Extra hr ₹200" },
-      { note: "Toll & parking separate" }
-    ],
-    outstation: [
-      { km: "300 km limit", price: "₹4200 (Incl. Driver Bata & Tax)" },
-      { extra: "Extra km ₹15" },
-      { note: "Toll & parking separate" }
-    ]
+    type: "Compact sedan",
+    image: "https://www.usedrive.in/upload/car/WhatsApp%20Image%202024-03-15%20at%206.30.40%20PM.jpeg",
+    seats: 5, bags: 2, doors: 4,
+    tags: ["Free cancellation", "Toll extra"],
+    local: {
+      pkgs: [
+        { l: "4 hr / 40 km", p: "₹1,200" },
+        { l: "8 hr / 80 km", p: "₹2,000" },
+        { l: "12 hr / 120 km", p: "₹3,000" },
+      ],
+      extra: "₹20/km", extraHr: "₹200/hr", note: "Toll & parking extra",
+    },
+    out: {
+      pkgs: [{ l: "300 km / day", p: "₹4,200" }],
+      extra: "₹15/km", note: "Driver bata & tax included",
+    },
   },
   {
     name: "Swift Dzire",
+    type: "Compact sedan",
     image: "https://www.usedrive.in/upload/car/swift%20diser%202.png",
-    offer: "LOCAL",
-    offerText: "Hourly rental packages",
-    localPackages: [
-      { hours: "4 hr / 40 km", price: "₹1200" },
-      { hours: "8 hr / 80 km", price: "₹2000" },
-      { hours: "12 hr / 120 km", price: "₹3000" },
-      { extra: "Extra km ₹20 / Extra hr ₹200" }
-    ],
-    outstation: [
-      { km: "300 km limit", price: "₹4200 (Incl. Driver Bata & Tax)" },
-      { extra: "Extra km ₹15" }
-    ]
+    seats: 5, bags: 2, doors: 4,
+    tags: ["Free cancellation", "Toll extra"],
+    local: {
+      pkgs: [
+        { l: "4 hr / 40 km", p: "₹1,200" },
+        { l: "8 hr / 80 km", p: "₹2,000" },
+        { l: "12 hr / 120 km", p: "₹3,000" },
+      ],
+      extra: "₹20/km", extraHr: "₹200/hr", note: "Toll & parking extra",
+    },
+    out: {
+      pkgs: [{ l: "300 km / day", p: "₹4,200" }],
+      extra: "₹15/km", note: "Driver bata & tax included",
+    },
   },
   {
     name: "Toyota Innova",
+    type: "7-seater MPV",
     image: "https://www.usedrive.in/upload/car/20221104124352_Innova.jpg",
-    offer: "LOCAL",
-    offerText: "Hourly rental packages",
-    localPackages: [
-      { hours: "4 hr / 40 km", price: "₹2000" },
-      { hours: "8 hr / 80 km", price: "₹3200" },
-      { hours: "12 hr / 120 km", price: "₹4200" },
-      { extra: "Extra km ₹25 / Extra hr ₹250" }
-    ],
-    outstation: [
-      { km: "300 km limit", price: "₹5699 (Incl. Driver Bata & Tax)" },
-      { extra: "Extra km ₹18" }
-    ]
+    seats: 7, bags: 3, doors: 4,
+    tags: ["Free cancellation", "Toll extra"],
+    local: {
+      pkgs: [
+        { l: "4 hr / 40 km", p: "₹2,000" },
+        { l: "8 hr / 80 km", p: "₹3,200" },
+        { l: "12 hr / 120 km", p: "₹4,200" },
+      ],
+      extra: "₹25/km", extraHr: "₹250/hr", note: "Toll & parking extra",
+    },
+    out: {
+      pkgs: [{ l: "300 km / day", p: "₹5,699" }],
+      extra: "₹18/km", note: "Driver bata & tax included",
+    },
   },
   {
     name: "Innova Crysta",
+    type: "Premium MPV",
     image: "https://www.kushicabz.com/upload/car/crysta-removebg-preview.png",
-    offer: "LOCAL",
-    offerText: "Hourly rental packages",
-    localPackages: [
-      { hours: "4 hr / 40 km", price: "₹2400" },
-      { hours: "8 hr / 80 km", price: "₹3400" },
-      { hours: "12 hr / 120 km", price: "₹4400" },
-      { extra: "Extra km ₹30 / Extra hr ₹275" }
-    ],
-    outstation: [
-      { km: "300 km limit", price: "₹6199 (Incl. Driver allownace & Tax)" },
-      { extra: "Extra km ₹19" }
-    ]
+    seats: 7, bags: 3, doors: 4,
+    tags: ["Free cancellation", "Toll extra"],
+    local: {
+      pkgs: [
+        { l: "4 hr / 40 km", p: "₹2,400" },
+        { l: "8 hr / 80 km", p: "₹3,400" },
+        { l: "12 hr / 120 km", p: "₹4,400" },
+      ],
+      extra: "₹30/km", extraHr: "₹275/hr", note: "Toll & parking extra",
+    },
+    out: {
+      pkgs: [{ l: "300 km / day", p: "₹6,199" }],
+      extra: "₹19/km", note: "Driver allowance & tax included",
+    },
   },
   {
     name: "Tempo Traveller",
+    type: "Group vehicle",
     image: "https://www.usedrive.in/upload/car/tempo%20traveler.jpg",
-    offer: "LOCAL",
-    offerText: "Perfect for group trips",
-    localPackages: [
-      { hours: "4 hr / 40 km", price: "₹2200" },
-      { hours: "8 hr / 80 km", price: "₹3400" },
-      { hours: "12 hr / 120 km", price: "₹4400" },
-      { extra: "Extra km ₹30 / Extra hr ₹275" }
-    ],
-    outstation: [
-      { km: "300 km limit", price: "₹6799 (Incl. Driver allowance & Tax)" },
-      { extra: "Extra km ₹21" }
-    ]
-  }
+    seats: 12, bags: 6, doors: 2,
+    tags: ["Group travel", "Toll extra"],
+    local: {
+      pkgs: [
+        { l: "4 hr / 40 km", p: "₹2,200" },
+        { l: "8 hr / 80 km", p: "₹3,400" },
+        { l: "12 hr / 120 km", p: "₹4,400" },
+      ],
+      extra: "₹30/km", extraHr: "₹275/hr", note: "Toll & parking extra",
+    },
+    out: {
+      pkgs: [{ l: "300 km / day", p: "₹6,799" }],
+      extra: "₹21/km", note: "Driver allowance & tax included",
+    },
+  },
 ];
 
-
-export default function OurVehicles() {
-  const [active, setActive] = useState<number | null>(null);
-  const [tab, setTab] = useState<"local" | "outstation">("local");
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
- 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-  };
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-  const handleMouseUp = () => setIsDragging(false);
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-  };
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-  const handleTouchEnd = () => setIsDragging(false);
+function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
+  const [tab, setTab] = useState<"local" | "out">("local");
+  const d: TripData = tab === "local" ? vehicle.local : vehicle.out;
+  const basePrice = d.pkgs[0].p;
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4">
-      
-<div className="bg-gray-800 text-white rounded-xl px-6 py-6 mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
-  <div className="mb-4 md:mb-0">
-    <h2 className="text-2xl font-bold">Book Your Ride Now</h2>
-    <p className="text-gray-300">
-     Explore with ease — book your perfect ride in minutes.
-    </p>
-  </div>
+    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
+      {/* Main Row */}
+      <div className="flex flex-col sm:flex-row">
 
-  <div className="flex gap-4">
-    <a
-      href="tel:+923086209344"
-      className="flex items-center gap-2 bg-white text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition"
-    >
-      <span></span> (+91) 7022237255
-    </a>
-    <button
-      className="bg-white text-gray-900 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition flex items-center gap-2"
-      onClick={() => {
-       
-      }}
-    >
-      BOOK ONLINE <span></span>
-    </button>
-  </div>
-</div>
+        {/* Image Column */}
+        <div className="sm:w-48 bg-gray-50 border-b sm:border-b-0 sm:border-r border-gray-200 flex flex-col items-center justify-center p-4 gap-2">
+          <img
+            src={vehicle.image}
+            alt={vehicle.name}
+            className="w-36 h-20 object-contain"
+            onError={(e: React.SyntheticEvent<HTMLImageElement>) =>
+              (e.currentTarget.style.opacity = "0.2")
+            }
+          />
+          <span className="text-xs text-gray-400 text-center">{vehicle.type}</span>
+        </div>
 
-      <div
-        ref={scrollContainerRef}
-        className="flex gap-5 overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {vehicles.map((car, i) => (
-          <div key={i} className="flex-none w-80 sm:w-96">
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              className="bg-white rounded-3xl shadow-md p-5 relative overflow-hidden hover:shadow-xl transition select-none"
-            >
-              
-              {car.offer && (
-                <div className="absolute top-3 left-3 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                  {car.offer}
-                </div>
-              )}
+        {/* Info Column */}
+        <div className="flex-1 p-4 flex flex-col gap-3">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">{vehicle.name}</h3>
+            <p className="text-xs text-gray-400">or similar · {vehicle.type}</p>
+          </div>
 
-              
-              <img
-                src={car.image}
-                alt={car.name}
-                className="w-full h-40 object-contain mt-3 pointer-events-none"
-              />
+          {/* Specs */}
+          <div className="flex flex-wrap gap-4 text-xs text-gray-500">
+            <span className="flex items-center gap-1">
+              <Users size={13} className="text-gray-400" />
+              {vehicle.seats} seats
+            </span>
+            <span className="flex items-center gap-1">
+              <Briefcase size={13} className="text-gray-400" />
+              {vehicle.bags} bags
+            </span>
+            <span className="flex items-center gap-1">
+              <DoorOpen size={13} className="text-gray-400" />
+              {vehicle.doors} doors
+            </span>
+            <span className="flex items-center gap-1">
+              <Snowflake size={13} className="text-gray-400" />
+              A/C
+            </span>
+            <span className="flex items-center gap-1">
+              <Settings2 size={13} className="text-gray-400" />
+              Auto
+            </span>
+          </div>
 
-              
-              <div className="mt-4 text-center">
-                <h3 className="text-lg font-bold">{car.name}</h3>
-                <p className="text-sm text-gray-600">{car.offerText}</p>
-              </div>
-
-             
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActive(active === i ? null : i);
-                }}
-                className="w-full mt-4 bg-black text-white py-2 rounded-full font-medium hover:bg-gray-800 transition"
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {vehicle.tags.map((tag: string, i: number) => (
+              <span
+                key={i}
+                className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full border ${
+                  tag === "Free cancellation" || tag === "Group travel"
+                    ? "bg-green-50 text-green-800 border-green-200"
+                    : "bg-gray-50 text-gray-500 border-gray-200"
+                }`}
               >
-                {active === i ? "Hide Details" : "View Details"}
-              </button>
-
-             
-              <AnimatePresence>
-                {active === i && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="mt-3 p-3 bg-gray-50 rounded-lg text-sm"
-                  >
-                    
-                    <div className="flex justify-center gap-4 mb-3">
-                      <button
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          tab === "local"
-                            ? "bg-orange-500 text-white"
-                            : "bg-gray-200"
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setTab("local");
-                        }}
-                      >
-                        Local Packages
-                      </button>
-                      <button
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          tab === "outstation"
-                            ? "bg-orange-500 text-white"
-                            : "bg-gray-200"
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setTab("outstation");
-                        }}
-                      >
-                        Outstation
-                      </button>
-                    </div>
-
-                   
-                    <div className="space-y-3">
-                      {(tab === "local" ? car.localPackages : car.outstation).map(
-                        (p, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-center justify-between bg-white rounded-xl border shadow-sm px-4 py-3 hover:shadow-md transition"
-                          >
-                            <span className="text-gray-800 font-medium">
-                              {p.hours ?? p.km ?? p.extra ?? p.note}
-                            </span>
-                            {p.price && (
-                              <span className="text-orange-600 font-semibold">
-                                {p.price}
-                              </span>
-                            )}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </motion.div>
+                {tag === "Free cancellation" || tag === "Group travel" ? (
+                  <CheckCircle2 size={11} />
+                ) : (
+                  <Info size={11} />
                 )}
-              </AnimatePresence>
-            </motion.div>
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Tab Toggle */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => setTab("local")}
+              className={`text-xs px-4 py-1.5 rounded-full border transition-colors ${
+                tab === "local"
+                  ? "bg-gray-900 text-white border-gray-900"
+                  : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              Local packages
+            </button>
+            <button
+              onClick={() => setTab("out")}
+              className={`text-xs px-4 py-1.5 rounded-full border transition-colors ${
+                tab === "out"
+                  ? "bg-gray-900 text-white border-gray-900"
+                  : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              Outstation
+            </button>
+          </div>
+        </div>
+
+        {/* Price Column */}
+        <div className="sm:w-44 border-t sm:border-t-0 sm:border-l border-gray-200 p-4 flex flex-col justify-between items-end gap-4">
+          <div className="text-right">
+            <p className="text-xs text-gray-400">Starting from</p>
+            <p className="text-2xl font-semibold text-gray-900">{basePrice}</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {tab === "local" ? "for 4 hr / 40 km" : "per day / 300 km"}
+            </p>
+          </div>
+          <div className="w-full text-right">
+            <p className="text-xs text-gray-400 mb-2">
+              {tab === "out" ? d.note : "Toll & parking extra"}
+            </p>
+            <button className="w-full bg-gray-900 text-white text-sm font-medium py-2 rounded-lg hover:bg-gray-700 transition-colors">
+              Book now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Package Detail Strip */}
+      <div className="border-t border-gray-200 bg-gray-50 px-4 py-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
+        {d.pkgs.map((pkg: Package, i: number) => (
+          <div key={i} className="bg-white border border-gray-200 rounded-lg px-3 py-2">
+            <p className="text-xs text-gray-400">{pkg.l}</p>
+            <p className="text-sm font-semibold text-gray-900">{pkg.p}</p>
+            <p className="text-xs text-gray-400">
+              {tab === "local" ? "Excl. extras" : "All-in rate"}
+            </p>
           </div>
         ))}
       </div>
 
-      <style>{`
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-`}</style>
+      {/* Extra Row */}
+      <div className="border-t border-gray-200 bg-gray-50 px-4 py-2 flex flex-wrap gap-4">
+        <span className="flex items-center gap-1 text-xs text-gray-500">
+          <Info size={11} className="text-gray-400" />
+          Extra km <strong className="text-gray-700 ml-1">{d.extra}</strong>
+        </span>
+        {tab === "local" && d.extraHr && (
+          <span className="flex items-center gap-1 text-xs text-gray-500">
+            <Info size={11} className="text-gray-400" />
+            Extra hour <strong className="text-gray-700 ml-1">{d.extraHr}</strong>
+          </span>
+        )}
+        <span className="flex items-center gap-1 text-xs text-gray-500">
+          <CheckCircle2 size={11} className="text-gray-400" />
+          <strong className="text-gray-700">{d.note}</strong>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default function OurVehicles() {
+  return (
+    <div className="max-w-7xl mx-auto py-10 px-4">
+      <div className="flex flex-col gap-4">
+        <div className="mb-10">
+  <p className="text-sm font-semibold tracking-widest uppercase text-orange-500">
+    Premium Fleet
+  </p>
+
+  <h1 className="mt-2 text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
+    Find the Perfect Ride for Every Journey
+  </h1>
+
+  <p className="mt-4 max-w-3xl text-gray-600 text-lg leading-relaxed">
+    Choose from our professionally maintained fleet for local trips,
+    airport transfers, outstation travel, and group journeys with
+    transparent pricing and experienced drivers.
+  </p>
+</div>
+        {vehicles.map((vehicle: Vehicle, i: number) => (
+          <VehicleCard key={i} vehicle={vehicle} />
+        ))}
+      </div>
     </div>
   );
 }

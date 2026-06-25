@@ -60,3 +60,33 @@ gmp-place-autocomplete,
 gmp-place-autocomplete * {
   color-scheme: light !important;
 }
+.pac-container {
+  margin-top: 4px !important;
+  border-radius: 12px !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden !important;
+  font-family: inherit !important;
+  z-index: 9999 !important;
+}
+
+.pac-item {
+  padding: 10px 12px !important;
+  font-size: 13px !important;
+  border-top: 1px solid #f3f4f6 !important;
+}
+
+.pac-item:hover {
+  background: #f9fafb !important;
+}
+
+.pac-item-query {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #111827 !important;
+}
+
+.pac-icon {
+  transform: scale(0.85);
+  opacity: 0.65;
+}

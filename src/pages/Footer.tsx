@@ -1,123 +1,112 @@
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
-    <footer className="bg-zinc-900 text-white pt-16 pb-6">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-12">
-          
-         
-          <div className="lg:col-span-5">
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-6">
-                
-                <div>
-                  <h2 className="text-3xl font-bold tracking-wider">ADIYOGI</h2>
-                  <p className="text-sm tracking-widest">TOURS & TRAVELS</p>
+    <footer
+      className="bg-zinc-900 text-white"
+      style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+    >
+      <div className="max-w-7xl mx-auto px-8 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-zinc-800">
+
+          {/* Brand + Contact */}
+          <div className="md:col-span-4 flex flex-col gap-5">
+            <div>
+              <h2
+                className="text-white"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: "1.4rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
+                  lineHeight: 1.2,
+                }}
+              >
+                Adiyogi
+              </h2>
+              <p
+                className="text-zinc-500 mt-0.5"
+                style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500 }}
+              >
+                Tours & Travels
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              {[
+                { icon: MdEmail, text: "vijaytourstravels6158@gmail.com" },
+                { icon: MdPhone, text: "+91 7022237255" },
+                { icon: MdLocationOn, text: "Bellandur, Bangalore, Karnataka" },
+              ].map(({ icon: Icon, text }) => (
+                <div key={text} className="flex items-start gap-2.5">
+                  <Icon className="text-zinc-500 flex-shrink-0 mt-0.5" size={14} />
+                  <span className="text-zinc-400 text-xs leading-relaxed">{text}</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <MdEmail className="text-gray-400 mt-1 flex-shrink-0" size={20} />
-                <span className="text-sm text-gray-300">vijaytourstravels6158@gmail.com</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <MdPhone className="text-gray-400 mt-1 flex-shrink-0" size={20} />
-                <span className="text-sm text-gray-300">+91 7022237255</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <MdLocationOn className="text-gray-400 mt-1 flex-shrink-0" size={20} />
-                <span className="text-sm text-gray-300">Bellandur, Bangalore, Karnataka</span>
-              </div>
+              ))}
             </div>
           </div>
 
-          
-          <div className="lg:col-span-3">
-  <h3 className="text-xl font-semibold mb-6 border-b border-gray-700 pb-3">Quick Links</h3>
-  <ul className="space-y-3">
-    <li>
-      <Link
-        to="/"
-        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-      >
-        <span className="text-gray-500">»</span>
-        <span className="text-sm">Home</span>
-      </Link>
-    </li>
-    <li>
-      <Link
-        to="/about"
-        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-      >
-        <span className="text-gray-500">»</span>
-        <span className="text-sm">About Us</span>
-      </Link>
-    </li>
-    <li>
-      <Link
-        to="/vehicle"
-        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-      >
-        <span className="text-gray-500">»</span>
-        <span className="text-sm">Our Fleet</span>
-      </Link>
-    </li>
-    <li>
-      <Link
-        to="/holiday-packages"
-        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-      >
-        <span className="text-gray-500">»</span>
-        <span className="text-sm">Our Services</span>
-      </Link>
-    </li>
-    <li>
-      <Link
-        to="/contact"
-        className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-      >
-        <span className="text-gray-500">»</span>
-        <span className="text-sm">Contact Us</span>
-      </Link>
-    </li>
-  </ul>
-</div>
+          {/* Quick Links */}
+          <div className="md:col-span-3 md:col-start-6">
+            <p
+              className="text-zinc-500 mb-4"
+              style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500 }}
+            >
+              Quick Links
+            </p>
+            <ul className="flex flex-col gap-2">
+              {[
+                { to: "/", label: "Home" },
+                { to: "/about", label: "About Us" },
+                { to: "/vehicle", label: "Our Fleet" },
+                { to: "/holiday-packages", label: "Our Services" },
+                { to: "/contact", label: "Contact Us" },
+              ].map(({ to, label }) => (
+                <li key={to}>
+                  <Link
+                    to={to}
+                    className="text-zinc-400 hover:text-white transition-colors text-xs"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-         
-          <div className="lg:col-span-4">
-            <h3 className="text-xl font-semibold mb-6">Subscribe to stay informed</h3>
-            <div className="flex mb-6">
-              <input 
-                type="email" 
-                placeholder="enter your email"
-                className="flex-1 bg-transparent border border-gray-600 rounded-l-full px-6 py-3 text-sm focus:outline-none focus:border-gray-400 text-gray-300 placeholder-gray-500"
-              />
-              <button className="bg-white text-black px-8 py-3 rounded-r-full font-medium text-sm hover:bg-gray-200 transition-colors">
-                Subscribe
-              </button>
-            </div>
-
+          {/* Subscribe */}
+          <div className="md:col-span-4 md:col-start-9">
+            <p
+              className="text-zinc-500 mb-4"
+              style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500 }}
+            >
+              Stay Informed
+            </p>
+            <p className="text-zinc-500 text-xs mb-4 leading-relaxed">
+              Get updates on our latest packages and offers.
+            </p>
             
-            </div>
           </div>
+
         </div>
 
-        
-        <div className="border-t border-gray-800 pt-6 text-center">
-          <p className="text-sm text-gray-400">
-            ©2025 Vijay Tours & Travels – All Rights Reserved
+        {/* Bottom */}
+        <div className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-1">
+          <p className="text-zinc-600 text-xs">
+            © 2025 Vijay Tours & Travels. All rights reserved.
           </p>
-          <p className="text-xs text-gray-500 mt-2">
-            Designed & Developed by <span className="text-gray-300">Akash Patil</span> – 
-            <a href="mailto:akashivu002@gmail.com" className="hover:underline ml-1 text-gray-400">
-              akashivu002@gmail.com
+          <p className="text-zinc-600 text-xs">
+            Designed by{" "}
+            <a
+              href="mailto:akashivu002@gmail.com"
+              className="text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              Akash Patil
             </a>
           </p>
         </div>
-      
+      </div>
     </footer>
   );
 }

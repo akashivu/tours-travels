@@ -22,7 +22,9 @@ import AccountForm from "./components/AccountForm";
 import MyBooking from "./pages/MyBooking";
 import RentalCarList from "./pages/RentalCarList";
 import RentalConfirmation from "./pages/RentalConfirmation";
-import AirportRide from "./pages/AirportRide";
+
+import AirportVehicleSelection from "./pages/AirportVehicleSelection";
+import AirportBooking from "./pages/AirportBooking";
 export default function App() {
   return (
     <BrowserRouter>
@@ -34,13 +36,15 @@ export default function App() {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/holiday-packages" element={<HolidayPackages />} />
           <Route path="/vehicles" element={<VehicleSelection />} />
+          <Route path="/airport-vehicles" element={<AirportVehicleSelection />} />
           <Route path="/vehicle" element={<OurVehicles />} />
+          <Route path="/airport-booking" element={<AirportBooking />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/bookingform" element={<QuickBookingForm />} />
           <Route path="/confirmation" element={<BookingConfirmation />} />
           <Route path="/rental-cars" element={<RentalCarList />} />
         <Route path="/rental-confirm" element={<RentalConfirmation />} />
-        <Route path="/airport" element={<AirportRide />} />
+        
         </Route>
 
        

@@ -15,17 +15,35 @@ type Booking = {
   status: string;
 };
 
+
 export default function AdminDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  
+  const token = localStorage.getItem("token");
+
+if (!token) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      Please login first
+    </div>
+  );
+}
   useEffect(() => {
     fetchBookings();
   }, []);
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("https://adiyogi-travels.onrender.com/api/admin/bookings");
+      const token = localStorage.getItem("token");
+
+const res = await axios.get(
+  "https://adiyogi-travels.onrender.com/api/admin/bookings",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       setBookings(res.data);
     } catch (error) {
       console.error("Error fetching bookings:", error);
@@ -35,7 +53,17 @@ export default function AdminDashboard() {
   
   const updateStatus = async (id: number, status: string) => {
     try {
-      await axios.patch(`https://adiyogi-travels.onrender.com/api/admin/bookings/${id}/status`, { status });
+      const token = localStorage.getItem("token");
+
+await axios.patch(
+  `https://adiyogi-travels.onrender.com/api/admin/bookings/${id}/status`,
+  { status },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       fetchBookings(); 
     } catch (error) {
       console.error("Error updating status:", error);
@@ -45,7 +73,16 @@ export default function AdminDashboard() {
  
   const deleteBooking = async (id: number) => {
     try {
-      await axios.delete(`https://adiyogi-travels.onrender.com/api/admin/bookings/${id}`);
+      const token = localStorage.getItem("token");
+
+await axios.delete(
+  `https://adiyogi-travels.onrender.com/api/admin/bookings/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       fetchBookings(); 
     } catch (error) {
       console.error("Error deleting booking:", error);

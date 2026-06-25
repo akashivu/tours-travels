@@ -46,203 +46,150 @@ export default function ContactForm() {
 
   return (
     <div
-      className="relative bg-cover bg-center flex flex-col justify-center items-center px-4 py-20 md:py-24"
+      className="relative bg-cover bg-center"
       style={{
         backgroundImage: "url('https://wallpaperaccess.com/full/627527.png')",
+        fontFamily: "'Inter', system-ui, sans-serif",
       }}
     >
-      
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/85 to-blue-900/90"></div>
+      <div className="absolute inset-0 bg-white" />
 
-      <div className="relative z-10 max-w-7xl w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          <div className="text-white space-y-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-8 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
+
+          {/* Left — contact info */}
+          <div className="lg:col-span-2 flex flex-col gap-8">
             <div>
-              <span className="inline-block px-4 py-2 bg-blue-500/20 backdrop-blur-sm rounded-full text-blue-300 text-sm font-medium mb-4">
-                Get In Touch
-              </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Let's talk about <br />
-                <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  working together
-                </span>
+              <p className="text-xs uppercase tracking-widest text-gray-400 mb-3 font-medium">Contact</p>
+              <h2 className="text-3xl font-semibold text-gray-900 leading-snug">
+                Let's plan your<br />perfect journey
               </h2>
-              <p className="text-lg md:text-xl text-slate-300 max-w-lg leading-relaxed">
-                Got queries? Our dedicated support team is ready to help you with quick solutions, every day of the week.
+              <p className="mt-3 text-sm text-gray-500 leading-relaxed">
+                Our team is available every day to help you with bookings, queries, and custom trips.
               </p>
             </div>
 
-            <div className="space-y-4 pt-4">
-              <div className="flex items-start gap-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="h-12 w-12 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <Phone className="h-6 w-6 text-blue-400" />
-                </div>
+            <div className="flex flex-col gap-5">
+              <div className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Call Us</h4>
-                  <p className="text-slate-300">+91 7022237255</p>
+                  <p className="text-xs text-gray-400 mb-0.5">Phone</p>
+                  <p className="text-sm font-medium text-gray-900">+91 7022237255</p>
                 </div>
               </div>
-
-              <div className="flex items-start gap-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="h-12 w-12 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <Mail className="h-6 w-6 text-blue-400" />
-                </div>
+              <div className="flex items-start gap-3">
+                <Mail className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Email Us</h4>
-                  <p className="text-slate-300 text-sm break-all">vijaytourstravels6158@gmail.com</p>
+                  <p className="text-xs text-gray-400 mb-0.5">Email</p>
+                  <p className="text-sm font-medium text-gray-900 break-all">vijaytourstravels6158@gmail.com</p>
                 </div>
               </div>
-
-              <div className="flex items-start gap-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="h-12 w-12 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-6 w-6 text-blue-400" />
-                </div>
+              <div className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Visit Us</h4>
-                  <p className="text-slate-300">Bangalore, Karnataka</p>
+                  <p className="text-xs text-gray-400 mb-0.5">Location</p>
+                  <p className="text-sm font-medium text-gray-900">Bangalore, Karnataka</p>
                 </div>
               </div>
             </div>
           </div>
 
-         
-          <div className="relative">
-            <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8 lg:p-10">
-              {!isSubmitted ? (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="mb-8">
-                    <h3 className="text-2xl md:text-3xl font-bold text-slate-800 mb-2">
-                      Send us a message
-                    </h3>
-                    <p className="text-slate-600">Fill out the form and we'll get back to you shortly</p>
-                  </div>
+          {/* Right — form */}
+          <div className="lg:col-span-3">
+            {!isSubmitted ? (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 tracking-tight">Send a message</h3>
+                  <p className="text-xs text-gray-400 mt-1">We'll get back to you within 24 hours.</p>
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div className="relative">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Your Name
-                      </label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                        <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-slate-800"
-                        />
-                      </div>
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <InputField label="Your name" icon={User} type="text" name="name" value={formData.name} onChange={handleChange} />
+                  <InputField label="Location" icon={MapPin} type="text" name="location" value={formData.location} onChange={handleChange} />
+                </div>
 
-                    <div className="relative">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Location
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                        <input
-                          type="text"
-                          name="location"
-                          value={formData.location}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-slate-800"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <InputField label="Phone number" icon={Phone} type="tel" name="phone" value={formData.phone} onChange={handleChange} />
+                  <InputField label="Email address" icon={Mail} type="email" name="email" value={formData.email} onChange={handleChange} />
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div className="relative">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Contact Number
-                      </label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-slate-800"
-                        />
-                      </div>
-                    </div>
+                <div>
+                  <label className={labelCls}>Message</label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={3}
+                    required
+                    className="w-full text-sm text-gray-900 bg-transparent outline-none resize-none border-b border-gray-200 py-2 focus:border-gray-900 transition-colors placeholder-transparent"
+                  />
+                </div>
 
-                    <div className="relative">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-slate-800"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Your Message
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows={4}
-                      required
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none resize-none transition-all duration-200 text-slate-800"
-                    ></textarea>
-                  </div>
-
+                <div className="pt-1">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex items-center gap-2 text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 active:bg-black transition-colors px-6 py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        Sending...
+                        <div className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Sending
                       </>
                     ) : (
                       <>
-                        Send Message
-                        <Send className="h-5 w-5" />
+                        Send message
+                        <Send className="w-3.5 h-3.5" />
                       </>
                     )}
                   </button>
-                </form>
-              ) : (
-                <div className="py-12 text-center">
-                  <div className="mb-6">
-                    <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="h-10 w-10 text-green-600" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-slate-800 mb-2">
-                      Message Sent Successfully!
-                    </h3>
-                    <p className="text-slate-600">
-                      Thank you for contacting us. We'll get back to you soon.
-                    </p>
-                  </div>
                 </div>
-              )}
-            </div>
-
-            <div className="absolute -top-4 -right-4 h-24 w-24 bg-blue-500/20 rounded-full blur-2xl"></div>
-            <div className="absolute -bottom-4 -left-4 h-32 w-32 bg-cyan-500/20 rounded-full blur-2xl"></div>
+              </form>
+            ) : (
+              <div className="flex flex-col gap-2 py-8">
+                <CheckCircle className="w-8 h-8 text-gray-900" />
+                <h3 className="text-lg font-semibold text-gray-900 mt-2">Message sent</h3>
+                <p className="text-sm text-gray-500">Thank you for reaching out. We'll be in touch soon.</p>
+              </div>
+            )}
           </div>
+
         </div>
+      </div>
+    </div>
+  );
+}
+
+const labelCls = "block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2";
+
+function InputField({
+  label,
+  icon: Icon,
+  type,
+  name,
+  value,
+  onChange,
+}: {
+  label: string;
+  icon: React.ElementType;
+  type: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <div>
+      <label className={labelCls}>{label}</label>
+      <div className="flex items-center gap-2 border-b border-gray-200 py-1.5 focus-within:border-gray-900 transition-colors">
+        <Icon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          required
+          className="flex-1 text-sm text-gray-900 bg-transparent outline-none placeholder-transparent"
+        />
       </div>
     </div>
   );

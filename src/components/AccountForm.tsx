@@ -61,90 +61,97 @@ navigate("/user/dashboard");
     }
   };
 
-  return (
-   
-      <div className="flex w-full max-w-4xl  bg-white rounded-xl shadow-lg overflow-hidden">
-      
-        <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 text-white items-center justify-center p-10">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold">Signup and start your hassle-free travel</h2>
-            <p className="text-3xl font-bold mt-2"> Because every mile matters to us</p>
-          </div>
-        </div>
+ return (
+  <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
+    
+    {/* Brand */}
+    <div className="text-center mb-8">
+      <h1 className="text-2xl font-bold text-orange-500">
+        AdiyogiCabz
+      </h1>
+      <p className="text-sm text-slate-500 mt-1">
+        Travel Smarter Across India
+      </p>
+    </div>
 
-        
-        <div className="w-full md:w-1/2 p-8">
-         
-          <div className="flex justify-center mb-6">
-            <button
-              onClick={() => setIsLogin(true)}
-              className={`px-6 py-2 font-semibold border-b-2 ${
-                isLogin ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500"
-              }`}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => setIsLogin(false)}
-              className={`ml-6 px-6 py-2 font-semibold border-b-2 ${
-                !isLogin ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500"
-              }`}
-            >
-              Register
-            </button>
-          </div>
+    {/* Heading */}
+    <div className="mb-6 text-center">
+      <h2 className="text-2xl font-bold text-slate-900">
+        {isLogin ? "Welcome Back" : "Create Account"}
+      </h2>
 
-         
-          <div>
-            {!isLogin && (
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="border w-full p-3 mb-4 rounded-md focus:ring-2 focus:ring-indigo-400"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            )}
-            <input
-              type="email"
-              placeholder="Email Address"
-              className="border w-full p-3 mb-4 rounded-md focus:ring-2 focus:ring-indigo-400"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="border w-full p-3 mb-6 rounded-md focus:ring-2 focus:ring-indigo-400"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+      <p className="text-slate-500 mt-2 text-sm">
+        {isLogin
+          ? "Login to continue your bookings"
+          : "Register to manage your rides"}
+      </p>
+    </div>
 
-            <button
-              onClick={handleSubmit}
-              className="bg-indigo-600 hover:bg-indigo-700 w-full text-white py-3 rounded-md font-semibold transition"
-            >
-              {isLogin ? "Login" : "Register"}
-            </button>
-          </div>
+    {/* Tabs */}
+    <div className="flex bg-slate-100 rounded-xl p-1 mb-6">
+      <button
+        onClick={() => setIsLogin(true)}
+        className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition ${
+          isLogin
+            ? "bg-white shadow text-orange-600"
+            : "text-slate-500"
+        }`}
+      >
+        Login
+      </button>
 
-         
-          <p className="text-xs text-gray-500 mt-4 text-center">
-            By proceeding, you agree to our{" "}
-            <a href="#" className="text-indigo-600 underline">
-              Privacy Policy
-            </a>
-            ,{" "}
-            <a href="#" className="text-indigo-600 underline">
-              User Agreement
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-indigo-600 underline">
-              T&Cs
-            </a>
-          </p>
-        </div>
-      </div>
-   
-  );
+      <button
+        onClick={() => setIsLogin(false)}
+        className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition ${
+          !isLogin
+            ? "bg-white shadow text-orange-600"
+            : "text-slate-500"
+        }`}
+      >
+        Register
+      </button>
+    </div>
+
+    {/* Form */}
+    <div className="space-y-4">
+      {!isLogin && (
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
+      )}
+
+      <input
+        type="email"
+        placeholder="Email Address"
+        className="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        className="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-semibold transition"
+      >
+        {isLogin ? "Login" : "Create Account"}
+      </button>
+    </div>
+
+    <p className="text-xs text-center text-slate-500 mt-6">
+      By continuing, you agree to our Privacy Policy and Terms &
+      Conditions.
+    </p>
+  </div>
+);
 }

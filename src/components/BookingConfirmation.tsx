@@ -1,10 +1,8 @@
-
-import { CheckCircle, MapPin, Calendar, Car, Phone, CreditCard, Shield, X, Loader2 } from "lucide-react";
+import { CheckCircle, Car, Phone, CreditCard, Shield, X, Loader2, Clock, Info } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 
 export default function BookingConfirmation() {
   const location = useLocation();
@@ -12,269 +10,221 @@ export default function BookingConfirmation() {
   const { booking } = location.state || {};
   const [isCancelling, setIsCancelling] = useState(false);
 
-
-
   if (!booking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <X className="w-10 h-10 text-red-600" />
+          <div className="w-14 h-14 bg-red-50 border border-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <X className="w-6 h-6 text-red-500" />
           </div>
-          <p className="text-gray-600 text-lg font-medium">No booking found</p>
-          <Link to="/" className="text-blue-600 hover:underline mt-4 inline-block">
+          <p className="text-gray-700 font-medium mb-3">No booking found</p>
+          <Link to="/" className="text-sm text-blue-600 hover:underline">
             Return to Home
           </Link>
         </div>
       </div>
     );
   }
- const handleCancelBooking = async () => {
-  if (!booking?.id) {
-    toast.error("Booking ID not found!");
-    console.error("Booking object missing ID:", booking);
-    return;
-  }
 
-  setIsCancelling(true);
-  try {
-    const res = await axios.put(
-      `https://adiyogi-travels.onrender.com/api/bookings/${booking.id}/cancel`
-    );
-    toast.success(res.data.message || "Your booking has been cancelled");
-    navigate("/");
-  } catch (err) {
-    console.error("Cancel error:", err);
-    toast.error("Failed to cancel booking. Please try again.");
-  } finally {
-    setIsCancelling(false);
-  }
-};
-
+  const handleCancelBooking = async () => {
+    if (!booking?.id) {
+      toast.error("Booking ID not found!");
+      console.error("Booking object missing ID:", booking);
+      return;
+    }
+    setIsCancelling(true);
+    try {
+      const res = await axios.put(
+        `https://adiyogi-travels.onrender.com/api/bookings/${booking.id}/cancel`
+      );
+      toast.success(res.data.message || "Your booking has been cancelled");
+      navigate("/");
+    } catch (err) {
+      console.error("Cancel error:", err);
+      toast.error("Failed to cancel booking. Please try again.");
+    } finally {
+      setIsCancelling(false);
+    }
+  };
 
   const gst = Math.round(booking.fare * 0.18);
   const discount = 100;
   const total = booking.fare + gst - discount;
 
+  /* ── shared classes ── */
+  const cardCls = "bg-white border border-gray-100 rounded-xl overflow-hidden";
+  const metaItemCls = "p-3 bg-gray-50 border border-gray-100 rounded-lg";
+  const labelCls = "text-[11px] text-gray-400 uppercase tracking-wide mb-1";
+  const valueCls = "text-sm font-medium text-gray-900";
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
-     
-      <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-6 px-4 shadow-lg">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <div className="min-h-screen bg-gray-50">
+
+      {/* ── Top bar ── */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-              <CheckCircle className="w-7 h-7 text-green-600" />
+            <div className="w-8 h-8 rounded-full bg-green-50 border border-green-100 flex items-center justify-center flex-shrink-0">
+              <CheckCircle className="w-4 h-4 text-green-600" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">Booking Confirmed!</h1>
-              <p className="text-green-100 text-sm">Your ride is all set</p>
+              <p className="text-sm font-medium text-gray-900">Booking Confirmed</p>
+              <p className="text-xs text-gray-400 hidden sm:block">Your ride is scheduled and confirmed</p>
             </div>
           </div>
           <button
-  onClick={handleCancelBooking}
-  disabled={isCancelling}
-  className={`hidden md:flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition duration-300 border border-white/30
-    ${isCancelling
-      ? "bg-white/20 cursor-not-allowed"
-      : "bg-white/10 hover:bg-white/20 text-white"}`}
->
-  {isCancelling ? (
-    <>
-      <Loader2 className="w-4 h-4 animate-spin" />
-      Cancelling...
-    </>
-  ) : (
-    <>
-      <X className="w-4 h-4" />
-      Cancel Request
-    </>
-  )}
-</button>
-
+            onClick={handleCancelBooking}
+            disabled={isCancelling}
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-medium text-gray-500 hover:border-red-200 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isCancelling ? (
+              <><Loader2 className="w-3 h-3 animate-spin" />Cancelling…</>
+            ) : (
+              <><X className="w-3 h-3" /><span className="hidden sm:inline">Cancel booking</span><span className="sm:hidden">Cancel</span></>
+            )}
+          </button>
         </div>
       </div>
 
-     
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-6">
-         
-          <div className="lg:col-span-2 space-y-6">
-          
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200 px-6 py-5">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-8 h-8 text-green-600" />
+      {/* ── Status strip ── */}
+      <div className="bg-green-50 border-b border-green-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2 flex items-center gap-2">
+          <Clock className="w-3.5 h-3.5 text-green-600 flex-shrink-0" />
+          <p className="text-xs text-green-700">
+            Driver assigned 1 hour before pickup · You'll receive a notification with driver details
+          </p>
+        </div>
+      </div>
+
+      {/* ── Main content ── */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5">
+
+        {/* ── LEFT ── */}
+        <div className="space-y-4">
+
+          {/* Trip details card */}
+          <div className={cardCls}>
+            <div className="px-5 py-3.5 border-b border-gray-100 flex items-center gap-2">
+              <Car className="w-4 h-4 text-gray-400" />
+              <span className="text-sm font-medium text-gray-900">Trip details</span>
+            </div>
+
+            <div className="p-5 space-y-4">
+
+              {/* Route */}
+              <div className="border border-gray-100 rounded-lg p-4 bg-gray-50">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+                  <div>
+                    <p className={labelCls}>Pickup location</p>
+                    <p className={valueCls}>{booking.fromLocation}</p>
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-xl font-bold text-gray-900 mb-1">
-                      Your Ride is Confirmed
-                    </h2>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      We've received your booking request. A professional driver will be assigned 
-                      to your trip 1 hour before the scheduled pickup time. You'll receive a 
-                      notification with driver details.
+                </div>
+                <div className="border-l border-dashed border-gray-300 ml-0.5 h-4 mt-1 mb-1" />
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                  <div>
+                    <p className={labelCls}>Drop location</p>
+                    <p className={valueCls}>{booking.toLocation}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Meta grid */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className={metaItemCls}>
+                  <p className={labelCls}>Pickup date</p>
+                  <p className={valueCls}>{booking.pickupDate}</p>
+                </div>
+                <div className={metaItemCls}>
+                  <p className={labelCls}>Pickup time</p>
+                  <p className={valueCls}>{booking.pickupTime}</p>
+                </div>
+                <div className={metaItemCls}>
+                  <p className={labelCls}>Vehicle</p>
+                  <p className={valueCls}>{booking.vehicleName}</p>
+                </div>
+                <div className={metaItemCls}>
+                  <p className={labelCls}>Trip type</p>
+                  <p className={`${valueCls} capitalize`}>{booking.tripType}</p>
+                </div>
+                <div className={`${metaItemCls} col-span-2`}>
+                  <p className={labelCls}>Contact number</p>
+                  <p className={valueCls}>{booking.mobile}</p>
+                </div>
+              </div>
+
+              {/* Info note */}
+              <div className="flex items-start gap-2.5 p-3 bg-gray-50 border border-gray-100 rounded-lg">
+                <Info className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  A professional driver will be assigned to your trip 1 hour before the scheduled pickup time.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Support card */}
+          <div className="bg-white border border-gray-100 rounded-xl p-4 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-gray-900 mb-0.5">Need help with your booking?</p>
+              <p className="text-xs text-gray-400">Support team available 24/7</p>
+            </div>
+            <a
+              href="tel:7022237255"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
+            >
+              <Phone className="w-3.5 h-3.5" />
+              7022 237 255
+            </a>
+          </div>
+        </div>
+
+        {/* ── RIGHT: Payment ── */}
+        <div>
+          <div className={`${cardCls} lg:sticky lg:top-5`}>
+            <div className="px-5 py-3.5 border-b border-gray-100 flex items-center gap-2">
+              <CreditCard className="w-4 h-4 text-gray-400" />
+              <span className="text-sm font-medium text-gray-900">Payment summary</span>
+            </div>
+
+            <div className="p-5 space-y-1">
+              <div className="flex justify-between py-2.5 border-b border-gray-50">
+                <span className="text-sm text-gray-500">Base fare</span>
+                <span className="text-sm font-medium text-gray-900">₹{booking.fare}</span>
+              </div>
+              <div className="flex justify-between py-2.5 border-b border-gray-50">
+                <span className="text-sm text-gray-500">GST (18%)</span>
+                <span className="text-sm font-medium text-gray-900">₹{gst}</span>
+              </div>
+              <div className="flex justify-between py-2.5">
+                <span className="text-sm text-green-600 font-medium">Discount</span>
+                <span className="text-sm font-medium text-green-600">−₹{discount}</span>
+              </div>
+
+              <div className="border-t border-gray-100 pt-3 mt-1 flex justify-between items-baseline">
+                <span className="text-sm font-medium text-gray-900">Total</span>
+                <span className="text-xl font-medium text-gray-900">₹{total}</span>
+              </div>
+
+              {/* No advance payment */}
+              <div className="mt-4 p-3 bg-gray-50 border border-gray-100 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <Shield className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-medium text-gray-700 mb-1">No advance payment required</p>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Pay directly to the driver or through company instructions after confirmation.
                     </p>
                   </div>
                 </div>
               </div>
 
-              
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Car className="w-5 h-5 text-blue-600" />
-                  Trip Details
-                </h3>
-
-                <div className="space-y-4">
-                  
-                  <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                    <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                    <div className="flex-1">
-                      <p className="text-xs text-gray-500 font-medium mb-1">Pickup Date & Time</p>
-                      <p className="font-semibold text-gray-900">
-                        {booking.pickupDate} at {booking.pickupTime}
-                      </p>
-                    </div>
-                  </div>
-
-                 
-                  <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <Car className="w-5 h-5 text-slate-600 flex-shrink-0" />
-                    <div className="flex-1">
-                      <p className="text-xs text-gray-500 font-medium mb-1">Vehicle Type</p>
-                      <p className="font-semibold text-gray-900">{booking.vehicleName}</p>
-                    </div>
-                  </div>
-
-                 
-                  <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-4 border border-slate-200">
-                    <div className="flex items-start gap-3 mb-3">
-                      <MapPin className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-xs text-gray-500 font-medium mb-1">Pickup Location</p>
-                        <p className="font-semibold text-gray-900">{booking.fromLocation}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="border-l-2 border-dashed border-gray-300 ml-2 h-6"></div>
-                    
-                    <div className="flex items-start gap-3">
-                      <MapPin className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-xs text-gray-500 font-medium mb-1">Drop Location</p>
-                        <p className="font-semibold text-gray-900">{booking.toLocation}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-3 bg-white rounded-lg border border-gray-200">
-                      <p className="text-xs text-gray-500 mb-1">Trip Type</p>
-                      <p className="font-semibold text-gray-900 capitalize">{booking.tripType}</p>
-                    </div>
-                    <div className="p-3 bg-white rounded-lg border border-gray-200">
-                      <p className="text-xs text-gray-500 mb-1">Contact Number</p>
-                      <p className="font-semibold text-gray-900">{booking.mobile}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl shadow-lg p-6 text-white">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2">Need Assistance?</h3>
-                  <p className="text-blue-100 text-sm mb-4 leading-relaxed">
-                    Our support team is available 24/7 to help you with any questions 
-                    or concerns about your ride.
-                  </p>
-                  <a
-                    href="tel:7022237255"
-                    className="inline-flex items-center gap-2 bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition duration-300 shadow-md"
-                  >
-                    <Phone className="w-5 h-5" />
-                    7022 237 255
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            
-          
-
-          </div>
-
-          
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden sticky top-6">
-             
-              <div className="bg-gradient-to-r from-slate-700 to-slate-800 px-6 py-4">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                  <CreditCard className="w-5 h-5" />
-                  Payment Summary
-                </h3>
-              </div>
-
-              
-              <div className="p-6 space-y-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600">Base Fare</span>
-                    <span className="font-semibold text-gray-900">₹{booking.fare}</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600">GST (18%)</span>
-                    <span className="font-semibold text-gray-900">₹{gst}</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 text-green-600">
-                    <span className="font-medium">Discount Applied</span>
-                    <span className="font-semibold">-₹{discount}</span>
-                  </div>
-                </div>
-
-                <div className="border-t-2 border-gray-200 pt-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold text-gray-900">Total Amount</span>
-                    <span className="text-2xl font-bold text-blue-700">₹{total}</span>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Amount payable to driver
-                  </p>
-                </div>
-
-               
-                <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                  <CreditCard className="w-5 h-5" />
-                  Pay Now
-                </button>
-
-                
-                <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4 mt-4">
-                  <div className="flex items-start gap-3">
-                    <Shield className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900 mb-1">
-                        Travel Insurance Available
-                      </p>
-                      <p className="text-xs text-gray-600 leading-relaxed">
-                        Your booking is eligible for our comprehensive Travel Insurance Program 
-                        for added peace of mind.
-                      </p>
-                    </div>
-                    
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

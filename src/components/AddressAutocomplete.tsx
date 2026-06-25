@@ -1,10 +1,12 @@
 /// <reference types="google.maps" />
 import { useEffect, useRef, useState } from "react";
+import { Navigation, Loader2 } from "lucide-react";
 
 type Props = {
   placeholder?: string;
   className?: string;
   value?: string;
+  showCurrentLocation?: boolean;
   onChange?: (val: string) => void;
   onSelect?: (address: string, lat: number, lng: number) => void;
 };
@@ -13,9 +15,10 @@ export default function AddressAutocomplete({
   placeholder = "Enter location",
   className,
   value = "",
+  showCurrentLocation = false,
   onChange,
   onSelect,
-}: Props) {
+}: Props){
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -161,45 +164,54 @@ export default function AddressAutocomplete({
         autoComplete="off"
         className="w-full"
         style={{
-          width: "100%",
-          padding: "12px",
-          border: "1px solid #d1d5db",
-          borderRadius: "8px",
-          fontSize: "16px",
-          color: "#000",
-          backgroundColor: isReady ? "#fff" : "#f3f4f6",
-          outline: "none",
-          transition: "all 0.2s ease",
-          boxSizing: "border-box",
-        }}
+  width: "100%",
+  padding: "12px 14px",
+  border: "1px solid #e5e7eb",
+  borderRadius: "12px",
+  fontSize: "14px",
+  fontWeight: 400,
+  color: "#111827",
+  backgroundColor: isReady ? "#fff" : "#f9fafb",
+  outline: "none",
+  transition: "all 0.2s ease",
+  boxSizing: "border-box",
+}}
         onFocus={(e) => {
-          e.currentTarget.style.borderColor = "#3b82f6";
-          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)";
-        }}
+  e.currentTarget.style.borderColor = "#f97316";
+  e.currentTarget.style.boxShadow =
+    "0 0 0 3px rgba(249,115,22,0.12)";
+}}
         onBlur={(e) => {
-          e.currentTarget.style.borderColor = "#d1d5db";
-          e.currentTarget.style.boxShadow = "none";
-        }}
+  e.currentTarget.style.borderColor = "#e5e7eb";
+  e.currentTarget.style.boxShadow = "none";
+}}
       />
-
-      <button
-        onClick={handleUseCurrentLocation}
-        type="button"
-        disabled={isLocating || !isReady}
-        style={{
-          marginTop: "6px",
-          fontSize: "14px",
-          color: isLocating || !isReady ? "#9ca3af" : "#2563eb",
-          textDecoration: "underline",
-          cursor: isLocating || !isReady ? "not-allowed" : "pointer",
-          opacity: isLocating || !isReady ? 0.6 : 1,
-          background: "none",
-          border: "none",
-          padding: "0",
-        }}
-      >
-        {isLocating ? "Locating..." : "Use Current Location"}
-      </button>
+{showCurrentLocation && (
+<button
+  onClick={handleUseCurrentLocation}
+  type="button"
+  disabled={isLocating || !isReady}
+  className="
+    mt-3 inline-flex items-center gap-1.5
+    text-sm font-medium
+    text-emerald-600 hover:text-emerald-700
+    transition-colors duration-200
+    disabled:opacity-50 disabled:cursor-not-allowed
+  "
+>
+  {isLocating ? (
+    <>
+      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+      Detecting location...
+    </>
+  ) : (
+    <>
+      <Navigation className="w-3.5 h-3.5" />
+      Use Current Location
+    </>
+  )}
+</button>
+)}
 
       {!isReady && (
         <div style={{ fontSize: "12px", color: "#6b7280", marginTop: "4px" }}>
