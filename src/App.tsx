@@ -25,6 +25,15 @@ import RentalConfirmation from "./pages/RentalConfirmation";
 
 import AirportVehicleSelection from "./pages/AirportVehicleSelection";
 import AirportBooking from "./pages/AirportBooking";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import AIAssistant from "./pages/AIAssistant";
+import { AIWidget } from "./components/ai/AIWidget";
+import CookieBanner from "./components/CookieBanner";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -34,6 +43,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/ai" element={<AIAssistant />} />
           <Route path="/holiday-packages" element={<HolidayPackages />} />
           <Route path="/vehicles" element={<VehicleSelection />} />
           <Route path="/airport-vehicles" element={<AirportVehicleSelection />} />
@@ -43,25 +53,38 @@ export default function App() {
           <Route path="/bookingform" element={<QuickBookingForm />} />
           <Route path="/confirmation" element={<BookingConfirmation />} />
           <Route path="/rental-cars" element={<RentalCarList />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/rental-confirm" element={<RentalConfirmation />} />
         
         </Route>
 
        
-        <Route path="/user" element={<UserDashboardLayout />}>
-          <Route path="dashboard" element={<QuickBookingForm />} />
-          <Route path="my-bookings" element={<MyBooking />} />
-          <Route path="vehicle" element={<OurVehicles />} />
-          <Route path="holiday-packages" element={<HolidayPackages />} />
-          <Route path="local-packages" element={<RoutesList />} />
-          <Route path="contact" element={<ContactUs />} />
-          
-        </Route>
+        <Route element={<ProtectedRoute />}>
+  <Route path="/user" element={<UserDashboardLayout />}>
+    <Route path="dashboard" element={<QuickBookingForm />} />
+    <Route path="my-bookings" element={<MyBooking />} />
+    <Route path="vehicle" element={<OurVehicles />} />
+    <Route path="holiday-packages" element={<HolidayPackages />} />
+    <Route path="local-packages" element={<RoutesList />} />
+
+    <Route path="contact" element={<ContactUs />} />
+     
+  </Route>
+</Route>
 
         
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/login" element={<AccountForm />} />
+        <Route element={<AdminRoute />}>
+  <Route
+      path="/admin/dashboard"
+      element={<AdminDashboard />}
+  />
+</Route>
+       <Route path="/account" element={<AccountForm />} />
       </Routes>
+      <AIWidget />
+      <CookieBanner />
      <Toaster
   position="top-center"
   toastOptions={{

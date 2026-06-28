@@ -27,7 +27,7 @@ export default function BookingConfirmation() {
   }
 
   const handleCancelBooking = async () => {
-    if (!booking?.id) {
+    if (booking?.id == null) {
       toast.error("Booking ID not found!");
       console.error("Booking object missing ID:", booking);
       return;
@@ -47,6 +47,9 @@ export default function BookingConfirmation() {
     }
   };
 
+  const isAirport = booking.tripType === "airport";
+
+  // Non-airport fare breakdown
   const gst = Math.round(booking.fare * 0.18);
   const discount = 100;
   const total = booking.fare + gst - discount;
@@ -189,23 +192,41 @@ export default function BookingConfirmation() {
             </div>
 
             <div className="p-5 space-y-1">
-              <div className="flex justify-between py-2.5 border-b border-gray-50">
-                <span className="text-sm text-gray-500">Base fare</span>
-                <span className="text-sm font-medium text-gray-900">₹{booking.fare}</span>
-              </div>
-              <div className="flex justify-between py-2.5 border-b border-gray-50">
-                <span className="text-sm text-gray-500">GST (18%)</span>
-                <span className="text-sm font-medium text-gray-900">₹{gst}</span>
-              </div>
-              <div className="flex justify-between py-2.5">
-                <span className="text-sm text-green-600 font-medium">Discount</span>
-                <span className="text-sm font-medium text-green-600">−₹{discount}</span>
-              </div>
 
-              <div className="border-t border-gray-100 pt-3 mt-1 flex justify-between items-baseline">
-                <span className="text-sm font-medium text-gray-900">Total</span>
-                <span className="text-xl font-medium text-gray-900">₹{total}</span>
-              </div>
+              {isAirport ? (
+                /* ── Airport: simple fare only ── */
+                <>
+                  <div className="flex justify-between py-2.5 border-b border-gray-50">
+                    <span className="text-sm text-gray-500">Airport Fare</span>
+                    <span className="text-xl font-semibold text-gray-900">
+                      ₹{booking.fare?.toLocaleString()}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-400 pt-2">
+                    Toll &amp; Parking extra if applicable
+                  </p>
+                </>
+              ) : (
+                /* ── Non-airport: GST + discount + total ── */
+                <>
+                  <div className="flex justify-between py-2.5 border-b border-gray-50">
+                    <span className="text-sm text-gray-500">Base fare</span>
+                    <span className="text-sm font-medium text-gray-900">₹{booking.fare}</span>
+                  </div>
+                  <div className="flex justify-between py-2.5 border-b border-gray-50">
+                    <span className="text-sm text-gray-500">GST (18%)</span>
+                    <span className="text-sm font-medium text-gray-900">₹{gst}</span>
+                  </div>
+                  <div className="flex justify-between py-2.5">
+                    <span className="text-sm text-green-600 font-medium">Discount</span>
+                    <span className="text-sm font-medium text-green-600">−₹{discount}</span>
+                  </div>
+                  <div className="border-t border-gray-100 pt-3 mt-1 flex justify-between items-baseline">
+                    <span className="text-sm font-medium text-gray-900">Total</span>
+                    <span className="text-xl font-medium text-gray-900">₹{total}</span>
+                  </div>
+                </>
+              )}
 
               {/* No advance payment */}
               <div className="mt-4 p-3 bg-gray-50 border border-gray-100 rounded-lg">
@@ -220,7 +241,6 @@ export default function BookingConfirmation() {
                 </div>
               </div>
 
-            
             </div>
           </div>
         </div>

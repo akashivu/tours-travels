@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Car } from "lucide-react";
 
 interface AirportVehicle {
   id: number;
@@ -17,15 +18,15 @@ export default function AirportBooking() {
   const navigate = useNavigate();
 
   const {
-  selectedVehicle,
-  pickup,
-  drop,
-  pickupDate,
-  pickupTime,
-  tripType,
-  distanceKm,
-  totalFare,
-} = location.state || {};
+    selectedVehicle,
+    pickup,
+    drop,
+    pickupDate,
+    pickupTime,
+    tripType,
+    distanceKm,
+    totalFare,
+  } = location.state || {};
 
   const vehicle = selectedVehicle as AirportVehicle;
 
@@ -63,28 +64,30 @@ export default function AirportBooking() {
         tripType: tripType || "airport",
       };
 
-      await axios.post(
+      const response = await axios.post(
         "https://adiyogi-travels.onrender.com/api/bookings/confirm",
         payload
       );
 
       toast.success("Booking Confirmed");
 
+      // Spread real booking from backend (gives us the actual ID for cancellation),
+      // then override/add fields the confirmation page needs.
       navigate("/confirmation", {
-  state: {
-    booking: {
-      id: 0,
-      fromLocation: pickup,
-      toLocation: drop,
-      pickupDate,
-      pickupTime,
-      vehicleName: vehicle.name,
-      tripType: "airport",
-      mobile: mobileNo,
-      fare: totalFare,
-    },
-  },
-});
+        state: {
+          booking: {
+            ...response.data,
+            fromLocation: pickup,
+            toLocation: drop,
+            pickupDate,
+            pickupTime,
+            vehicleName: vehicle.name,
+            tripType: "airport",
+            mobile: mobileNo,
+            fare: totalFare,
+          },
+        },
+      });
     } catch (error) {
       console.error(error);
       toast.error("Failed to confirm booking");
@@ -168,11 +171,17 @@ export default function AirportBooking() {
 
           <div className="p-6">
 
-            <img
-              src={vehicle.imageUrl}
-              alt={vehicle.name}
-              className="w-full h-48 object-cover rounded-2xl"
-            />
+            {vehicle.imageUrl ? (
+              <img
+                src={vehicle.imageUrl}
+                alt={vehicle.name}
+                className="w-full h-48 object-cover rounded-2xl"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-100 rounded-2xl flex items-center justify-center">
+                <Car className="w-16 h-16 text-gray-300" />
+              </div>
+            )}
 
             <h3 className="text-xl font-bold mt-4">
               {vehicle.name}
@@ -210,27 +219,27 @@ export default function AirportBooking() {
                 <p>{vehicle.luggage} Bags</p>
               </div>
 
-   <div>
-  <span className="font-semibold">Distance:</span>
-  <p>{distanceKm} KM</p>
-</div>
+              {distanceKm != null && (
+                <div>
+                  <span className="font-semibold">Distance:</span>
+                  <p>{distanceKm} km</p>
+                </div>
+              )}
 
-<div>
-  <span className="font-semibold">Rate:</span>
-  <p>₹{vehicle.pricePerKm}/KM</p>
-</div>
+              <div>
+                <span className="font-semibold">Airport Fare:</span>
+                <p className="text-green-600 font-bold text-2xl">
+                  ₹{totalFare?.toLocaleString() ?? "--"}
+                </p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Toll &amp; Parking extra if applicable
+                </p>
+              </div>
 
-<div>
-  <span className="font-semibold">Total Fare:</span>
-  <p className="text-green-600 font-bold text-2xl">
-    ₹{totalFare}
-  </p>
-</div>
             </div>
 
             <div className="mt-6 bg-orange-50 border border-orange-200 rounded-xl p-4">
               <p className="text-sm text-orange-700">
-                Final fare will be calculated based on actual travel distance.
                 Toll, parking and airport entry charges are extra if applicable.
               </p>
             </div>

@@ -34,6 +34,7 @@ export default function AirportVehicleSelection() {
 
   const [vehicles, setVehicles] = useState<AirportVehicle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fares, setFares] = useState<Record<number, number>>({});
 
   // Modal state (UI only)
   const [selectedVehicle, setSelectedVehicle] = useState<AirportVehicle | null>(null);
@@ -42,22 +43,37 @@ export default function AirportVehicleSelection() {
     fetchVehicles();
   }, []);
 
-  // ── LOGIC UNCHANGED ──
+  // ── LOGIC ──
   const fetchVehicles = async () => {
     try {
+      // Step 1: fetch vehicle list
       const response = await axios.get(
         "https://adiyogi-travels.onrender.com/api/airport/vehicles"
       );
-      setVehicles(response.data);
+      const data: AirportVehicle[] = response.data;
+      setVehicles(data);
+
+      // Step 2: fetch fare per vehicle — backend returns ResponseEntity<Double>
+      // so r.data is the plain number (e.g. 899), NOT { fare: 899 }
+      const fareResults = await Promise.all(
+        data.map((v) =>
+          axios
+            .get("https://adiyogi-travels.onrender.com/api/airport/fare", {
+              params: { carName: v.name, distance: distanceKm },
+            })
+            .then((r) => ({ id: v.id, fare: r.data as number }))
+        )
+      );
+      setFares(Object.fromEntries(fareResults.map((f) => [f.id, f.fare])));
     } catch (error) {
-      console.error("Failed to fetch airport vehicles", error);
+      console.error("Failed to fetch airport vehicles or fares", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleSelectVehicle = (vehicle: AirportVehicle) => {
-    const totalFare = Math.round(distanceKm * vehicle.pricePerKm);
+    const totalFare = fares[vehicle.id];
     navigate("/airport-booking", {
       state: {
         selectedVehicle: vehicle,
@@ -127,13 +143,13 @@ export default function AirportVehicleSelection() {
                   <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
                   {pickupTime}
                 </span>
-                <span className="hidden sm:flex items-center gap-1 font-medium text-slate-700">
-                  {distanceKm} km
-                </span>
               </div>
             </div>
 
-            <button className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition text-xs sm:text-sm font-medium shrink-0">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition text-xs sm:text-sm font-medium shrink-0"
+            >
               <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Modify
             </button>
@@ -166,7 +182,7 @@ export default function AirportVehicleSelection() {
         {/* ── Vehicle cards ── */}
         <div className="flex flex-col gap-3 sm:gap-4">
           {vehicles.map((vehicle, i) => {
-            const totalFare = Math.round(distanceKm * vehicle.pricePerKm);
+            const fare = fares[vehicle.id];
 
             return (
               <motion.div
@@ -213,9 +229,6 @@ export default function AirportVehicleSelection() {
                         <Wind className="w-3 h-3 sm:w-4 sm:h-4" />
                         A/C
                       </span>
-                      <span className="text-green-600 font-medium text-xs">
-                        {distanceKm} km
-                      </span>
                     </div>
 
                     {/* Badges — desktop */}
@@ -237,17 +250,11 @@ export default function AirportVehicleSelection() {
                   {/* Right — price + book */}
                   <div className="w-28 sm:w-48 shrink-0 border-l border-gray-100 flex flex-col items-end justify-between px-3 py-3 sm:px-6 sm:py-5">
                     <div className="text-right">
-                      <p className="text-xs text-gray-400 mb-0.5 hidden sm:block">
-                        ₹{vehicle.pricePerKm} / km
-                      </p>
                       <p className="text-lg sm:text-3xl font-bold text-gray-900">
-                        ₹{totalFare.toLocaleString()}
+                        {fare != null ? `₹${fare.toLocaleString()}` : "…"}
                       </p>
-                      <p className="text-xs text-gray-400 mt-0.5 hidden sm:block">
-                        for {distanceKm} km
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5 hidden sm:block">
-                        Toll &amp; parking extra
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Toll &amp; Parking extra
                       </p>
                     </div>
 
@@ -260,21 +267,7 @@ export default function AirportVehicleSelection() {
                   </div>
                 </div>
 
-                {/* Footer row */}
-                <div className="border-t border-gray-100 px-3 sm:px-6 py-2 sm:py-2.5 flex flex-wrap gap-3 sm:gap-6 text-xs text-gray-500 bg-gray-50/60">
-                  <span className="flex items-center gap-1">
-                    <Info className="w-3 h-3" />
-                    Rate <span className="font-semibold text-gray-700 ml-1">₹{vehicle.pricePerKm}/km</span>
-                  </span>
-                  <span className="hidden sm:flex items-center gap-1">
-                    <Info className="w-3 h-3" />
-                    Distance <span className="font-semibold text-gray-700 ml-1">{distanceKm} km</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Info className="w-3 h-3" />
-                    Total <span className="font-semibold text-green-700 ml-1">₹{totalFare.toLocaleString()}</span>
-                  </span>
-                </div>
+
               </motion.div>
             );
           })}
@@ -361,20 +354,15 @@ export default function AirportVehicleSelection() {
                       <span className="text-gray-600">Date &amp; Time</span>
                       <span className="font-semibold">{pickupDate} · {pickupTime}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Distance</span>
-                      <span className="font-semibold">{distanceKm} km</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Rate</span>
-                      <span className="font-semibold">₹{selectedVehicle.pricePerKm} / km</span>
-                    </div>
                     <div className="pt-3 border-t border-orange-200 flex justify-between text-base sm:text-lg font-bold">
-                      <span>Total Fare</span>
+                      <span>Airport Fare</span>
                       <span className="text-orange-600">
-                        ₹{Math.round(distanceKm * selectedVehicle.pricePerKm).toLocaleString()}
+                        {fares[selectedVehicle.id] != null
+                          ? `₹${fares[selectedVehicle.id].toLocaleString()}`
+                          : "…"}
                       </span>
                     </div>
+                    <p className="text-xs text-gray-400">Toll &amp; Parking extra if applicable</p>
                   </div>
                 </div>
 
@@ -417,7 +405,10 @@ export default function AirportVehicleSelection() {
                   onClick={() => handleSelectVehicle(selectedVehicle)}
                   className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:from-orange-600 hover:to-orange-700 transition shadow-lg"
                 >
-                  Confirm Booking · ₹{Math.round(distanceKm * selectedVehicle.pricePerKm).toLocaleString()}
+                  Confirm Booking ·{" "}
+                  {fares[selectedVehicle.id] != null
+                    ? `₹${fares[selectedVehicle.id].toLocaleString()}`
+                    : "…"}
                 </button>
               </div>
             </motion.div>

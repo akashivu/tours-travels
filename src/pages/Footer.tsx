@@ -1,5 +1,6 @@
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { openCookiePreferences } from "../utils/cookie";
 
 export default function Footer() {
   return (
@@ -75,18 +76,69 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Subscribe */}
-          <div className="md:col-span-4 md:col-start-9">
+          {/* Legal */}
+          <div className="md:col-span-2 md:col-start-9">
+            <p
+              className="text-zinc-500 mb-4"
+              style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500 }}
+            >
+              Legal
+            </p>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <Link
+                  to="/privacy-policy"
+                  className="text-zinc-400 hover:text-white transition-colors text-xs"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/cookie-policy"
+                  className="text-zinc-400 hover:text-white transition-colors text-xs"
+                >
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/terms-and-conditions"
+                  className="text-zinc-400 hover:text-white transition-colors text-xs"
+                >
+                  Terms &amp; Conditions
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={openCookiePreferences}
+                  className="text-zinc-400 hover:text-white transition-colors text-xs text-left"
+                >
+                  Cookie Preferences
+                </button>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-zinc-400 hover:text-white transition-colors text-xs"
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Stay Informed */}
+          <div className="md:col-span-2 md:col-start-11">
             <p
               className="text-zinc-500 mb-4"
               style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500 }}
             >
               Stay Informed
             </p>
-            <p className="text-zinc-500 text-xs mb-4 leading-relaxed">
+            <p className="text-zinc-500 text-xs leading-relaxed">
               Get updates on our latest packages and offers.
             </p>
-            
           </div>
 
         </div>
