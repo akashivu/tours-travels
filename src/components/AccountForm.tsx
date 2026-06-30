@@ -13,8 +13,10 @@ export default function AccountForm() {
   const [showOtpScreen, setShowOtpScreen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const [forgotOtp, setForgotOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [resending, setResending] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
@@ -118,6 +120,62 @@ export default function AccountForm() {
     }
   };
 
+  const verifyForgotOtp = async () => {
+    try {
+      setLoading(true);
+
+      await axiosClient.post("/account/verify-forgot-password-otp", {
+        email,
+        otp: forgotOtp,
+      });
+
+      alert("OTP verified successfully.");
+
+      setShowResetPassword(true);
+    } catch (error: any) {
+      alert(error.response?.data?.message || "Invalid OTP.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetPassword = async () => {
+    if (newPassword.length < 8) {
+      alert("Password must be at least 8 characters.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await axiosClient.post("/account/reset-password", {
+        email,
+        newPassword,
+      });
+
+      alert("Password updated successfully! Please login.");
+
+      setShowForgotPassword(false);
+      setShowResetPassword(false);
+
+      setForgotOtp("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setPassword("");
+
+      setIsLogin(true);
+    } catch (error: any) {
+      alert(error.response?.data?.message || "Unable to reset password.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const resendOtp = async () => {
     try {
       setResending(true);
@@ -153,7 +211,11 @@ export default function AccountForm() {
       <div className="mb-6 text-center">
         <h2 className="text-2xl font-bold text-slate-900">
           {showOtpScreen
-            ? "Verify Your Email"
+            ? "Verify Email"
+            : showForgotPassword && !showResetPassword
+            ? "Verify Password Reset OTP"
+            : showResetPassword
+            ? "Create New Password"
             : isLogin
             ? "Welcome Back"
             : "Create Account"}
@@ -161,9 +223,19 @@ export default function AccountForm() {
 
         {showOtpScreen ? (
           <p className="text-slate-500 mt-2 text-sm">
-            Enter the 6-digit verification code sent to
+            Enter the verification code sent to
             <br />
             <strong className="text-slate-700">{email}</strong>
+          </p>
+        ) : showForgotPassword && !showResetPassword ? (
+          <p className="text-slate-500 mt-2 text-sm">
+            Enter the password reset OTP sent to
+            <br />
+            <strong className="text-slate-700">{email}</strong>
+          </p>
+        ) : showResetPassword ? (
+          <p className="text-slate-500 mt-2 text-sm">
+            Choose a strong password for your account.
           </p>
         ) : (
           <p className="text-slate-500 mt-2 text-sm">
@@ -175,7 +247,7 @@ export default function AccountForm() {
       </div>
 
       {/* Tabs */}
-      {!showOtpScreen && (
+      {!showOtpScreen && !showForgotPassword && (
         <div className="flex bg-slate-100 rounded-xl p-1 mb-6">
           <button
             onClick={() => setIsLogin(true)}
@@ -251,6 +323,64 @@ export default function AccountForm() {
               </button>
             )}
           </div>
+        </div>
+      ) : showForgotPassword && !showResetPassword ? (
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            maxLength={6}
+            value={forgotOtp}
+            onChange={(e) => setForgotOtp(e.target.value.replace(/\D/g, ""))}
+            className="w-full border border-slate-200 rounded-xl px-4 py-3"
+          />
+
+          <button
+            onClick={verifyForgotOtp}
+            disabled={loading}
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl"
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+        </div>
+      ) : showResetPassword ? (
+        <div className="space-y-4">
+          <input
+            type="password"
+            placeholder="Enter New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+
+          <button
+            onClick={resetPassword}
+            disabled={loading}
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold"
+          >
+            {loading ? "Updating..." : "Update Password"}
+          </button>
+
+          <button
+            onClick={() => {
+              setShowForgotPassword(false);
+              setShowResetPassword(false);
+              setForgotOtp("");
+              setNewPassword("");
+              setConfirmPassword("");
+            }}
+            className="w-full border border-slate-300 py-3 rounded-xl"
+          >
+            Back to Login
+          </button>
         </div>
       ) : (
         <div className="space-y-4">

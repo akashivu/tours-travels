@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
-import { MapPin, Calendar, Clock, ArrowRight, Car, Plane, Building } from "lucide-react";
+import { MapPin, Calendar, Clock, ArrowRight, Car, Plane } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface BookingState {
@@ -10,27 +10,23 @@ interface BookingState {
   tripType: "oneway" | "roundtrip";
   pickupDate: string; pickupTime: string;
   returnDate?: string; returnTime?: string;
-  rentalHours?: string; 
 }
 
 export default function QuickBookingForm() {
   const navigate = useNavigate();
-  const [rentalCity, setRentalCity] = useState("");
-  const [activeTab, setActiveTab] = useState<"outstation" | "airport" /* | "rental" */>("outstation");
+  const [activeTab, setActiveTab] = useState<"outstation" | "airport">("outstation");
   const [tripType, setTripType] = useState<"oneway" | "roundtrip">("oneway");
 
-  const handleTabChange = (tab: "outstation" | "airport" /* | "rental" */) => {
+  const handleTabChange = (tab: "outstation" | "airport") => {
     setActiveTab(tab);
     setPickupLat(null); setPickupLng(null);
     setDropLat(null); setDropLng(null);
-    
   };
 
   const [outstationPickup, setOutstationPickup] = useState("");
   const [outstationDrop, setOutstationDrop] = useState("");
   const [airportPickup, setAirportPickup] = useState("");
   const [airportDrop, setAirportDrop] = useState("");
-  const [rentalPickup, setRentalPickup] = useState("");
   const [pickupLat, setPickupLat] = useState<number | null>(null);
   const [pickupLng, setPickupLng] = useState<number | null>(null);
   const [dropLat, setDropLat] = useState<number | null>(null);
@@ -39,12 +35,11 @@ export default function QuickBookingForm() {
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
-  const [rentalHours] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const getTodayDate = () => new Date().toISOString().split("T")[0];
-  const getCurrentPickup = () => activeTab === "outstation" ? outstationPickup : activeTab === "airport" ? airportPickup : rentalPickup;
-  const getCurrentDrop = () => activeTab === "outstation" ? outstationDrop : activeTab === "airport" ? airportDrop : "";
+  const getCurrentPickup = () => activeTab === "outstation" ? outstationPickup : airportPickup;
+  const getCurrentDrop = () => activeTab === "outstation" ? outstationDrop : airportDrop;
 
   const validateForm = (): boolean => {
     const pickup = getCurrentPickup();
@@ -63,26 +58,11 @@ export default function QuickBookingForm() {
       if (!pickup.trim() || !drop.trim()) { toast.error("Please enter both pickup and drop locations"); return false; }
       if (!pickupDate || pickupDate < today) { toast.error("Please select a valid pickup date"); return false; }
       if (!pickupTime) { toast.error("Please select pickup time"); return false; }
-      
     }
-    // if (activeTab === "rental") {
-    //   if (!pickup.trim()) { toast.error("Please enter pickup location"); return false; }
-    //   if (!rentalHours.trim() || parseInt(rentalHours) < 1) { toast.error("Enter valid rental hours"); return false; }
-    //   if (!pickupDate || pickupDate < today) { toast.error("Please select a valid pickup date"); return false; }
-    //   if (!pickupTime) { toast.error("Please select pickup time"); return false; }
-    // }
     return true;
   };
 
   const handleSearchRide = async () => {
-    // if (activeTab === "rental") {
-    //   if (!rentalPickup.trim()) { toast.error("Please enter pickup location"); return; }
-    //   if (!pickupDate) { toast.error("Please select pickup date"); return; }
-    //   if (!pickupTime) { toast.error("Please select pickup time"); return; }
-    //   navigate("/rental-cars", { state: { pickup: rentalPickup, pickupDate, pickupTime, rentalHours } });
-    //   return;
-    // }
-
     if (activeTab === "airport") {
       if (!airportPickup || !airportDrop) {
         toast.error("Please select pickup and drop locations");
@@ -159,7 +139,6 @@ export default function QuickBookingForm() {
   const tabs = [
     { id: "outstation", label: "Outstation", icon: Car },
     { id: "airport", label: "Airport", icon: Plane },
-    // { id: "rental", label: "Local", icon: Building },
   ] as const;
 
   const todayDate = getTodayDate();
@@ -246,80 +225,47 @@ export default function QuickBookingForm() {
           {/* Form body */}
           <div className="p-4 md:p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-              {/* FROM / CITY */}
-              {/* {activeTab === "rental" ? (
-                <div>
-                  <label className={labelCls}>City</label>
-                  <input
-                    type="text"
-                    placeholder="Enter city"
-                    value={rentalCity}
-                    onChange={(e) => setRentalCity(e.target.value)}
-                    className={inputCls}
-                  />
-                </div>
-              ) : ( */}
-                <div>
-                  <label className={labelCls}>From</label>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <AddressAutocomplete
-                      showCurrentLocation={true}
-                        placeholder="Enter pickup location"
-                        value={activeTab === "outstation" ? outstationPickup : airportPickup}
-                        onChange={activeTab === "outstation" ? setOutstationPickup : setAirportPickup}
-                        onSelect={(address: string, lat: number, lng: number) => {
-                          if (activeTab === "outstation") setOutstationPickup(address);
-                          else setAirportPickup(address);
-                          setPickupLat(lat); setPickupLng(lng);
-                        }}
-                      />
-                    </div>
+              {/* FROM */}
+              <div>
+                <label className={labelCls}>From</label>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <AddressAutocomplete
+                    showCurrentLocation={true}
+                      placeholder="Enter pickup location"
+                      value={activeTab === "outstation" ? outstationPickup : airportPickup}
+                      onChange={activeTab === "outstation" ? setOutstationPickup : setAirportPickup}
+                      onSelect={(address: string, lat: number, lng: number) => {
+                        if (activeTab === "outstation") setOutstationPickup(address);
+                        else setAirportPickup(address);
+                        setPickupLat(lat); setPickupLng(lng);
+                      }}
+                    />
                   </div>
                 </div>
-              {/* )} */}
+              </div>
 
-              {/* TO / PICKUP */}
-              {/* {activeTab === "rental" ? (
-                <div>
-                  <label className={labelCls}>Pick-up Location</label>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <AddressAutocomplete
-                       showCurrentLocation={true}
-                        placeholder="Enter pickup location"
-                        value={rentalPickup}
-                        onChange={setRentalPickup}
-                        onSelect={(address: string, lat: number, lng: number) => {
-                          setRentalPickup(address); setPickupLat(lat); setPickupLng(lng);
-                        }}
-                      />
-                    </div>
+              {/* TO */}
+              <div>
+                <label className={labelCls}>To</label>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <AddressAutocomplete
+                     showCurrentLocation={false}
+                      placeholder="Enter drop location"
+                      value={activeTab === "outstation" ? outstationDrop : airportDrop}
+                      onChange={activeTab === "outstation" ? setOutstationDrop : setAirportDrop}
+                      onSelect={(address: string, lat: number, lng: number) => {
+                        if (activeTab === "outstation") setOutstationDrop(address);
+                        else setAirportDrop(address);
+                        setDropLat(lat); setDropLng(lng);
+                      }}
+                    />
                   </div>
                 </div>
-              ) : ( */}
-                <div>
-                  <label className={labelCls}>To</label>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <AddressAutocomplete
-                       showCurrentLocation={false}
-                        placeholder="Enter drop location"
-                        value={activeTab === "outstation" ? outstationDrop : airportDrop}
-                        onChange={activeTab === "outstation" ? setOutstationDrop : setAirportDrop}
-                        onSelect={(address: string, lat: number, lng: number) => {
-                          if (activeTab === "outstation") setOutstationDrop(address);
-                          else setAirportDrop(address);
-                          setDropLat(lat); setDropLng(lng);
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              {/* )} */}
+              </div>
 
               {/* DATE */}
               <div>
@@ -380,9 +326,6 @@ export default function QuickBookingForm() {
                   </div>
                 </>
               )}
-
-              {/* Mobile */}
-              
             </div>
 
             {/* CTA */}
