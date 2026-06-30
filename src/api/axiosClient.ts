@@ -10,11 +10,26 @@ const axiosClient = axios.create({
   withCredentials: true,
 });
 
+// Public endpoints that do NOT require JWT
+const publicEndpoints = [
+  "/account/login",
+  "/account/register",
+  "/account/verify-otp",
+  "/account/resend-otp",
+  "/account/forgot-password",
+  "/account/verify-forgot-password-otp",
+  "/account/reset-password",
+];
+
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
 
-    if (token) {
+    const isPublicEndpoint = publicEndpoints.some((endpoint) =>
+      config.url?.includes(endpoint)
+    );
+
+    if (token && !isPublicEndpoint) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -26,7 +41,13 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const requestUrl = error.config?.url || "";
+
+    const isPublicEndpoint = publicEndpoints.some((endpoint) =>
+      requestUrl.includes(endpoint)
+    );
+
+    if (error.response?.status === 401 && !isPublicEndpoint) {
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
       localStorage.removeItem("fullName");
