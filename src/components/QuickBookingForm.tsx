@@ -16,10 +16,10 @@ interface BookingState {
 export default function QuickBookingForm() {
   const navigate = useNavigate();
   const [rentalCity, setRentalCity] = useState("");
-  const [activeTab, setActiveTab] = useState<"outstation" | "airport" | "rental">("outstation");
+  const [activeTab, setActiveTab] = useState<"outstation" | "airport" /* | "rental" */>("outstation");
   const [tripType, setTripType] = useState<"oneway" | "roundtrip">("oneway");
 
-  const handleTabChange = (tab: "outstation" | "airport" | "rental") => {
+  const handleTabChange = (tab: "outstation" | "airport" /* | "rental" */) => {
     setActiveTab(tab);
     setPickupLat(null); setPickupLng(null);
     setDropLat(null); setDropLng(null);
@@ -65,69 +65,73 @@ export default function QuickBookingForm() {
       if (!pickupTime) { toast.error("Please select pickup time"); return false; }
       
     }
-    if (activeTab === "rental") {
-      if (!pickup.trim()) { toast.error("Please enter pickup location"); return false; }
-      if (!rentalHours.trim() || parseInt(rentalHours) < 1) { toast.error("Enter valid rental hours"); return false; }
-      if (!pickupDate || pickupDate < today) { toast.error("Please select a valid pickup date"); return false; }
-      if (!pickupTime) { toast.error("Please select pickup time"); return false; }
-    
-    }
+    // if (activeTab === "rental") {
+    //   if (!pickup.trim()) { toast.error("Please enter pickup location"); return false; }
+    //   if (!rentalHours.trim() || parseInt(rentalHours) < 1) { toast.error("Enter valid rental hours"); return false; }
+    //   if (!pickupDate || pickupDate < today) { toast.error("Please select a valid pickup date"); return false; }
+    //   if (!pickupTime) { toast.error("Please select pickup time"); return false; }
+    // }
     return true;
   };
 
   const handleSearchRide = async () => {
-    if (activeTab === "rental") {
-      if (!rentalPickup.trim()) { toast.error("Please enter pickup location"); return; }
-      if (!pickupDate) { toast.error("Please select pickup date"); return; }
-      if (!pickupTime) { toast.error("Please select pickup time"); return; }
-      navigate("/rental-cars", { state: { pickup: rentalPickup, pickupDate, pickupTime, rentalHours } });
+    // if (activeTab === "rental") {
+    //   if (!rentalPickup.trim()) { toast.error("Please enter pickup location"); return; }
+    //   if (!pickupDate) { toast.error("Please select pickup date"); return; }
+    //   if (!pickupTime) { toast.error("Please select pickup time"); return; }
+    //   navigate("/rental-cars", { state: { pickup: rentalPickup, pickupDate, pickupTime, rentalHours } });
+    //   return;
+    // }
+
+    if (activeTab === "airport") {
+      if (!airportPickup || !airportDrop) {
+        toast.error("Please select pickup and drop locations");
+        return;
+      }
+      if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
+        toast.error("Please select locations from Google suggestions");
+        return;
+      }
+      if (!pickupDate || pickupDate < getTodayDate()) {
+        toast.error("Please select a valid pickup date");
+        return;
+      }
+      if (!pickupTime) {
+        toast.error("Please select pickup time");
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const res = await axios.post(
+          "https://adiyogi-travels.onrender.com/api/quotes",
+          {
+            pickup: airportPickup,
+            dropoff: airportDrop,
+            tripType: "airport",
+            pickupLat,
+            pickupLng,
+            dropLat,
+            dropLng,
+          }
+        );
+        const distanceKm = res.data?.[0]?.distanceKm || 0;
+        navigate("/airport-vehicles", {
+          state: {
+            pickup: airportPickup,
+            drop: airportDrop,
+            pickupDate,
+            pickupTime,
+            distanceKm,
+          },
+        });
+      } catch (error) {
+        toast.error("Unable to calculate airport distance");
+      } finally {
+        setIsLoading(false);
+      }
       return;
     }
-    if (activeTab === "airport") {
 
-  if (!airportPickup || !airportDrop) {
-    toast.error("Please select pickup and drop locations");
-    return;
-  }
-
-  if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
-    toast.error("Please select locations from Google suggestions");
-    return;
-  }
-
-  try {
-
-    const res = await axios.post(
-      "https://adiyogi-travels.onrender.com/api/quotes",
-      {
-        pickup: airportPickup,
-        dropoff: airportDrop,
-        tripType: "airport",
-        pickupLat,
-        pickupLng,
-        dropLat,
-        dropLng,
-      }
-    );
-
-    const distanceKm = res.data?.[0]?.distanceKm || 0;
-
-    navigate("/airport-vehicles", {
-      state: {
-        pickup: airportPickup,
-        drop: airportDrop,
-        pickupDate,
-        pickupTime,
-        distanceKm,
-      },
-    });
-
-  } catch (error) {
-    toast.error("Unable to calculate airport distance");
-  }
-
-  return;
-}
     if (!validateForm()) return;
     const pickup = getCurrentPickup();
     const drop = getCurrentDrop();
@@ -155,7 +159,7 @@ export default function QuickBookingForm() {
   const tabs = [
     { id: "outstation", label: "Outstation", icon: Car },
     { id: "airport", label: "Airport", icon: Plane },
-    { id: "rental", label: "Local", icon: Building },
+    // { id: "rental", label: "Local", icon: Building },
   ] as const;
 
   const todayDate = getTodayDate();
@@ -243,7 +247,7 @@ export default function QuickBookingForm() {
           <div className="p-4 md:p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
               {/* FROM / CITY */}
-              {activeTab === "rental" ? (
+              {/* {activeTab === "rental" ? (
                 <div>
                   <label className={labelCls}>City</label>
                   <input
@@ -254,7 +258,7 @@ export default function QuickBookingForm() {
                     className={inputCls}
                   />
                 </div>
-              ) : (
+              ) : ( */}
                 <div>
                   <label className={labelCls}>From</label>
                   <div className="flex items-center gap-2">
@@ -274,10 +278,10 @@ export default function QuickBookingForm() {
                     </div>
                   </div>
                 </div>
-              )}
+              {/* )} */}
 
               {/* TO / PICKUP */}
-              {activeTab === "rental" ? (
+              {/* {activeTab === "rental" ? (
                 <div>
                   <label className={labelCls}>Pick-up Location</label>
                   <div className="flex items-center gap-2">
@@ -295,7 +299,7 @@ export default function QuickBookingForm() {
                     </div>
                   </div>
                 </div>
-              ) : (
+              ) : ( */}
                 <div>
                   <label className={labelCls}>To</label>
                   <div className="flex items-center gap-2">
@@ -315,7 +319,7 @@ export default function QuickBookingForm() {
                     </div>
                   </div>
                 </div>
-              )}
+              {/* )} */}
 
               {/* DATE */}
               <div>
