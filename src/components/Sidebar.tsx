@@ -1,15 +1,11 @@
-
 import {
   Menu,
   Home,
   Car,
-  Plane,
   Briefcase,
   Bot,
   Phone,
-  Sparkles,
   ChevronLeft,
-  
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -26,11 +22,9 @@ export default function Sidebar({
   const items = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Car, label: "Our Cars", path: "/vehicle" },
-    { icon: Plane, label: "Airport", path: "/" },
     { icon: Briefcase, label: "Packages", path: "/holiday-packages" },
     { icon: Bot, label: "AI Assistant", path: "/ai" },
     { icon: Phone, label: "Contact", path: "/contact" },
-    { icon: Sparkles, label: "Coming Soon", path: "/coming-soon" },
   ];
 
   return (
@@ -84,19 +78,10 @@ export default function Sidebar({
 
       {/* Bottom */}
       {expanded && (
-        <div className="absolute bottom-4 left-4 right-4">
-          <div className="bg-orange-50 border border-orange-100 rounded-xl p-3">
-            <div className="flex items-center gap-2 text-orange-600 mb-1">
-              <Bot size={16} />
-              <span className="font-semibold text-sm">
-                AI Assistant
-              </span>
-            </div>
-
-            <p className="text-xs text-slate-600">
-              Coming Soon 
-            </p>
-          </div>
+        <div className="absolute bottom-4 left-4 right-4 text-center">
+          <p className="text-[11px] text-slate-400">
+            Powered by Swiftov.ai
+          </p>
         </div>
       )}
     </aside>

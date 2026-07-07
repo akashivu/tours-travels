@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+
+import { AIWidgetProvider } from "./context/AIWidgetContext";
 
 import SiteLayout from "./layouts/SiteLayout";
 import UserDashboardLayout from "./pages/UserDashboardLayout";
-
 
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
@@ -12,7 +13,6 @@ import HolidayPackages from "./pages/HolidayPackages";
 import OurVehicles from "./pages/OurVehicles";
 import Booking from "./pages/Booking";
 import RoutesList from "./pages/RoutesList";
-
 
 import VehicleSelection from "./components/VehicleSelection";
 import QuickBookingForm from "./components/QuickBookingForm";
@@ -25,20 +25,29 @@ import RentalConfirmation from "./pages/RentalConfirmation";
 
 import AirportVehicleSelection from "./pages/AirportVehicleSelection";
 import AirportBooking from "./pages/AirportBooking";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+
 import AIAssistant from "./pages/AIAssistant";
 import { AIWidget } from "./components/ai/AIWidget";
+
 import CookieBanner from "./components/CookieBanner";
+
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 
-export default function App() {
+function AppContent() {
+  const location = useLocation();
+
+  // Hide floating AI widget on AI Assistant page
+  const hideAIWidget = location.pathname === "/ai";
+
   return (
-    <BrowserRouter>
+    <>
       <Routes>
-       
+        {/* Public Website */}
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
@@ -53,60 +62,72 @@ export default function App() {
           <Route path="/bookingform" element={<QuickBookingForm />} />
           <Route path="/confirmation" element={<BookingConfirmation />} />
           <Route path="/rental-cars" element={<RentalCarList />} />
+          <Route path="/rental-confirm" element={<RentalConfirmation />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
-        <Route path="/rental-confirm" element={<RentalConfirmation />} />
-        
         </Route>
 
-       
+        {/* User Dashboard */}
         <Route element={<ProtectedRoute />}>
-  <Route path="/user" element={<UserDashboardLayout />}>
-    <Route path="dashboard" element={<QuickBookingForm />} />
-    <Route path="my-bookings" element={<MyBooking />} />
-    <Route path="vehicle" element={<OurVehicles />} />
-    <Route path="holiday-packages" element={<HolidayPackages />} />
-    <Route path="local-packages" element={<RoutesList />} />
+          <Route path="/user" element={<UserDashboardLayout />}>
+            <Route path="dashboard" element={<QuickBookingForm />} />
+            <Route path="my-bookings" element={<MyBooking />} />
+            <Route path="vehicle" element={<OurVehicles />} />
+            <Route path="holiday-packages" element={<HolidayPackages />} />
+            <Route path="local-packages" element={<RoutesList />} />
+            <Route path="contact" element={<ContactUs />} />
+          </Route>
+        </Route>
 
-    <Route path="contact" element={<ContactUs />} />
-     
-  </Route>
-</Route>
-
-        
+        {/* Admin */}
         <Route element={<AdminRoute />}>
-  <Route
-      path="/admin/dashboard"
-      element={<AdminDashboard />}
-  />
-</Route>
-       <Route path="/account" element={<AccountForm />} />
-      </Routes>
-      <AIWidget />
-      <CookieBanner />
-     <Toaster
-  position="top-center"
-  toastOptions={{
-    duration: 4000,
-    style: {
-      background: "#333",       
-      color: "#fff",           
-      fontSize: "15px",
-      fontWeight: "500",
-      borderRadius: "8px",
-      padding: "12px 16px",
-    },
-    success: {
-      style: { background: "#16a34a" }, 
-    },
-    error: {
-      style: { background: "#dc2626" },
-    },
-  }}
-/>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Route>
 
-    </BrowserRouter>
+        {/* Account */}
+        <Route path="/account" element={<AccountForm />} />
+      </Routes>
+
+      
+      {!hideAIWidget && <AIWidget />}
+
+      <CookieBanner />
+
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontSize: "15px",
+            fontWeight: "500",
+            borderRadius: "8px",
+            padding: "12px 16px",
+          },
+          success: {
+            style: {
+              background: "#16a34a",
+            },
+          },
+          error: {
+            style: {
+              background: "#dc2626",
+            },
+          },
+        }}
+      />
+    </>
   );
 }
 
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AIWidgetProvider>
+        <AppContent />
+      </AIWidgetProvider>
+    </BrowserRouter>
+  );
+}

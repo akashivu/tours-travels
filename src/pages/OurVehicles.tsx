@@ -1,5 +1,21 @@
-import { useState } from "react";
-import { Users, Briefcase, DoorOpen, Snowflake, Settings2, CheckCircle2, Info } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Users,
+  Briefcase,
+  DoorOpen,
+  Snowflake,
+  Settings2,
+  ShieldCheck,
+  Navigation,
+  Sparkles,
+  BadgeCheck,
+  CarFront,
+  Clock,
+} from "lucide-react";
+
+/* ---------------------------------------------------------------------- */
+/* Original data & types — untouched. Do not modify structure or types.  */
+/* ---------------------------------------------------------------------- */
 
 type Package = {
   l: string;
@@ -29,8 +45,11 @@ const vehicles: Vehicle[] = [
   {
     name: "Toyota Etios",
     type: "Compact sedan",
-    image: "https://www.usedrive.in/upload/car/WhatsApp%20Image%202024-03-15%20at%206.30.40%20PM.jpeg",
-    seats: 5, bags: 2, doors: 4,
+    image:
+      "https://www.usedrive.in/upload/car/WhatsApp%20Image%202024-03-15%20at%206.30.40%20PM.jpeg",
+    seats: 5,
+    bags: 2,
+    doors: 4,
     tags: ["Free cancellation", "Toll extra"],
     local: {
       pkgs: [
@@ -38,18 +57,23 @@ const vehicles: Vehicle[] = [
         { l: "8 hr / 80 km", p: "₹2,000" },
         { l: "12 hr / 120 km", p: "₹3,000" },
       ],
-      extra: "₹20/km", extraHr: "₹200/hr", note: "Toll & parking extra",
+      extra: "₹20/km",
+      extraHr: "₹200/hr",
+      note: "Toll & parking extra",
     },
     out: {
       pkgs: [{ l: "300 km / day", p: "₹4,200" }],
-      extra: "₹15/km", note: "Driver bata & tax included",
+      extra: "₹15/km",
+      note: "Driver bata & tax included",
     },
   },
   {
     name: "Swift Dzire",
     type: "Compact sedan",
     image: "https://www.usedrive.in/upload/car/swift%20diser%202.png",
-    seats: 5, bags: 2, doors: 4,
+    seats: 5,
+    bags: 2,
+    doors: 4,
     tags: ["Free cancellation", "Toll extra"],
     local: {
       pkgs: [
@@ -57,18 +81,23 @@ const vehicles: Vehicle[] = [
         { l: "8 hr / 80 km", p: "₹2,000" },
         { l: "12 hr / 120 km", p: "₹3,000" },
       ],
-      extra: "₹20/km", extraHr: "₹200/hr", note: "Toll & parking extra",
+      extra: "₹20/km",
+      extraHr: "₹200/hr",
+      note: "Toll & parking extra",
     },
     out: {
       pkgs: [{ l: "300 km / day", p: "₹4,200" }],
-      extra: "₹15/km", note: "Driver bata & tax included",
+      extra: "₹15/km",
+      note: "Driver bata & tax included",
     },
   },
   {
     name: "Toyota Innova",
     type: "7-seater MPV",
     image: "https://www.usedrive.in/upload/car/20221104124352_Innova.jpg",
-    seats: 7, bags: 3, doors: 4,
+    seats: 7,
+    bags: 3,
+    doors: 4,
     tags: ["Free cancellation", "Toll extra"],
     local: {
       pkgs: [
@@ -76,18 +105,24 @@ const vehicles: Vehicle[] = [
         { l: "8 hr / 80 km", p: "₹3,200" },
         { l: "12 hr / 120 km", p: "₹4,200" },
       ],
-      extra: "₹25/km", extraHr: "₹250/hr", note: "Toll & parking extra",
+      extra: "₹25/km",
+      extraHr: "₹250/hr",
+      note: "Toll & parking extra",
     },
     out: {
       pkgs: [{ l: "300 km / day", p: "₹5,699" }],
-      extra: "₹18/km", note: "Driver bata & tax included",
+      extra: "₹18/km",
+      note: "Driver bata & tax included",
     },
   },
   {
     name: "Innova Crysta",
     type: "Premium MPV",
-    image: "https://www.kushicabz.com/upload/car/crysta-removebg-preview.png",
-    seats: 7, bags: 3, doors: 4,
+    image:
+      "https://www.kushicabz.com/upload/car/crysta-removebg-preview.png",
+    seats: 7,
+    bags: 3,
+    doors: 4,
     tags: ["Free cancellation", "Toll extra"],
     local: {
       pkgs: [
@@ -95,18 +130,23 @@ const vehicles: Vehicle[] = [
         { l: "8 hr / 80 km", p: "₹3,400" },
         { l: "12 hr / 120 km", p: "₹4,400" },
       ],
-      extra: "₹30/km", extraHr: "₹275/hr", note: "Toll & parking extra",
+      extra: "₹30/km",
+      extraHr: "₹275/hr",
+      note: "Toll & parking extra",
     },
     out: {
       pkgs: [{ l: "300 km / day", p: "₹6,199" }],
-      extra: "₹19/km", note: "Driver allowance & tax included",
+      extra: "₹19/km",
+      note: "Driver allowance & tax included",
     },
   },
   {
     name: "Tempo Traveller",
     type: "Group vehicle",
     image: "https://www.usedrive.in/upload/car/tempo%20traveler.jpg",
-    seats: 12, bags: 6, doors: 2,
+    seats: 12,
+    bags: 6,
+    doors: 2,
     tags: ["Group travel", "Toll extra"],
     local: {
       pkgs: [
@@ -114,164 +154,212 @@ const vehicles: Vehicle[] = [
         { l: "8 hr / 80 km", p: "₹3,400" },
         { l: "12 hr / 120 km", p: "₹4,400" },
       ],
-      extra: "₹30/km", extraHr: "₹275/hr", note: "Toll & parking extra",
+      extra: "₹30/km",
+      extraHr: "₹275/hr",
+      note: "Toll & parking extra",
     },
     out: {
       pkgs: [{ l: "300 km / day", p: "₹6,799" }],
-      extra: "₹21/km", note: "Driver allowance & tax included",
+      extra: "₹21/km",
+      note: "Driver allowance & tax included",
     },
   },
 ];
 
+/* ---------------------------------------------------------------------- */
+/* Presentation-only content, keyed off vehicle.name.                     */
+/* Purely descriptive copy for the catalogue view — no business logic,   */
+/* no pricing, no effect on the data above.                               */
+/* ---------------------------------------------------------------------- */
+
+type FleetCopy = {
+  transmission: string;
+  perfectFor: string[];
+  bestFor: string[];
+  groupNote: string;
+};
+
+const fleetCopy: Record<string, FleetCopy> = {
+  "Toyota Etios": {
+    transmission: "Manual / Automatic",
+    perfectFor: [
+      "Airport transfers",
+      "Business travel",
+      "City rides",
+      "Short outstation trips",
+    ],
+    bestFor: ["Solo travelers", "Couples", "Corporate travel", "Airport pickup & drop"],
+    groupNote: "Family Friendly",
+  },
+  "Swift Dzire": {
+    transmission: "Manual / Automatic",
+    perfectFor: [
+      "Airport transfers",
+      "Business travel",
+      "City rides",
+      "Weekend trips",
+    ],
+    bestFor: ["Solo travelers", "Small families", "Corporate travel", "Outstation trips"],
+    groupNote: "Family Friendly",
+  },
+  "Toyota Innova": {
+    transmission: "Manual",
+    perfectFor: [
+      "Family trips",
+      "Airport transfers",
+      "Outstation journeys",
+      "Group outings",
+    ],
+    bestFor: ["Families", "Group travel", "Outstation trips", "Airport pickup & drop"],
+    groupNote: "Family Friendly",
+  },
+  "Innova Crysta": {
+    transmission: "Automatic",
+    perfectFor: [
+      "Corporate travel",
+      "Long outstation trips",
+      "Family vacations",
+      "Premium airport transfers",
+    ],
+    bestFor: ["Corporate executives", "Families", "Outstation trips", "Premium travel"],
+    groupNote: "Family Friendly",
+  },
+  "Tempo Traveller": {
+    transmission: "Manual",
+    perfectFor: [
+      "Group travel",
+      "Outstation tours",
+      "Corporate events",
+      "Pilgrimage trips",
+    ],
+    bestFor: ["Large groups", "Corporate events", "Family functions", "Outstation tours"],
+    groupNote: "Group Friendly",
+  },
+};
+
+const fallbackCopy: FleetCopy = {
+  transmission: "Manual / Automatic",
+  perfectFor: ["Airport transfers", "City rides", "Outstation trips", "Group travel"],
+  bestFor: ["Travelers", "Families", "Corporate travel", "Outstation trips"],
+  groupNote: "Family Friendly",
+};
+
+/* ---------------------------------------------------------------------- */
+
+function SpecItem({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100">
+        <Icon size={12} className="text-slate-500" strokeWidth={2} />
+      </span>
+      <span className="text-xs font-medium text-slate-600">{label}</span>
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+      {children}
+    </p>
+  );
+}
+
+function Chip({
+  children,
+  icon: Icon,
+}: {
+  children: React.ReactNode;
+  icon?: LucideIcon;
+}) {
+  return (
+    <span className="flex items-center gap-1 rounded-full bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600">
+      {Icon && <Icon size={11} className="text-emerald-600" />}
+      {children}
+    </span>
+  );
+}
+
 function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
-  const [tab, setTab] = useState<"local" | "out">("local");
-  const d: TripData = tab === "local" ? vehicle.local : vehicle.out;
-  const basePrice = d.pkgs[0].p;
+  const copy = fleetCopy[vehicle.name] ?? fallbackCopy;
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
-      {/* Main Row */}
+    <div className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-10px_rgba(15,23,42,0.16)]">
       <div className="flex flex-col sm:flex-row">
-
-        {/* Image Column */}
-        <div className="sm:w-48 bg-gray-50 border-b sm:border-b-0 sm:border-r border-gray-200 flex flex-col items-center justify-center p-4 gap-2">
-          <img
-            src={vehicle.image}
-            alt={vehicle.name}
-            className="w-36 h-20 object-contain"
-            onError={(e: React.SyntheticEvent<HTMLImageElement>) =>
-              (e.currentTarget.style.opacity = "0.2")
-            }
-          />
-          <span className="text-xs text-gray-400 text-center">{vehicle.type}</span>
+        {/* Image */}
+        <div className="relative w-full shrink-0 overflow-hidden bg-slate-100 sm:w-40 lg:w-56">
+          <div className="absolute left-2.5 top-2.5 z-10 flex items-center gap-1 rounded-full bg-slate-900/90 px-2 py-1 backdrop-blur-sm">
+            <CarFront size={10} className="text-white" />
+            <span className="text-[10px] font-medium tracking-wide text-white">
+              {vehicle.type}
+            </span>
+          </div>
+          <div className="h-32 w-full sm:h-full sm:min-h-[132px]">
+            <img
+              src={vehicle.image}
+              alt={vehicle.name}
+              className="h-full w-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) =>
+                (e.currentTarget.style.opacity = "0.15")
+              }
+            />
+          </div>
         </div>
 
-        {/* Info Column */}
-        <div className="flex-1 p-4 flex flex-col gap-3">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">{vehicle.name}</h3>
-            <p className="text-xs text-gray-400">or similar · {vehicle.type}</p>
+        {/* Content */}
+        <div className="flex-1 border-t border-slate-100 p-3.5 sm:border-t-0 sm:border-l sm:p-4">
+          {/* Header */}
+          <div className="flex items-baseline justify-between gap-2">
+            <h3 className="text-base font-bold tracking-tight text-slate-900">
+              {vehicle.name}
+            </h3>
+            <span className="text-[11px] text-slate-400">{vehicle.type}</span>
           </div>
 
           {/* Specs */}
-          <div className="flex flex-wrap gap-4 text-xs text-gray-500">
-            <span className="flex items-center gap-1">
-              <Users size={13} className="text-gray-400" />
-              {vehicle.seats} seats
-            </span>
-            <span className="flex items-center gap-1">
-              <Briefcase size={13} className="text-gray-400" />
-              {vehicle.bags} bags
-            </span>
-            <span className="flex items-center gap-1">
-              <DoorOpen size={13} className="text-gray-400" />
-              {vehicle.doors} doors
-            </span>
-            <span className="flex items-center gap-1">
-              <Snowflake size={13} className="text-gray-400" />
-              A/C
-            </span>
-            <span className="flex items-center gap-1">
-              <Settings2 size={13} className="text-gray-400" />
-              Auto
-            </span>
+          <div className="mt-2.5 grid grid-cols-3 gap-y-1.5 border-t border-slate-100 pt-2.5">
+            <SpecItem icon={Users} label={`${vehicle.seats} pax`} />
+            <SpecItem icon={Briefcase} label={`${vehicle.bags} bags`} />
+            <SpecItem icon={DoorOpen} label={`${vehicle.doors} doors`} />
+            <SpecItem icon={Snowflake} label="A/C" />
+            <SpecItem icon={Settings2} label={copy.transmission} />
+            <SpecItem icon={Navigation} label="GPS" />
           </div>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {vehicle.tags.map((tag: string, i: number) => (
-              <span
-                key={i}
-                className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full border ${
-                  tag === "Free cancellation" || tag === "Group travel"
-                    ? "bg-green-50 text-green-800 border-green-200"
-                    : "bg-gray-50 text-gray-500 border-gray-200"
-                }`}
-              >
-                {tag === "Free cancellation" || tag === "Group travel" ? (
-                  <CheckCircle2 size={11} />
-                ) : (
-                  <Info size={11} />
-                )}
-                {tag}
-              </span>
-            ))}
+          {/* Perfect for */}
+          <div className="mt-2.5 border-t border-slate-100 pt-2.5">
+            <SectionLabel>Perfect for</SectionLabel>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              {copy.perfectFor.map((item: string) => (
+                <Chip key={item}>{item}</Chip>
+              ))}
+            </div>
           </div>
 
-          {/* Tab Toggle */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => setTab("local")}
-              className={`text-xs px-4 py-1.5 rounded-full border transition-colors ${
-                tab === "local"
-                  ? "bg-gray-900 text-white border-gray-900"
-                  : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
-              }`}
-            >
-              Local packages
-            </button>
-            <button
-              onClick={() => setTab("out")}
-              className={`text-xs px-4 py-1.5 rounded-full border transition-colors ${
-                tab === "out"
-                  ? "bg-gray-900 text-white border-gray-900"
-                  : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
-              }`}
-            >
-              Outstation
-            </button>
+          {/* Best for */}
+          <div className="mt-2.5 border-t border-slate-100 pt-2.5">
+            <SectionLabel>Best for</SectionLabel>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              {copy.bestFor.map((item: string) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Assurance + reliability */}
+          <div className="mt-2.5 flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-2.5">
+            <Chip icon={ShieldCheck}>Sanitized</Chip>
+            <Chip icon={Sparkles}>Chauffeur driven</Chip>
+            <Chip icon={Users}>{copy.groupNote}</Chip>
+            <Chip icon={Clock}>24×7</Chip>
+            <Chip icon={BadgeCheck}>Well maintained</Chip>
           </div>
         </div>
-
-        {/* Price Column */}
-        <div className="sm:w-44 border-t sm:border-t-0 sm:border-l border-gray-200 p-4 flex flex-col justify-between items-end gap-4">
-          <div className="text-right">
-            <p className="text-xs text-gray-400">Starting from</p>
-            <p className="text-2xl font-semibold text-gray-900">{basePrice}</p>
-            <p className="text-xs text-gray-400 mt-0.5">
-              {tab === "local" ? "for 4 hr / 40 km" : "per day / 300 km"}
-            </p>
-          </div>
-          <div className="w-full text-right">
-            <p className="text-xs text-gray-400 mb-2">
-              {tab === "out" ? d.note : "Toll & parking extra"}
-            </p>
-            <button className="w-full bg-gray-900 text-white text-sm font-medium py-2 rounded-lg hover:bg-gray-700 transition-colors">
-              Book now
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Package Detail Strip */}
-      <div className="border-t border-gray-200 bg-gray-50 px-4 py-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
-        {d.pkgs.map((pkg: Package, i: number) => (
-          <div key={i} className="bg-white border border-gray-200 rounded-lg px-3 py-2">
-            <p className="text-xs text-gray-400">{pkg.l}</p>
-            <p className="text-sm font-semibold text-gray-900">{pkg.p}</p>
-            <p className="text-xs text-gray-400">
-              {tab === "local" ? "Excl. extras" : "All-in rate"}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Extra Row */}
-      <div className="border-t border-gray-200 bg-gray-50 px-4 py-2 flex flex-wrap gap-4">
-        <span className="flex items-center gap-1 text-xs text-gray-500">
-          <Info size={11} className="text-gray-400" />
-          Extra km <strong className="text-gray-700 ml-1">{d.extra}</strong>
-        </span>
-        {tab === "local" && d.extraHr && (
-          <span className="flex items-center gap-1 text-xs text-gray-500">
-            <Info size={11} className="text-gray-400" />
-            Extra hour <strong className="text-gray-700 ml-1">{d.extraHr}</strong>
-          </span>
-        )}
-        <span className="flex items-center gap-1 text-xs text-gray-500">
-          <CheckCircle2 size={11} className="text-gray-400" />
-          <strong className="text-gray-700">{d.note}</strong>
-        </span>
       </div>
     </div>
   );
@@ -279,25 +367,26 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
 
 export default function OurVehicles() {
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4">
-      <div className="flex flex-col gap-4">
-        <div className="mb-10">
-  <p className="text-sm font-semibold tracking-widest uppercase text-orange-500">
-    Premium Fleet
-  </p>
+    <div className="mx-auto max-w-7xl px-4 py-6">
+      <div className="mb-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+          Premium Fleet
+        </p>
+        <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          Our Premium Fleet
+        </h1>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+          Choose from our professionally maintained fleet designed for airport
+          transfers, corporate travel, family trips, outstation journeys, and
+          group transportation. Every vehicle is chauffeur-driven, regularly
+          serviced, and maintained to provide a safe, comfortable, and
+          reliable travel experience.
+        </p>
+      </div>
 
-  <h1 className="mt-2 text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
-    Find the Perfect Ride for Every Journey
-  </h1>
-
-  <p className="mt-4 max-w-3xl text-gray-600 text-lg leading-relaxed">
-    Choose from our professionally maintained fleet for local trips,
-    airport transfers, outstation travel, and group journeys with
-    transparent pricing and experienced drivers.
-  </p>
-</div>
-        {vehicles.map((vehicle: Vehicle, i: number) => (
-          <VehicleCard key={i} vehicle={vehicle} />
+      <div className="flex flex-col gap-3">
+        {vehicles.map((vehicle: Vehicle) => (
+          <VehicleCard key={vehicle.name} vehicle={vehicle} />
         ))}
       </div>
     </div>

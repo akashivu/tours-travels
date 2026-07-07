@@ -1,19 +1,13 @@
 export function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1 px-3.5 py-2 mb-2.5">
-      {[0, 1, 2].map(i => (
-        <div
+    <div className="flex items-center gap-1.5 pl-3.5 mb-5" style={{ borderLeft: '2px solid var(--signal-soft)' }}>
+      {[0, 1, 2].map((i) => (
+        <span
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-neutral-400"
-          style={{ animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite` }}
+          className="ai-typing-dot block w-1.5 h-1.5 rounded-full"
+          style={{ background: 'var(--muted)', animationDelay: `${i * 0.15}s` }}
         />
       ))}
-      <style>{`
-        @keyframes bounce {
-          0%, 60%, 100% { transform: translateY(0); }
-          30% { transform: translateY(-4px); }
-        }
-      `}</style>
     </div>
   );
 }

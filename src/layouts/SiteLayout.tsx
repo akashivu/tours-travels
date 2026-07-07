@@ -14,7 +14,7 @@ export default function SiteLayout() {
       <TopBar expanded={expanded} />
 
       <div
-        className={`pt-12 min-h-screen transition-all duration-300 ${
+        className={`pt-[92px] min-h-screen transition-all duration-300 ${
           expanded ? "lg:ml-64" : "lg:ml-16"
         }`}
       >
@@ -27,4 +27,4 @@ export default function SiteLayout() {
       </div>
     </div>
   );
-}
+} 

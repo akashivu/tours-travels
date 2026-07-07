@@ -41,30 +41,42 @@ export function AIChatWindow({
   /* ── Inline: plain block filling parent flex container ── */
   if (inline) {
     return (
-      <div className="flex flex-col h-full w-full overflow-hidden bg-white border-l border-neutral-100">
+      <div className="flex flex-col h-full w-full overflow-hidden bg-black">
         <AIChatHeader
           isLoading={state.isLoading}
           onNewChat={onNewChat}
-          onClose={undefined}        // no close button in inline mode
-          onToggleSidebar={() => setSidebarOpen(o => !o)}
+          onClose={undefined}
+          onToggleSidebar={() => setSidebarOpen((o) => !o)}
           sidebarOpen={sidebarOpen}
         />
 
-        <div className="flex flex-1 overflow-hidden relative">
+        <div className="flex flex-1 overflow-hidden relative min-h-0">
           {sidebarOpen && (
-            <div className="absolute inset-y-0 left-0 z-10 w-[200px] border-r border-neutral-100 bg-white">
-              <AIChatSidebar
-                sessions={sessions}
-                currentSessionId={state.sessionId}
-                isLoading={isLoadingSessions}
-                onSelect={(id) => { onSelectSession(id); setSidebarOpen(false); }}
-                onDelete={onDeleteSession}
-                onNewChat={() => { onNewChat(); setSidebarOpen(false); }}
+            <>
+              <div
+                onClick={() => setSidebarOpen(false)}
+                className="absolute inset-0 z-10 bg-slate-900/10 backdrop-blur-[1px]"
               />
-            </div>
+              <div className="absolute inset-y-0 left-0 z-20 w-[220px] border-r border-slate-200 bg-white shadow-lg">
+                <AIChatSidebar
+                  sessions={sessions}
+                  currentSessionId={state.sessionId}
+                  isLoading={isLoadingSessions}
+                  onSelect={(id) => {
+                    onSelectSession(id);
+                    setSidebarOpen(false);
+                  }}
+                  onDelete={onDeleteSession}
+                  onNewChat={() => {
+                    onNewChat();
+                    setSidebarOpen(false);
+                  }}
+                />
+              </div>
+            </>
           )}
 
-          <div className="flex flex-col flex-1 overflow-hidden min-w-0">
+          <div className="flex flex-col flex-1 overflow-hidden min-w-0 min-h-0 bg-slate-50/40">
             <AIMessageList
               messages={state.messages}
               isLoading={state.isLoading}
@@ -78,7 +90,7 @@ export function AIChatWindow({
     );
   }
 
-  /* ── Default: fixed floating overlay (used by AIWidget everywhere else) ── */
+  /* ── Default: fixed floating overlay ── */
   return (
     <div
       className="
@@ -88,31 +100,43 @@ export function AIChatWindow({
         sm:w-[400px] sm:h-[580px]
         sm:rounded-2xl
       "
-      style={{ boxShadow: '0 0 0 1px rgba(0,0,0,0.08), 0 20px 60px rgba(0,0,0,0.12)' }}
+      style={{ boxShadow: '0 0 0 1px rgba(15,23,42,0.08), 0 20px 60px rgba(15,23,42,0.16)' }}
     >
       <AIChatHeader
         isLoading={state.isLoading}
         onNewChat={onNewChat}
         onClose={onClose}
-        onToggleSidebar={() => setSidebarOpen(o => !o)}
+        onToggleSidebar={() => setSidebarOpen((o) => !o)}
         sidebarOpen={sidebarOpen}
       />
 
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="flex flex-1 overflow-hidden relative min-h-0">
         {sidebarOpen && (
-          <div className="absolute inset-y-0 left-0 z-10 w-[200px] border-r border-neutral-100 bg-white">
-            <AIChatSidebar
-              sessions={sessions}
-              currentSessionId={state.sessionId}
-              isLoading={isLoadingSessions}
-              onSelect={(id) => { onSelectSession(id); setSidebarOpen(false); }}
-              onDelete={onDeleteSession}
-              onNewChat={() => { onNewChat(); setSidebarOpen(false); }}
+          <>
+            <div
+              onClick={() => setSidebarOpen(false)}
+              className="absolute inset-0 z-10 bg-slate-900/10"
             />
-          </div>
+            <div className="absolute inset-y-0 left-0 z-20 w-[220px] border-r border-slate-200 bg-white shadow-lg">
+              <AIChatSidebar
+                sessions={sessions}
+                currentSessionId={state.sessionId}
+                isLoading={isLoadingSessions}
+                onSelect={(id) => {
+                  onSelectSession(id);
+                  setSidebarOpen(false);
+                }}
+                onDelete={onDeleteSession}
+                onNewChat={() => {
+                  onNewChat();
+                  setSidebarOpen(false);
+                }}
+              />
+            </div>
+          </>
         )}
 
-        <div className="flex flex-col flex-1 overflow-hidden min-w-0">
+        <div className="flex flex-col flex-1 overflow-hidden min-w-0 min-h-0 bg-slate-50/40">
           <AIMessageList
             messages={state.messages}
             isLoading={state.isLoading}
