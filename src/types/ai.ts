@@ -26,6 +26,7 @@ export interface SessionsState {
 export interface SendMessagePayload {
   session_id: string;
   question: string;
+  guest_id?: string;
 }
 
 export interface ChatResponse {

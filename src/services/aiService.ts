@@ -3,7 +3,9 @@ import type { ChatResponse, SendMessagePayload, Session, Message } from '../type
 import { AI_ENDPOINTS } from '../constants/aiEndpoints';
 
 const SESSION_KEY = 'AI_SESSION_ID';
+const GUEST_KEY = 'AI_GUEST_ID';
 const WIDGET_OPEN_KEY = 'AI_WIDGET_OPEN';
+
 
 const aiClient = axios.create({
   baseURL: import.meta.env.VITE_AI_BASE_URL || 'http://localhost:8000',
@@ -41,6 +43,18 @@ export const aiService = {
     return id;
   },
 
+  getOrCreateGuestId(): string {
+  const existing = localStorage.getItem(GUEST_KEY);
+
+  if (existing) {
+    return existing;
+  }
+
+  const guestId = crypto.randomUUID();
+  localStorage.setItem(GUEST_KEY, guestId);
+
+  return guestId;
+},
   newSession(): string {
     const id = crypto.randomUUID();
     localStorage.setItem(SESSION_KEY, id);
@@ -64,11 +78,14 @@ export const aiService = {
     signal?: AbortSignal,
   ): Promise<ChatResponse> {
     try {
-      const { data } = await aiClient.post<ChatResponse>(
-        AI_ENDPOINTS.CHAT,
-        payload,
-        { signal },
-      );
+      const { data } = await aiClient.post(
+  AI_ENDPOINTS.CHAT,
+  {
+    ...payload,
+    guest_id: this.getOrCreateGuestId(),
+  },
+  { signal },
+);
       return data;
     } catch (error) {
       if (axios.isCancel(error)) throw error;
