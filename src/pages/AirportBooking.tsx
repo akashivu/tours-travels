@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import axiosClient from "../api/axiosClient";
 import toast from "react-hot-toast";
 import { Car } from "lucide-react";
 
@@ -64,10 +64,10 @@ export default function AirportBooking() {
         tripType: tripType || "airport",
       };
 
-      const response = await axios.post(
-        "https://adiyogi-travels.onrender.com/api/bookings/confirm",
-        payload
-      );
+      const response = await axiosClient.post(
+  "/bookings/confirm",
+  payload
+);
 
       toast.success("Booking Confirmed");
 

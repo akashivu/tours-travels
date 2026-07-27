@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosClient from "../api/axiosClient";
 
 type Booking = {
-   id: number;
+  id: number;
   pickup: string;
   dropoff: string;
   tripType: string;
@@ -15,100 +15,102 @@ type Booking = {
   status: string;
 };
 
-
 export default function AdminDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   const token = localStorage.getItem("token");
 
-if (!token) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      Please login first
-    </div>
-  );
-}
+  if (!token) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Please login first
+      </div>
+    );
+  }
+
   useEffect(() => {
     fetchBookings();
   }, []);
 
   const fetchBookings = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-const res = await axios.get(
-  "https://adiyogi-travels.onrender.com/api/admin/bookings",
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const res = await axiosClient.get("/admin/bookings");
       setBookings(res.data);
     } catch (error) {
       console.error("Error fetching bookings:", error);
     }
   };
 
-  
   const updateStatus = async (id: number, status: string) => {
     try {
-      const token = localStorage.getItem("token");
+      await axiosClient.patch(
+        `/admin/bookings/${id}/status`,
+        { status }
+      );
 
-await axios.patch(
-  `https://adiyogi-travels.onrender.com/api/admin/bookings/${id}/status`,
-  { status },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
-      fetchBookings(); 
+      fetchBookings();
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
 
- 
   const deleteBooking = async (id: number) => {
     try {
-      const token = localStorage.getItem("token");
+      await axiosClient.delete(`/admin/bookings/${id}`);
 
-await axios.delete(
-  `https://adiyogi-travels.onrender.com/api/admin/bookings/${id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
-      fetchBookings(); 
+      fetchBookings();
     } catch (error) {
       console.error("Error deleting booking:", error);
     }
   };
+
   const totalBookings = bookings.length;
-  const confirmed = bookings.filter((b) => b.status === "CONFIRMED").length;
-  const cancelled = bookings.filter((b) => b.status === "CANCELLED").length;
+  const confirmed = bookings.filter(
+    (b) => b.status === "CONFIRMED"
+  ).length;
+  const cancelled = bookings.filter(
+    (b) => b.status === "CANCELLED"
+  ).length;
+
   const vehiclesInUse = new Set(
-    bookings.filter((b) => b.status === "CONFIRMED").map((b) => b.vehicleName)
+    bookings
+      .filter((b) => b.status === "CONFIRMED")
+      .map((b) => b.vehicleName)
   ).size;
 
   return (
     <div className="min-h-screen p-8 bg-gray-50">
-      <h1 className="text-3xl font-bold mb-6 text-center">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Admin Dashboard
+      </h1>
 
-     
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <SummaryCard title="Total Bookings Today" value={totalBookings} icon="" />
-        <SummaryCard title="Confirmed" value={confirmed} icon="" />
-        <SummaryCard title="Cancelled" value={cancelled} icon="" />
-        <SummaryCard title="Vehicles in Use" value={vehiclesInUse} icon="" />
+        <SummaryCard
+          title="Total Bookings Today"
+          value={totalBookings}
+          icon=""
+        />
+        <SummaryCard
+          title="Confirmed"
+          value={confirmed}
+          icon=""
+        />
+        <SummaryCard
+          title="Cancelled"
+          value={cancelled}
+          icon=""
+        />
+        <SummaryCard
+          title="Vehicles in Use"
+          value={vehiclesInUse}
+          icon=""
+        />
       </div>
 
-      
-      <h2 className="text-2xl font-semibold mb-4">Recent Bookings</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        Recent Bookings
+      </h2>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {bookings.map((b) => (
           <div
@@ -118,14 +120,26 @@ await axios.delete(
             <h3 className="font-bold text-lg mb-2 text-gray-800">
               {b.pickup} → {b.dropoff}
             </h3>
+
             <p className="text-sm text-gray-600">{b.tripType}</p>
+
             <p className="text-sm text-gray-600">
-               {b.pickupDate}  {b.pickupTime}
+              {b.pickupDate} {b.pickupTime}
             </p>
-            <p className="text-sm text-gray-600"> {b.mobile}</p>
-            <p className="text-sm text-gray-600"> {b.vehicleName}</p>
-            <p className="text-sm text-gray-600"> {b.distanceKm.toFixed(1)} km</p>
-            <p className="text-sm text-gray-600"> ₹{b.fare.toFixed(0)}</p>
+
+            <p className="text-sm text-gray-600">{b.mobile}</p>
+
+            <p className="text-sm text-gray-600">
+              {b.vehicleName}
+            </p>
+
+            <p className="text-sm text-gray-600">
+              {b.distanceKm.toFixed(1)} km
+            </p>
+
+            <p className="text-sm text-gray-600">
+              ₹{b.fare.toFixed(0)}
+            </p>
 
             <span
               className={`inline-block mt-3 px-3 py-1 text-sm font-medium rounded-full ${
@@ -139,20 +153,25 @@ await axios.delete(
               {b.status}
             </span>
 
-            
             <div className="mt-4 flex gap-2">
               <button
-                onClick={() => updateStatus(b.id, "CONFIRMED")}
+                onClick={() =>
+                  updateStatus(b.id, "CONFIRMED")
+                }
                 className="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
               >
                 Approve
               </button>
+
               <button
-                onClick={() => updateStatus(b.id, "CANCELLED")}
+                onClick={() =>
+                  updateStatus(b.id, "CANCELLED")
+                }
                 className="px-3 py-1 bg-red-600 text-white rounded-md text-sm hover:bg-red-700"
               >
                 Cancel
               </button>
+
               <button
                 onClick={() => deleteBooking(b.id)}
                 className="px-3 py-1 bg-gray-600 text-white rounded-md text-sm hover:bg-gray-700"
@@ -173,14 +192,22 @@ await axios.delete(
   );
 }
 
-
-function SummaryCard({ title, value, icon }: { title: string; value: number; icon: string }) {
+function SummaryCard({
+  title,
+  value,
+  icon,
+}: {
+  title: string;
+  value: number;
+  icon: string;
+}) {
   return (
     <div className="bg-white shadow-md rounded-xl p-6 flex items-center justify-between border">
       <div>
         <p className="text-gray-500 text-sm">{title}</p>
         <h2 className="text-2xl font-bold">{value}</h2>
       </div>
+
       <div className="text-3xl">{icon}</div>
     </div>
   );

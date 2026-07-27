@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosClient from "../api/axiosClient";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Users,
@@ -47,23 +47,27 @@ export default function AirportVehicleSelection() {
   const fetchVehicles = async () => {
     try {
       // Step 1: fetch vehicle list
-      const response = await axios.get(
-        "https://adiyogi-travels.onrender.com/api/airport/vehicles"
-      );
+      const response = await axiosClient.get("/airport/vehicles");
       const data: AirportVehicle[] = response.data;
       setVehicles(data);
 
       // Step 2: fetch fare per vehicle — backend returns ResponseEntity<Double>
       // so r.data is the plain number (e.g. 899), NOT { fare: 899 }
       const fareResults = await Promise.all(
-        data.map((v) =>
-          axios
-            .get("https://adiyogi-travels.onrender.com/api/airport/fare", {
-              params: { carName: v.name, distance: distanceKm },
-            })
-            .then((r) => ({ id: v.id, fare: r.data as number }))
-        )
-      );
+  data.map((v) =>
+    axiosClient
+      .get("/airport/fare", {
+        params: {
+          carName: v.name,
+          distance: distanceKm,
+        },
+      })
+      .then((r) => ({
+        id: v.id,
+        fare: r.data as number,
+      }))
+  )
+);
       setFares(Object.fromEntries(fareResults.map((f) => [f.id, f.fare])));
     } catch (error) {
       console.error("Failed to fetch airport vehicles or fares", error);

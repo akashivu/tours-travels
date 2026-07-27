@@ -1,16 +1,24 @@
 import axios from "axios";
 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+if (!API_BASE_URL) {
+  throw new Error(
+    "VITE_API_BASE_URL is not defined."
+  );
+}
+
 const axiosClient = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_BASE_URL ||
-    "https://adiyogi-travels.onrender.com/api",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
   withCredentials: true,
+  timeout: 30000, // 30 seconds
 });
 
-// Public endpoints that do NOT require JWT
+
 const publicEndpoints = [
   "/account/login",
   "/account/register",
@@ -20,6 +28,7 @@ const publicEndpoints = [
   "/account/verify-forgot-password-otp",
   "/account/reset-password",
 ];
+
 
 axiosClient.interceptors.request.use(
   (config) => {
@@ -37,6 +46,7 @@ axiosClient.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 
 axiosClient.interceptors.response.use(
   (response) => response,

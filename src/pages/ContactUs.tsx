@@ -1,6 +1,7 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaGoogle, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import { useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
+import axiosClient from "../api/axiosClient";
 import toast from "react-hot-toast";
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -10,36 +11,32 @@ export default function ContactUs() {
   });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      
-      const res = await fetch("https://adiyogi-travels.onrender.com/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  try {
+    await axiosClient.post("/send-email", formData);
 
-      if (res.ok) {
-        toast.success("Message sent successfully! We’ll get back to you soon.", {
-          style: {
-            background: "#16a34a",
-            color: "#fff",
-            fontSize: "15px",
-            fontWeight: "500",
-            borderRadius: "8px",
-            padding: "12px 16px",
-          },
-        });
-        setFormData({ name: "", email: "", message: "" }); 
-      } else {
-        toast.error("Failed to send message. Please try again.");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Server error. Please try again.");
-    }
-  };
+    toast.success("Message sent successfully! We’ll get back to you soon.", {
+      style: {
+        background: "#16a34a",
+        color: "#fff",
+        fontSize: "15px",
+        fontWeight: "500",
+        borderRadius: "8px",
+        padding: "12px 16px",
+      },
+    });
+
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
+  } catch (err) {
+    console.error(err);
+    toast.error("Server error. Please try again.");
+  }
+};
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({

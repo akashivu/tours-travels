@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, User, Send, CheckCircle } from "lucide-react";
+import axiosClient from "../api/axiosClient";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -16,33 +17,32 @@ export default function ContactForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+   const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    try {
-      const res = await fetch("https://adiyogi-travels.onrender.com/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+  try {
+    await axiosClient.post("/send-email", formData);
+
+    setIsSubmitted(true);
+
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setFormData({
+        name: "",
+        location: "",
+        phone: "",
+        email: "",
+        message: "",
       });
-
-      if (res.ok) {
-        setIsSubmitted(true);
-        setTimeout(() => {
-          setIsSubmitted(false);
-          setFormData({ name: "", location: "", phone: "", email: "", message: "" });
-        }, 3000);
-      } else {
-        alert("Failed to send message. Please try again.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Server error. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    }, 3000);
+  } catch (err) {
+    console.error(err);
+    alert("Server error. Please try again.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div

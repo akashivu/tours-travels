@@ -1,5 +1,5 @@
-import { CheckCircle, Car, Phone, CreditCard, Shield, X, Loader2, Clock, Info } from "lucide-react";
-import axios from "axios";
+import { CheckCircle, Car, Phone, CreditCard, Shield, X, Loader2, Clock, Info } from "lucide-react"
+import axiosClient from "../api/axiosClient";
 import { toast } from "react-hot-toast";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -34,9 +34,9 @@ export default function BookingConfirmation() {
     }
     setIsCancelling(true);
     try {
-      const res = await axios.put(
-        `https://adiyogi-travels.onrender.com/api/bookings/${booking.id}/cancel`
-      );
+      const res = await axiosClient.put(
+  `/bookings/${booking.id}/cancel`
+    );
       toast.success(res.data.message || "Your booking has been cancelled");
       navigate("/");
     } catch (err) {

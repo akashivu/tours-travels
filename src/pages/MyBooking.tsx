@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import axiosClient from "../api/axiosClient";
 type Booking = {
   id: number;
   vehicleName: string;
@@ -27,18 +27,7 @@ export default function MyBookings() {
         return;
       }
 
-      const res = await fetch("https://adiyogi-travels.onrender.com/api/bookings/my-bookings", {
-        headers: {
-          "Authorization": `Bearer ${token}`, 
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error(`Failed: ${res.status}`);
-      }
-
-      const data = await res.json();
+      const { data } = await axiosClient.get("/bookings/my-bookings");
       setBookings(data);
 
     } catch (err) {

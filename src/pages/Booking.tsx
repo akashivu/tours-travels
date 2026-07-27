@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosClient from "../api/axiosClient";
 import { Loader2, MapPin, Navigation, Calendar, Clock, Car, Check } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -64,8 +64,7 @@ export default function Booking() {
         fare: totalFare,
       };
 
-      await axios.post("https://adiyogi-travels.onrender.com/api/bookings/confirm", booking);
-
+      await axiosClient.post("/bookings/confirm", booking);
       toast.success("Booking confirmed! Details sent to admin.", {
         duration: 4000,
         style: {

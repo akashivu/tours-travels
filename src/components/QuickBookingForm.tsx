@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressAutocomplete from "./AddressAutocomplete";
-import axios from "axios";
+import axiosClient from "../api/axiosClient";
 import { MapPin, Calendar, Clock, ArrowRight, Car, Plane } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -82,18 +82,15 @@ export default function QuickBookingForm() {
       }
       setIsLoading(true);
       try {
-        const res = await axios.post(
-          "https://adiyogi-travels.onrender.com/api/quotes",
-          {
-            pickup: airportPickup,
-            dropoff: airportDrop,
-            tripType: "airport",
-            pickupLat,
-            pickupLng,
-            dropLat,
-            dropLng,
-          }
-        );
+        const res = await axiosClient.post("/quotes", {
+  pickup: airportPickup,
+  dropoff: airportDrop,
+  tripType: "airport",
+  pickupLat,
+  pickupLng,
+  dropLat,
+  dropLng,
+});
         const distanceKm = res.data?.[0]?.distanceKm || 0;
         navigate("/airport-vehicles", {
           state: {
@@ -121,9 +118,15 @@ export default function QuickBookingForm() {
     }
     setIsLoading(true);
     try {
-      const res = await axios.post("https://adiyogi-travels.onrender.com/api/quotes", {
-        pickup, dropoff: drop, tripType, pickupLat, pickupLng, dropLat, dropLng,
-      });
+      const res = await axiosClient.post("/quotes", {
+  pickup,
+  dropoff: drop,
+  tripType,
+  pickupLat,
+  pickupLng,
+  dropLat,
+  dropLng,
+});
       const bookingState: BookingState = { quotes: res.data, pickup, drop, tripType, pickupDate, pickupTime };
       if (activeTab === "outstation" && tripType === "roundtrip") {
         bookingState.returnDate = returnDate;
