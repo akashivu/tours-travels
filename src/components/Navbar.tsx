@@ -39,13 +39,13 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-3">
             <img
               src="https://marketplace.canva.com/EAFvvrEdW20/2/0/1600w/canva-blue-and-yellow-illustrative-travel-agency-logo-8fYWV8dFqJw.jpg"
-              alt="Adiyogicabz Logo"
+              alt="Elixway Logo"
               className="h-8 w-8 rounded-lg"
             />
 
             <div className="flex flex-col leading-tight">
               <span className="font-semibold text-base text-slate-900">
-                Adiyogicabz
+                Elixway
               </span>
 
               

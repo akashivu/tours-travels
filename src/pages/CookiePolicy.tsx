@@ -11,7 +11,7 @@ export default function CookiePolicy() {
         </h1>
 
         <p className="mt-4 text-lg font-semibold text-gray-900">
-          AdiyogiCabz
+          ElixWay
         </p>
 
         <p className="mt-1 text-sm text-gray-400">
@@ -20,12 +20,12 @@ export default function CookiePolicy() {
 
         <p className="mt-8 text-base leading-7 text-gray-700">
           This Cookie Policy explains what cookies are, which cookies
-          AdiyogiCabz uses on{" "}
+          ElixWay uses on{" "}
           <a
-            href="https://adiyogicabz.com"
+            href="https://elixway.com"
             className="text-orange-500 underline-offset-4 hover:underline"
           >
-            adiyogicabz.com
+            elixway.com
           </a>
           , and how you can control them. By continuing to use our website, you
           agree to our use of essential cookies as described below.
@@ -225,14 +225,14 @@ export default function CookiePolicy() {
           </p>
 
           <div className="mt-4 text-base leading-7 text-gray-700">
-            <p className="font-semibold text-gray-900">AdiyogiCabz</p>
+            <p className="font-semibold text-gray-900">ElixWay</p>
             <p>Bangalore, Karnataka, India</p>
             <p>
               <a
-                href="https://adiyogicabz.com"
+                href="https://elixway.com"
                 className="text-orange-500 underline-offset-4 hover:underline"
               >
-                adiyogicabz.com
+                elixway.com
               </a>
             </p>
           </div>
@@ -240,7 +240,7 @@ export default function CookiePolicy() {
 
         {/* ── Footer ── */}
         <p className="mt-16 text-xs text-gray-400">
-          © {new Date().getFullYear()} AdiyogiCabz. All rights reserved.
+          © {new Date().getFullYear()} ElixWay. All rights reserved.
         </p>
 
       </div>

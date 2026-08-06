@@ -78,7 +78,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
 
             <div className="text-right">
               <h2 className="font-semibold text-[15px] text-slate-900 leading-tight">
-                AdiyogiCabz
+                Elixway
               </h2>
               <p className="text-[11px] text-slate-500">Powered by Swiftov.ai</p>
             </div>

@@ -1,27 +1,13 @@
 import { useEffect, useState } from "react";
 import { X, MessageCircle } from "lucide-react";
 
-/**
- * Delayed AI-assistant nudge — shows after `delayMs`, bottom-right.
- * Dismisses permanently for `hideForDays` once closed or acted on.
- *
- * Usage: drop <PromoNotification /> once near the top of app/layout.tsx
- * (or on Home, if you only want it on the landing page).
- *
- * Wiring to your chat widget:
- * - If your chat widget exposes a global open function (e.g. window.openChat,
- *   or a hook from your chat provider), pass it in via onCtaClick.
- * - If you don't have that yet, leave onCtaClick unset — the default
- *   dispatches an "open-ai-chat" window event, so your chat widget can just
- *   add: window.addEventListener("open-ai-chat", () => setChatOpen(true))
- *   whenever it's ready, and this component doesn't need to change.
- */
+
 
 const STORAGE_KEY = "ai-promo-dismissed-at";
 
 type PromoNotificationProps = {
-  delayMs?: number; // how long to wait before showing
-  hideForDays?: number; // how long to stay hidden after dismissal
+  delayMs?: number; 
+  hideForDays?: number; 
   title?: string;
   message?: string;
   ctaLabel?: string;
@@ -43,12 +29,12 @@ export default function PromoNotification({
     const dismissedAt = localStorage.getItem(STORAGE_KEY);
     if (dismissedAt) {
       const hoursSince = (Date.now() - Number(dismissedAt)) / 36e5;
-      if (hoursSince < hideForDays * 24) return; // still within cooldown
+      if (hoursSince < hideForDays * 24) return; 
     }
 
     const timer = setTimeout(() => {
       setMounted(true);
-      // mount off-screen first, then flip visible on next tick for a slide-in transition
+     
       requestAnimationFrame(() => setVisible(true));
     }, delayMs);
 
@@ -58,14 +44,14 @@ export default function PromoNotification({
   const dismiss = () => {
     setVisible(false);
     localStorage.setItem(STORAGE_KEY, String(Date.now()));
-    setTimeout(() => setMounted(false), 300); // wait for exit transition
+    setTimeout(() => setMounted(false), 300);
   };
 
   const handleCtaClick = () => {
     if (onCtaClick) {
       onCtaClick();
     } else {
-      // Default: fire a global event your chat widget can listen for.
+      
       window.dispatchEvent(new CustomEvent("open-ai-chat"));
     }
     dismiss();

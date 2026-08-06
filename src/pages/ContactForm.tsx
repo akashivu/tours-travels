@@ -81,7 +81,7 @@ export default function ContactForm() {
                 <Mail className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-xs text-gray-400 mb-0.5">Email</p>
-                  <p className="text-sm font-medium text-gray-900 break-all">vijaytourstravels6158@gmail.com</p>
+                  <p className="text-sm font-medium text-gray-900 break-all">support@elixway.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">

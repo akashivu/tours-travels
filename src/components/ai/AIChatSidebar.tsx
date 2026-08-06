@@ -19,7 +19,6 @@ export function AIChatSidebar({
   onDelete,
   onNewChat,
 }: Props) {
-  // UI-only local filter — never mutates the sessions array or touches the hook.
   const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
@@ -29,24 +28,22 @@ export function AIChatSidebar({
   }, [sessions, query]);
 
   return (
-    <div className="flex flex-col w-full h-full min-h-0" style={{ background: 'var(--paper)' }}>
-      {/* New chat — lives only here, never stretched across the page */}
+    <div className="flex flex-col w-full h-full min-h-0" style={{ background: 'var(--surface)' }}>
       <div className="px-3.5 pt-4 pb-3 shrink-0">
         <button
           onClick={onNewChat}
-          className="ai-no-native-focus w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[12.5px] font-semibold transition-colors"
-          style={{ background: 'var(--ink)', color: '#fff' }}
+          className="ai-no-native-focus w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[12.5px] font-medium transition-colors border"
+          style={{ background: 'var(--paper)', borderColor: 'var(--border-strong)', color: 'var(--ink)' }}
         >
           <Plus size={14} strokeWidth={2.2} />
           New chat
         </button>
       </div>
 
-      {/* Search (optional) */}
       <div className="px-3.5 pb-3 shrink-0">
         <div
           className="flex items-center gap-2 rounded-lg px-2.5 py-1.5"
-          style={{ background: 'var(--mist)', border: '1px solid var(--line)' }}
+          style={{ background: 'var(--paper)', border: '1px solid var(--border)' }}
         >
           <Search size={12.5} strokeWidth={2} style={{ color: 'var(--muted)' }} />
           <input
@@ -59,26 +56,24 @@ export function AIChatSidebar({
         </div>
       </div>
 
-      {/* Heading */}
       <div
         className="px-3.5 pt-1 pb-2 flex items-center gap-1.5 shrink-0"
-        style={{ borderTop: '1px solid var(--line)' }}
+        style={{ borderTop: '1px solid var(--border)' }}
       >
         <History size={11.5} strokeWidth={2} style={{ color: 'var(--muted)' }} />
         <span
-          className="text-[10px] font-semibold uppercase tracking-[0.14em]"
+          className="text-[10px] font-medium uppercase tracking-[0.1em]"
           style={{ color: 'var(--muted)' }}
         >
           History
         </span>
       </div>
 
-      {/* Session list — this is the only part that scrolls within the panel */}
       <div className="flex-1 min-h-0 overflow-y-auto ai-scroll px-2 pb-3">
         {isLoading && (
           <div className="space-y-1.5 px-1.5">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-9 rounded-lg animate-pulse" style={{ background: 'var(--mist)' }} />
+              <div key={i} className="h-9 rounded-lg animate-pulse" style={{ background: 'var(--surface-strong)' }} />
             ))}
           </div>
         )}
@@ -87,7 +82,7 @@ export function AIChatSidebar({
           <div className="flex flex-col items-center justify-center mt-10 text-center px-4">
             <div
               className="h-10 w-10 rounded-full flex items-center justify-center mb-2.5"
-              style={{ background: 'var(--mist)', border: '1px solid var(--line)' }}
+              style={{ background: 'var(--paper)', border: '1px solid var(--border)' }}
             >
               <MessageSquare size={16} strokeWidth={1.8} style={{ color: 'var(--muted)' }} />
             </div>
@@ -109,23 +104,23 @@ export function AIChatSidebar({
               <div
                 key={session.session_id}
                 onClick={() => onSelect(session.session_id)}
-                className="ai-history-row group flex items-center justify-between gap-1.5 rounded-lg px-2.5 py-2 mb-0.5 cursor-pointer"
+                className="group flex items-center justify-between gap-1.5 rounded-lg px-2.5 py-2 mb-0.5 cursor-pointer transition-colors"
                 style={{
-                  background: isActive ? 'var(--mist)' : 'transparent',
-                  border: isActive ? '1px solid var(--line-strong)' : '1px solid transparent',
+                  background: isActive ? 'var(--paper)' : 'transparent',
+                  border: isActive ? '1px solid var(--border-strong)' : '1px solid transparent',
                 }}
               >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <MessageSquare
                     size={13}
                     strokeWidth={2}
-                    style={{ color: isActive ? 'var(--ink)' : 'var(--muted)' }}
+                    style={{ color: isActive ? 'var(--accent-ink)' : 'var(--muted)' }}
                   />
                   <span
                     className="truncate text-[12px]"
                     style={{
                       color: isActive ? 'var(--ink)' : 'var(--ink-soft)',
-                      fontWeight: isActive ? 600 : 500,
+                      fontWeight: isActive ? 500 : 400,
                     }}
                   >
                     {session.session_id.slice(0, 16)}

@@ -199,7 +199,7 @@ export default function AccountForm() {
       {/* Brand */}
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold text-orange-500">
-          AdiyogiCabz
+          ElixWay
         </h1>
 
         <p className="text-sm text-slate-500 mt-1">

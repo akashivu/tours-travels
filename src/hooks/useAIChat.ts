@@ -25,7 +25,7 @@ export function useAIChat() {
     };
   }, []);
 
-  // --- initialization ---
+  // --- initialization --- 
 
   const initialize = useCallback(async () => {
     const sessions = await loadSessions();

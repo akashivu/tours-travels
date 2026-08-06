@@ -103,7 +103,7 @@ export default function ContactUs() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">Email Address</h3>
-                  <p className="text-gray-600 text-sm break-all">vijaytourstravels6158@gmail.com</p>
+                  <p className="text-gray-600 text-sm break-all">support@elixway.com</p>
                   <p className="text-sm text-gray-500 mt-1">We'll respond within 24 hours</p>
                 </div>
               </div>

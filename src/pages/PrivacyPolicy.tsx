@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
         </h1>
 
         <p className="mt-4 text-lg font-semibold text-gray-900">
-          AdiyogiCabz
+          ElixWay
         </p>
 
         <p className="mt-1 text-sm text-gray-400">
@@ -20,20 +20,20 @@ export default function PrivacyPolicy() {
 
         {/* ── Intro ── */}
         <p className="mt-8 text-base leading-7 text-gray-700">
-          This Privacy Policy describes how AdiyogiCabz ("we", "us", or "our")
+          This Privacy Policy describes how ElixWay ("we", "us", or "our")
           collects, uses, and protects personal information when you use our
           website at{" "}
           <a
-            href="https://adiyogicabz.com"
+            href="https://elixway.com"
             className="text-orange-500 hover:underline underline-offset-4"
           >
-            adiyogicabz.com
+            elixway.com
           </a>{" "}
           or contact us to book a cab service (collectively, the "Service").
         </p>
 
         <p className="mt-4 text-base leading-7 text-gray-700">
-          AdiyogiCabz is an outstation, airport, and rental cab booking platform
+          ElixWay is an outstation, airport, and rental cab booking platform
           serving South India. We are committed to handling your information
           responsibly and transparently.
         </p>
@@ -349,15 +349,15 @@ export default function PrivacyPolicy() {
           </p>
 
           <div className="mt-4 text-base leading-7 text-gray-700">
-            <p className="font-semibold text-gray-900">AdiyogiCabz</p>
+            <p className="font-semibold text-gray-900">ElixWay</p>
             <p>Bangalore, Karnataka, India</p>
             <p>
               Website:{" "}
               <a
-                href="https://adiyogicabz.com"
+                href="https://elixway.com"
                 className="text-orange-500 hover:underline underline-offset-4"
               >
-                adiyogicabz.com
+                elixway.com
               </a>
             </p>
           </div>
@@ -365,7 +365,7 @@ export default function PrivacyPolicy() {
 
         {/* ── Footer ── */}
         <p className="mt-16 text-xs text-gray-400">
-          © {new Date().getFullYear()} AdiyogiCabz. All rights reserved.
+          © {new Date().getFullYear()} ElixWay. All rights reserved.
         </p>
 
       </div>

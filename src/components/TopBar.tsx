@@ -1,9 +1,10 @@
-import { Calendar, Clock, MapPin, Car, LogIn, Sparkles } from "lucide-react";
+import { Calendar, Clock, MapPin, LogIn, Sparkles } from "lucide-react";
 import { useState } from "react";
 import AccountForm from "./AccountForm";
 import MobileSidebar, { HamburgerIcon } from "./MobileSidebar";
 import AnnouncementBar from "./AnnouncementBar";
 import { useAIWidget } from "../context/AIWidgetContext";
+import logo from "../assets/logo.png";
 
 type TopBarProps = {
   expanded: boolean;
@@ -38,7 +39,7 @@ export default function TopBar({ expanded }: TopBarProps) {
         <div className="lg:hidden h-full px-4 flex items-center justify-between sticky top-0 bg-white">
           <div>
             <h1 className="text-[15px] font-semibold text-slate-900 leading-tight">
-              AdiyogiCabz
+              Elixway
             </h1>
             <p className="text-[11px] text-slate-500">Powered by Swiftov.ai</p>
           </div>
@@ -62,12 +63,25 @@ export default function TopBar({ expanded }: TopBarProps) {
           </div>
         </div>
 
-        {/* ---------------- DESKTOP (unchanged) ---------------- */}
+        
         <div className="hidden lg:flex h-full px-6 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Car className="w-5 h-5 text-orange-500" />
-            <h1 className="font-semibold text-slate-900 text-lg">AdiyogiCabz</h1>
-          </div>
+         <div className="flex items-center gap-3">
+  <img
+    src={logo}
+    alt="ElixWay"
+    className="w-9 h-9 object-contain"
+  />
+
+  <div className="leading-tight">
+    <h1 className="font-semibold text-slate-900 text-lg">
+      ElixWay
+    </h1>
+
+    <p className="text-[10px] text-slate-500 tracking-wide uppercase">
+      AI-Powered Travel Platform
+    </p>
+  </div>
+</div>
 
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-sm text-slate-600">

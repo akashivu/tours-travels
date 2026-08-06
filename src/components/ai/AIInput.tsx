@@ -9,7 +9,6 @@ interface Props {
 
 export function AIInput({ onSend, disabled }: Props) {
   const [value, setValue] = useState('');
-  const [focused, setFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -42,12 +41,8 @@ export function AIInput({ onSend, disabled }: Props) {
   return (
     <div className="px-3.5 pb-3.5 pt-1.5 bg-[var(--paper)]">
       <div
-        className="flex items-end gap-2 rounded-[20px] px-3.5 py-2.5 transition-all"
-        style={{
-          background: 'var(--mist)',
-          border: `1px solid ${focused ? 'var(--line-strong)' : 'var(--line)'}`,
-          boxShadow: focused ? 'var(--shadow-sm)' : 'none',
-        }}
+        className="flex items-end gap-2 rounded-[16px] px-3.5 py-2.5"
+        style={{ background: 'var(--surface)' }}
       >
         <textarea
           ref={textareaRef}
@@ -55,9 +50,7 @@ export function AIInput({ onSend, disabled }: Props) {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
           onInput={handleInput}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          placeholder="Ask about routes, fares, or plan a trip…"
+          placeholder="Message the assistant"
           disabled={disabled}
           rows={1}
           className="flex-1 resize-none border-none outline-none text-[13.5px] leading-relaxed font-[inherit] bg-transparent text-[var(--ink)] placeholder:text-[var(--muted)] overflow-y-auto py-1 disabled:opacity-50 ai-scroll"
@@ -67,10 +60,11 @@ export function AIInput({ onSend, disabled }: Props) {
           onClick={handleSend}
           disabled={!canSend}
           aria-label="Send message"
-          className="w-8 h-8 rounded-full border-none flex items-center justify-center shrink-0 transition-all"
+          className="w-8 h-8 rounded-full border-none flex items-center justify-center shrink-0"
           style={{
-            background: canSend ? 'var(--ink)' : 'var(--line-strong)',
+            background: 'var(--ink)',
             color: '#fff',
+            opacity: canSend ? 1 : 0.35,
             cursor: canSend ? 'pointer' : 'default',
           }}
         >
@@ -78,7 +72,7 @@ export function AIInput({ onSend, disabled }: Props) {
         </button>
       </div>
       <p className="text-center text-[10px] text-[var(--muted)] mt-2 tracking-wide">
-        Powered by Swiftov
+        The assistant can make mistakes. Verify important info.
       </p>
     </div>
   );

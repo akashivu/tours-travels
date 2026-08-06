@@ -32,7 +32,7 @@ export default function AboutUsSection() {
           {/* Right — content */}
           <div className="lg:col-span-8 flex flex-col gap-8">
             <p className="text-zinc-500 text-sm leading-relaxed">
-              Adiyogi Cabz provides trusted airport transfers, local rentals, and
+              ElixWay provides trusted airport transfers, local rentals, and
               outstation cab services designed for comfort, safety, and convenience.
               With professional drivers and well-maintained vehicles, we ensure a
               smooth travel experience from pickup to destination.
