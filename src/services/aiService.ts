@@ -60,7 +60,12 @@ export const aiService = {
     localStorage.setItem(SESSION_KEY, id);
     return id;
   },
-
+  setSessionId(sessionId: string): void {
+  localStorage.setItem(
+    SESSION_KEY,
+    sessionId
+  );
+},
   // --- widget open state ---
 
   getWidgetOpen(): boolean {

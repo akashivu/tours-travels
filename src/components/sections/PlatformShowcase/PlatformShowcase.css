@@ -1,0 +1,1296 @@
+.platform-showcase {
+  position: relative;
+  width: 100%;
+  height: 280vh;
+  background: #ffffff;
+  color: #111;
+ 
+}
+
+.platform-showcase__sticky {
+  position: sticky;
+  top: 0;
+  height: min(100vh, 880px);
+  min-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.platform-showcase__container {
+  width: min(1400px, 92%);
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 70px;
+}
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.platform-showcase__visual {
+  position: relative;
+  height: 680px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laptop-scene {
+  position: relative;
+  width: 680px;
+  height: 600px;
+  perspective: 1400px;
+}
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+.laptop-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(70, 95, 255, 0.08);
+  filter: blur(70px);
+  opacity: 0;
+  transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.laptop.is-open ~ .laptop-glow {
+  opacity: 1;
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+.laptop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  height: 360px;
+  transform: translate(-50%, -46%) rotateX(7deg) scale(0.92);
+  transform-style: preserve-3d;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 45px 35px rgba(0, 0, 0, 0.14));
+}
+
+.laptop.is-open {
+  transform: translate(-50%, -46%) rotateX(2deg) scale(1);
+}
+
+/* =========================================================
+   DISPLAY BODY
+========================================================= */
+
+.laptop__display {
+  position: absolute;
+  left: 30px;
+  top: 0;
+  width: 500px;
+  height: 325px;
+  padding: 8px;
+  border-radius: 19px 19px 7px 7px;
+  background: linear-gradient(145deg, #5e6268 0%, #292c31 35%, #101215 75%, #050607 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.8),
+    0 20px 45px rgba(0, 0, 0, 0.14);
+  transform-origin: bottom center;
+  transform: rotateX(-82deg);
+  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 5;
+}
+
+.laptop.is-open .laptop__display {
+  transform: rotateX(0deg);
+}
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+.laptop__camera {
+  position: absolute;
+  z-index: 20;
+  top: 4px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #6876a5, #090a0b 60%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================================
+   SCREEN
+========================================================= */
+
+.laptop__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px 12px 4px 4px;
+  background: #f4f7ff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.laptop__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.18),
+    transparent 24%,
+    transparent 72%,
+    rgba(255, 255, 255, 0.04)
+  );
+}
+
+.laptop__screen-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 13px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #f9fbff, #edf2ff);
+}
+
+/* =========================================================
+   SCREEN HEADER
+========================================================= */
+
+.screen-header {
+  position: relative;
+  z-index: 10;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.screen-brand {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #111827;
+}
+
+.screen-brand__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #465fff, #8b5cf6);
+}
+
+.screen-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 5px;
+  color: #64748b;
+}
+
+.screen-nav span:first-child {
+  color: #465fff;
+  font-weight: 700;
+}
+
+.screen-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.screen-search-icon {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.screen-signin {
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: #111827;
+  color: white;
+  font-size: 5px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   SCREEN HERO
+========================================================= */
+
+.screen-hero {
+  position: relative;
+  height: 150px;
+  margin-top: 5px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #dce8ff, #9dc5f4 48%, #d8d1ff);
+}
+
+.screen-hero__copy {
+  position: relative;
+  z-index: 10;
+  width: 55%;
+  padding: 24px 20px;
+}
+
+.screen-hero__eyebrow {
+  font-size: 5px;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.screen-hero__copy h3 {
+  margin: 6px 0 5px;
+  font-size: 23px;
+  line-height: 0.94;
+  letter-spacing: -1.3px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.screen-hero__copy p {
+  margin: 0;
+  font-size: 6px;
+  line-height: 1.4;
+  color: #475569;
+}
+
+/* =========================================================
+   HERO VISUAL
+========================================================= */
+
+.screen-hero__visual {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 52%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.screen-sun {
+  position: absolute;
+  right: 35px;
+  top: 22px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff9c4, #ffd76a);
+  filter: blur(1px);
+  box-shadow: 0 0 25px rgba(255, 210, 90, 0.5);
+}
+
+.screen-mountain {
+  position: absolute;
+  bottom: -20px;
+  width: 170px;
+  height: 110px;
+  clip-path: polygon(0 100%, 45% 15%, 58% 38%, 72% 10%, 100% 100%);
+}
+
+.screen-mountain--back {
+  right: -15px;
+  background: linear-gradient(145deg, #64748b, #334155);
+}
+
+.screen-mountain--front {
+  left: 20px;
+  background: linear-gradient(145deg, #2563eb, #1e3a8a);
+  opacity: 0.8;
+}
+
+/* =========================================================
+   SEARCH PANEL
+========================================================= */
+
+.screen-trip-search {
+  position: relative;
+  z-index: 15;
+  width: calc(100% - 30px);
+  height: 55px;
+  margin: -25px auto 0;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 12px 30px rgba(30, 41, 59, 0.12);
+}
+
+.screen-trip-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.screen-trip-field span {
+  font-size: 4px;
+  letter-spacing: 0.7px;
+  color: #94a3b8;
+}
+
+.screen-trip-field strong {
+  font-size: 8px;
+  color: #111827;
+}
+
+.screen-trip-field small {
+  font-size: 4px;
+  color: #94a3b8;
+}
+
+.screen-trip-arrow {
+  font-size: 9px;
+  color: #465fff;
+}
+
+.screen-trip-search button {
+  border: 0;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #465fff, #7048e8);
+  color: white;
+  font-size: 5px;
+  font-weight: 700;
+  box-shadow: 0 6px 12px rgba(70, 95, 255, 0.25);
+}
+
+/* =========================================================
+   DESTINATION PREVIEWS
+========================================================= */
+
+.screen-destinations {
+  padding: 8px 3px 0;
+}
+
+.screen-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.screen-section-title strong {
+  font-size: 6px;
+  color: #111827;
+}
+
+.screen-section-title span {
+  font-size: 4px;
+  color: #465fff;
+}
+
+.screen-destination-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.screen-destination__image {
+  position: relative;
+  height: 48px;
+  overflow: hidden;
+  border-radius: 5px;
+  background-size: cover;
+  background-position: center;
+}
+
+.screen-destination__image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 60%);
+}
+
+.screen-destination__image span {
+  position: absolute;
+  z-index: 2;
+  left: 5px;
+  bottom: 4px;
+  font-size: 5px;
+  color: white;
+  font-weight: 600;
+}
+
+.screen-destination--paris {
+  background: linear-gradient(145deg, #1e40af, #f59e0b);
+}
+
+.screen-destination--bali {
+  background: linear-gradient(145deg, #0f766e, #facc15);
+}
+
+.screen-destination--tokyo {
+  background: linear-gradient(145deg, #312e81, #ec4899);
+}
+
+.screen-destination--swiss {
+  background: linear-gradient(145deg, #0f766e, #bae6fd);
+}
+
+/* =========================================================
+   LAPTOP BASE — clean, no keyboard
+========================================================= */
+
+.laptop__base {
+  position: absolute;
+  left: 0;
+  bottom: -34px;
+  width: 560px;
+  height: 34px;
+  border-radius: 4px 4px 20px 20px;
+  background: linear-gradient(145deg, #e7e9ec 0%, #cdd0d5 35%, #aeb3b9 70%, #d8dade 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -4px 6px rgba(0, 0, 0, 0.1),
+    0 18px 30px rgba(0, 0, 0, 0.12);
+  transform: perspective(900px) rotateX(60deg);
+  transform-origin: top center;
+  z-index: 3;
+}
+
+.laptop__hinge {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 90px;
+  height: 4px;
+  transform: translateX(-50%);
+  border-radius: 0 0 4px 4px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.laptop__trackpad {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 130px;
+  height: 20px;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  background: linear-gradient(145deg, #e1e3e6, #c1c4c8);
+  border: 1px solid rgba(90, 90, 90, 0.18);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.95);
+}
+
+/* =========================================================
+   TRAVEL CARDS
+========================================================= */
+
+.travel-card {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 15px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 25px 60px rgba(17, 24, 39, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.travel-card.is-visible {
+  opacity: 1;
+}
+
+.travel-card span,
+.travel-card small {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 1.1px;
+  color: #94a3b8;
+}
+
+.travel-card strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.travel-card small {
+  margin-left: 8px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  background: #f0f4ff;
+  color: #465fff;
+  font-weight: 600;
+}
+
+.travel-card__icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: white;
+  font-size: 13px;
+}
+
+.travel-card__icon--flight {
+  background: linear-gradient(145deg, #465fff, #2f3fd6);
+}
+
+.travel-card__icon--hotel {
+  background: linear-gradient(145deg, #f59e0b, #ea580c);
+}
+
+/* FLIGHT */
+
+.travel-card--flight {
+  left: 12px;
+  top: 175px;
+  transform: translate(180px, 100px) rotate(12deg) scale(0.7);
+}
+
+.travel-card--flight.is-visible {
+  transform: translate(0, 0) rotate(-5deg) scale(1);
+}
+
+/* HOTEL */
+
+.travel-card--hotel {
+  right: 5px;
+  top: 100px;
+  transform: translate(-170px, 100px) rotate(-12deg) scale(0.7);
+}
+
+.travel-card--hotel.is-visible {
+  transform: translate(0, 0) rotate(5deg) scale(1);
+}
+
+/* DESTINATION */
+
+.travel-card--destination {
+  right: 55px;
+  bottom: 55px;
+  width: 180px;
+  padding: 8px;
+  display: block;
+  transform: translate(-100px, -120px) rotate(-14deg) scale(0.6);
+}
+
+.travel-card--destination.is-visible {
+  transform: translate(0, 0) rotate(-4deg) scale(1);
+}
+
+.destination-image {
+  position: relative;
+  height: 95px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(140deg, #312e81 0%, #6366f1 48%, #f59e0b 100%);
+}
+
+.destination-image span {
+  position: absolute;
+  left: 10px;
+  bottom: 9px;
+  color: white;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.destination-info {
+  padding: 8px 3px 2px;
+}
+
+.destination-info span {
+  color: #94a3b8;
+}
+
+.destination-info strong {
+  font-size: 11px;
+  color: #111827;
+}
+
+/* =========================================================
+   AI CONNECTION — simplified, no spinning rings
+========================================================= */
+
+.ai-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  transition: opacity 1s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.ai-orbit.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.ai-orbit__core {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #465fff, #7048e8);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 18px 40px rgba(70, 95, 255, 0.3);
+  transition: box-shadow 0.8s ease;
+}
+
+.ai-orbit.is-combining .ai-orbit__core {
+  box-shadow: 0 20px 55px rgba(70, 95, 255, 0.45);
+}
+
+.ai-orbit__label {
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.ai-orbit.is-visible .ai-orbit__label {
+  opacity: 1;
+}
+
+.ai-orbit.is-combining .ai-orbit__label {
+  color: #465fff;
+}
+
+/* Cards fold into the AI core once combining starts */
+
+.travel-card.is-combining {
+  opacity: 0;
+  transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.travel-card--flight.is-combining {
+  transform: translate(235px, 75px) scale(0.15) rotate(15deg);
+}
+
+.travel-card--hotel.is-combining {
+  transform: translate(-170px, 95px) scale(0.15) rotate(-15deg);
+}
+
+.travel-card--destination.is-combining {
+  transform: translate(-15px, -70px) scale(0.15) rotate(15deg);
+}
+
+/* =========================================================
+   BOOKING CARD
+========================================================= */
+
+.booking-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 285px;
+  padding: 18px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 30px 80px rgba(17, 24, 39, 0.14);
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 1s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1s ease;
+}
+
+.booking-card.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  filter: blur(0);
+}
+
+.booking-card__check {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  color: white;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.booking-card__content {
+  flex: 1;
+}
+
+.booking-card span {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+}
+
+.booking-card strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.booking-card__details {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.booking-card__pill {
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 6px;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  color: white;
+  margin: 0 !important;
+}
+
+.booking-card__pill--flight {
+  background: linear-gradient(145deg, #465fff, #2f3fd6);
+}
+
+.booking-card__pill--hotel {
+  background: linear-gradient(145deg, #f59e0b, #ea580c);
+}
+
+.booking-card__pill--destination {
+  background: linear-gradient(145deg, #6366f1, #a855f7);
+}
+
+/* =========================================================
+   RIGHT CONTENT
+========================================================= */
+
+.platform-showcase__content {
+  position: relative;
+  max-width: 540px;
+  min-height: 500px;
+}
+
+.platform-showcase__eyebrow {
+  display: inline-block;
+  margin-bottom: 35px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  color: #777;
+}
+
+/* STORY */
+
+.story-content {
+  position: relative;
+  min-height: 350px;
+}
+
+.story-step {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-step.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.story-step h2 {
+  margin: 0;
+  font-size: clamp(52px, 5vw, 78px);
+  line-height: 0.93;
+  letter-spacing: -4px;
+  font-weight: 600;
+}
+
+.story-step p {
+  max-width: 450px;
+  margin-top: 32px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.story-progress {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  display: flex;
+  gap: 7px;
+}
+
+.story-progress span {
+  width: 25px;
+  height: 2px;
+  background: #e2e2df;
+  transition: width 0.5s ease, background 0.5s ease;
+}
+
+.story-progress span.active {
+  width: 45px;
+  background: #465fff;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+  .platform-showcase {
+    height: 300vh;
+    margin-bottom: 48px;
+  }
+
+  .platform-showcase__sticky {
+    height: min(100vh, 820px);
+    min-height: 700px;
+  }
+
+  .platform-showcase__container {
+    width: 94%;
+    grid-template-columns: 1fr 0.85fr;
+    gap: 30px;
+  }
+
+  .platform-showcase__visual {
+    height: 560px;
+  }
+
+  .laptop-scene {
+    width: 600px;
+    height: 540px;
+  }
+
+  .laptop {
+    transform: translate(-50%, -46%) rotateX(5deg) scale(0.82);
+  }
+
+  .laptop.is-open {
+    transform: translate(-50%, -46%) rotateX(2deg) scale(0.82);
+  }
+
+  .platform-showcase__content {
+    max-width: 470px;
+  }
+
+  .story-step h2 {
+    font-size: 55px;
+    letter-spacing: -3px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+  /* Same pin-and-scrub technique as desktop: the section is taller than
+     the viewport, the inner wrapper sticks to the top while scrolling
+     through it, and JS turns that scroll distance into `progress`.
+     (Progress only advances while `.platform-showcase` is taller than
+     the viewport — keep the vh height here, don't switch to `auto`.) */
+
+  .platform-showcase {
+    width: 100%;
+    height: 220vh;
+    overflow: clip;
+    background: #ffffff;
+    margin-bottom: 32px;
+  }
+
+  .platform-showcase__sticky {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    max-height: 760px;
+    min-height: 620px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .platform-showcase__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 28px 18px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  /* Text first on mobile */
+
+  .platform-showcase__content {
+    order: 1;
+    width: 100%;
+    max-width: none;
+    min-height: 220px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .platform-showcase__eyebrow {
+    margin: 0 0 14px;
+    font-size: 8px;
+    letter-spacing: 1.8px;
+  }
+
+  .story-content {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+  }
+
+  /* .story-step keeps the base (desktop) absolute-position + opacity/
+     translateY crossfade rules — just resize the type for mobile. */
+
+  .story-step h2 {
+    max-width: 320px;
+    font-size: clamp(34px, 10vw, 46px);
+    letter-spacing: -1.8px;
+  }
+
+  .story-step p {
+    max-width: 320px;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #64748b;
+  }
+
+  .story-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    gap: 4px;
+  }
+
+  .story-progress span {
+    width: 15px;
+    height: 2px;
+  }
+
+  .story-progress span.active {
+    width: 28px;
+  }
+
+  /* Laptop scene */
+
+  .platform-showcase__visual {
+    order: 2;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    min-height: 300px;
+    margin-top: 6px;
+    display: block;
+    overflow: visible;
+  }
+
+  .laptop-scene {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    max-width: 380px;
+    height: 280px;
+    transform: translate(-50%, -50%);
+    perspective: 1200px;
+  }
+
+  .laptop {
+    width: 320px;
+    height: 210px;
+    transform: translate(-50%, -46%) rotateX(5deg) scale(0.82);
+  }
+
+  .laptop.is-open {
+    transform: translate(-50%, -46%) rotateX(2deg) scale(0.82);
+  }
+
+  .laptop__display {
+    left: 18px;
+    top: 0;
+    width: 284px;
+    height: 190px;
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  .laptop__screen-content {
+    padding: 9px;
+  }
+
+  .screen-header {
+    height: 18px;
+    gap: 5px;
+  }
+
+  .screen-brand {
+    font-size: 8px;
+  }
+
+  .screen-nav {
+    display: none;
+  }
+
+  .screen-actions {
+    margin-left: auto;
+  }
+
+  .screen-signin {
+    padding: 3px 5px;
+    font-size: 4px;
+  }
+
+  .screen-hero {
+    height: 86px;
+    margin-top: 3px;
+    border-radius: 6px;
+  }
+
+  .screen-hero__copy {
+    width: 60%;
+    padding: 12px 10px;
+  }
+
+  .screen-hero__copy h3 {
+    margin: 4px 0;
+    font-size: 15px;
+    letter-spacing: -0.7px;
+  }
+
+  .screen-sun {
+    width: 26px;
+    height: 26px;
+    right: 16px;
+    top: 12px;
+  }
+
+  .screen-mountain {
+    width: 90px;
+    height: 58px;
+  }
+
+  .screen-trip-search {
+    width: calc(100% - 16px);
+    height: 32px;
+    margin: -12px auto 0;
+    padding: 5px 7px;
+    gap: 4px;
+    border-radius: 6px;
+  }
+
+  .screen-trip-field strong {
+    font-size: 6px;
+  }
+
+  .screen-destinations {
+    padding: 5px 2px 0;
+  }
+
+  .screen-destination__image {
+    height: 28px;
+  }
+
+  .laptop__base {
+    width: 320px;
+    height: 24px;
+    bottom: -24px;
+    border-radius: 3px 3px 16px 16px;
+  }
+
+  .laptop__trackpad {
+    width: 90px;
+    height: 14px;
+  }
+
+  /* Floating cards — keep them close to the laptop and legible */
+
+  .travel-card {
+    z-index: 30;
+    padding: 8px 10px;
+    gap: 7px;
+    border-radius: 10px;
+  }
+
+  .travel-card__icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    font-size: 10px;
+  }
+
+  .travel-card span,
+  .travel-card small {
+    font-size: 5px;
+  }
+
+  .travel-card strong {
+    font-size: 8px;
+    margin-top: 2px;
+  }
+
+  .travel-card--flight {
+    left: -8px;
+    top: 55px;
+    transform: translate(70px, 40px) rotate(8deg) scale(0.78);
+  }
+
+  .travel-card--flight.is-visible {
+    transform: translate(0, 0) rotate(-5deg) scale(0.78);
+  }
+
+  .travel-card--hotel {
+    right: -8px;
+    top: 20px;
+    transform: translate(-70px, 40px) rotate(-8deg) scale(0.78);
+  }
+
+  .travel-card--hotel.is-visible {
+    transform: translate(0, 0) rotate(5deg) scale(0.78);
+  }
+
+  .travel-card--destination {
+    right: 6px;
+    bottom: 4px;
+    width: 116px;
+    padding: 5px;
+    transform: translate(-50px, -40px) rotate(-8deg) scale(0.8);
+  }
+
+  .travel-card--destination.is-visible {
+    transform: translate(0, 0) rotate(-4deg) scale(0.8);
+  }
+
+  .destination-image {
+    height: 62px;
+    border-radius: 5px;
+  }
+
+  .destination-info strong {
+    font-size: 8px;
+  }
+
+  .ai-orbit__core {
+    width: 46px;
+    height: 46px;
+    font-size: 9px;
+  }
+
+  .ai-orbit__label {
+    font-size: 5px;
+  }
+
+  .booking-card {
+    width: min(240px, calc(100vw - 55px));
+    padding: 11px 13px;
+    gap: 9px;
+    border-radius: 11px;
+    z-index: 50;
+  }
+
+  .booking-card__check {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .booking-card strong {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .platform-showcase {
+    height: 210vh;
+  }
+
+  .platform-showcase__sticky {
+    min-height: 580px;
+  }
+
+  .platform-showcase__container {
+    padding: 24px 16px 20px;
+  }
+
+  .story-step h2 {
+    font-size: 30px;
+    letter-spacing: -1.4px;
+  }
+
+  .laptop-scene {
+    max-width: 320px;
+  }
+
+  .laptop {
+    width: 280px;
+    height: 190px;
+  }
+
+  .laptop__display {
+    width: 248px;
+    height: 168px;
+  }
+
+  .booking-card {
+    width: calc(100vw - 45px);
+  }
+}

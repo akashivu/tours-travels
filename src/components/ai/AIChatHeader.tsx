@@ -26,7 +26,7 @@ export function AIChatHeader({
             onClick={onClose}
             title="Close"
             aria-label="Close"
-            className="sm:hidden p-1.5 -ml-1 rounded-lg text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors mr-1"
+            className="sm:hidden p-1.5 -ml-1 rounded-full text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors mr-1"
           >
             <X size={17} strokeWidth={1.8} />
           </button>
@@ -36,7 +36,7 @@ export function AIChatHeader({
           onClick={onToggleSidebar}
           title={sidebarOpen ? 'Close history' : 'Open history'}
           aria-label={sidebarOpen ? 'Close history' : 'Open history'}
-          className={`p-1.5 rounded-lg transition-colors ${
+          className={`p-1.5 rounded-full transition-colors ${
             sidebarOpen
               ? 'bg-[var(--surface-strong)] text-[var(--ink)]'
               : 'text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)]'
@@ -79,7 +79,7 @@ export function AIChatHeader({
           disabled={isLoading}
           title="New chat"
           aria-label="New chat"
-          className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="p-1.5 rounded-full text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <SquarePen size={15} strokeWidth={1.8} />
         </button>
@@ -89,7 +89,7 @@ export function AIChatHeader({
             onClick={onClose}
             title="Close"
             aria-label="Close"
-            className="hidden sm:flex p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors"
+            className="hidden sm:flex p-1.5 rounded-full text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors"
           >
             <X size={16} strokeWidth={1.8} />
           </button>

@@ -1,30 +1,89 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-import TopBar from "../components/TopBar";
-import Footer from "../pages/Footer";
-import ServiceSection from "../pages/ServiceSection";
+import { Outlet, useLocation } from "react-router-dom";
+
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/sections/Footer/Footer";
+import TravelExperience from "../components/sections/TravelExperience/TravelExperience";
 
 export default function SiteLayout() {
-  const [expanded, setExpanded] = useState(false);
+  const location = useLocation();
+
+  /*
+   * =========================================================
+   * AI WORKSPACE
+   * =========================================================
+   *
+   * The AI workspace is a completely separate application.
+   *
+   * It does NOT inherit:
+   * - Navbar
+   * - TravelExperience
+   * - Footer
+   * - Website spacing
+   */
+
+  const isAIWorkspace =
+    location.pathname === "/ai" ||
+    location.pathname.startsWith("/ai/");
+
+  /*
+   * =========================================================
+   * AI WORKSPACE
+   * =========================================================
+   */
+
+  if (isAIWorkspace) {
+    return (
+      <div
+        className="
+          flex
+          h-[100dvh]
+          min-h-0
+          w-full
+          flex-col
+          overflow-hidden
+        "
+        style={{
+          background: "var(--ai-canvas)",
+        }}
+      >
+        <Outlet />
+      </div>
+    );
+  }
+
+  /*
+   * =========================================================
+   * ELIXWAY V2 WEBSITE
+   * =========================================================
+   *
+   * Structure:
+   *
+   * New Navbar
+   *     ↓
+   * Page Content
+   *     ↓
+   * Travel Experience
+   *     ↓
+   * New Footer
+   */
 
   return (
-    <div className="relative">
-      <Sidebar expanded={expanded} setExpanded={setExpanded} />
-      <TopBar expanded={expanded} />
+    <div className="min-h-screen bg-white">
 
-      <div
-        className={`pt-[92px] min-h-screen transition-all duration-300 ${
-          expanded ? "lg:ml-64" : "lg:ml-16"
-        }`}
-      >
-        <div className="bg-gray-50">
-          <Outlet />
-        </div>
+      {/* New Elixway Navbar */}
+      <Navbar />
 
-        <ServiceSection />
-        <Footer />
-      </div>
+      {/* Page Content */}
+      <main className="min-h-screen">
+        <Outlet />
+      </main>
+
+      {/* New Travel Experience */}
+      <TravelExperience />
+
+      {/* New Footer */}
+      <Footer />
+
     </div>
   );
-} 
+}

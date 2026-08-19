@@ -1,178 +1,458 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import axios from 'axios';
-import type { Message, ChatState, SessionsState } from '../types/ai';
-import { aiService } from '../services/aiService';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import axios from "axios";
+
+import type {
+  ChatState,
+  Message,
+  SessionsState,
+} from "../types/ai";
+
+import { aiService } from "../services/aiService";
 
 export function useAIChat() {
-  const [state, setState] = useState<ChatState>({
-    sessionId: aiService.getOrCreateSessionId(),
+  /* =========================================================
+     CHAT STATE
+  ========================================================= */
+
+  const [state, setState] = useState<ChatState>(() => ({
+    sessionId:
+      aiService.getOrCreateSessionId(),
     messages: [],
     isLoading: false,
     error: null,
-  });
+  }));
 
-  const [sessionsState, setSessionsState] = useState<SessionsState>({
-    sessions: [],
-    isLoadingSessions: false,
-  });
+  /* =========================================================
+     SESSIONS STATE
+  ========================================================= */
 
-  const abortRef = useRef<AbortController | null>(null);
+  const [sessionsState, setSessionsState] =
+    useState<SessionsState>({
+      sessions: [],
+      isLoadingSessions: false,
+    });
+
+  /* =========================================================
+     ACTIVE SESSION REF
+
+     Keeps the latest session ID available to
+     async callbacks without relying on stale
+     React state closures.
+  ========================================================= */
+
+  const sessionIdRef = useRef(
+    state.sessionId
+  );
+
+  /* =========================================================
+     ABORT CONTROLLER
+  ========================================================= */
+
+  const abortRef =
+    useRef<AbortController | null>(null);
+
+  /* =========================================================
+     KEEP REF IN SYNC
+  ========================================================= */
 
   useEffect(() => {
-    initialize();
+    sessionIdRef.current =
+      state.sessionId;
+  }, [state.sessionId]);
+
+  /* =========================================================
+     LOAD SESSIONS
+  ========================================================= */
+
+  const loadSessions =
+    useCallback(async () => {
+      setSessionsState((prev) => ({
+        ...prev,
+        isLoadingSessions: true,
+      }));
+
+      try {
+        const sessions =
+          await aiService.getSessions();
+
+        setSessionsState({
+          sessions,
+          isLoadingSessions: false,
+        });
+
+        return sessions;
+      } catch {
+        setSessionsState((prev) => ({
+          ...prev,
+          isLoadingSessions: false,
+        }));
+
+        return [];
+      }
+    }, []);
+
+  /* =========================================================
+     LOAD CONVERSATION
+  ========================================================= */
+
+  const loadConversation =
+    useCallback(
+      async (sessionId: string) => {
+        /*
+         * Cancel an existing request.
+         */
+        abortRef.current?.abort();
+
+        try {
+          const messages =
+            await aiService.getConversation(
+              sessionId
+            );
+
+          /*
+           * Make the selected conversation
+           * the active session.
+           */
+          sessionIdRef.current =
+            sessionId;
+
+          aiService.setSessionId(
+            sessionId
+          );
+
+          setState({
+            sessionId,
+            messages,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error) {
+          if (axios.isCancel(error)) {
+            return;
+          }
+
+          setState((prev) => ({
+            ...prev,
+            sessionId,
+            isLoading: false,
+            error:
+              "Couldn't load conversation. Please try again.",
+          }));
+        }
+      },
+      []
+    );
+
+  /* =========================================================
+     INITIALIZATION
+  ========================================================= */
+
+  useEffect(() => {
+    let mounted = true;
+
+    const initialize = async () => {
+      const sessions =
+        await loadSessions();
+
+      if (!mounted) {
+        return;
+      }
+
+      const currentSessionId =
+        sessionIdRef.current;
+
+      const currentExists =
+        sessions.some(
+          (session) =>
+            session.session_id ===
+            currentSessionId
+        );
+
+      /*
+       * If the current local session already
+       * exists on the backend, restore it.
+       */
+      if (currentExists) {
+        await loadConversation(
+          currentSessionId
+        );
+      }
+    };
+
+    void initialize();
+
     return () => {
+      mounted = false;
       abortRef.current?.abort();
     };
+
+    // Intentionally initialize once.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // --- initialization --- 
+  /* =========================================================
+     SEND MESSAGE
+  ========================================================= */
 
-  const initialize = useCallback(async () => {
-    const sessions = await loadSessions();
-    const currentExists = sessions.some(s => s.session_id === state.sessionId);
+  const sendMessage =
+    useCallback(
+      async (question: string) => {
+        const trimmedQuestion =
+          question.trim();
 
-    if (currentExists) {
-      await loadConversation(state.sessionId);
-    }
-    // if session doesn't exist on backend, keep empty chat — no error shown
-  }, []);
+        const currentSessionId =
+          sessionIdRef.current;
 
-  // --- sessions ---
+        if (
+          !trimmedQuestion ||
+          state.isLoading
+        ) {
+          return;
+        }
 
-  const loadSessions = useCallback(async () => {
-    setSessionsState(prev => ({ ...prev, isLoadingSessions: true }));
-    try {
-      const sessions = await aiService.getSessions();
-      setSessionsState({ sessions, isLoadingSessions: false });
-      return sessions;
-    } catch {
-      setSessionsState(prev => ({ ...prev, isLoadingSessions: false }));
-      return [];
-    }
-  }, []);
+        /*
+         * Cancel previous request.
+         */
+        abortRef.current?.abort();
 
-  // --- conversation ---
+        const controller =
+          new AbortController();
 
-  const loadConversation = useCallback(async (sessionId: string) => {
-    abortRef.current?.abort();
-    try {
-      const messages = await aiService.getConversation(sessionId);
-      setState({
-        sessionId,
-        messages,
-        isLoading: false,
-        error: null,
-      });
-    } catch {
-      setState(prev => ({
-        ...prev,
-        sessionId,
-        error: "Couldn't load conversation. Please try again.",
-      }));
-    }
-  }, []);
+        abortRef.current =
+          controller;
 
-  // --- send message ---
+        /* -----------------------------------------------------
+           USER MESSAGE
+        ------------------------------------------------------ */
 
-  const sendMessage = useCallback(async (question: string) => {
-    if (!question.trim() || state.isLoading) return;
+        const userMessage: Message = {
+          id: crypto.randomUUID(),
+          role: "user",
+          content: trimmedQuestion,
+          timestamp: new Date(),
+        };
 
-    abortRef.current?.abort();
-    abortRef.current = new AbortController();
+        setState((prev) => ({
+          ...prev,
+          messages: [
+            ...prev.messages,
+            userMessage,
+          ],
+          isLoading: true,
+          error: null,
+        }));
 
-    const userMessage: Message = {
-      id: crypto.randomUUID(),
-      role: 'user',
-      content: question.trim(),
-      timestamp: new Date(),
-    };
+        try {
+          /* ---------------------------------------------------
+             API REQUEST
+          ---------------------------------------------------- */
 
-    setState(prev => ({
-      ...prev,
-      messages: [...prev.messages, userMessage],
-      isLoading: true,
-      error: null,
-    }));
+          const response =
+            await aiService.sendMessage(
+              {
+                session_id:
+                  currentSessionId,
 
-    try {
-      const response = await aiService.sendMessage(
-        { session_id: state.sessionId, question: question.trim() },
-        abortRef.current.signal,
-      );
+                question:
+                  trimmedQuestion,
+              },
+              controller.signal
+            );
 
-      const assistantMessage: Message = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: response.answer,
-        timestamp: new Date(),
-      };
+          /*
+           * Backend is the source of truth.
+           */
+          const resolvedSessionId =
+            response.session_id ||
+            currentSessionId;
 
-      setState(prev => ({
-        ...prev,
-        messages: [...prev.messages, assistantMessage],
-        isLoading: false,
-      }));
+          /*
+           * Keep React + localStorage +
+           * ref synchronized.
+           */
+          sessionIdRef.current =
+            resolvedSessionId;
 
-      loadSessions();
-    } catch (err) {
-      if (axios.isCancel(err)) return;
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: err instanceof Error ? err.message : 'Failed to get a response.',
-      }));
-    }
-  }, [state.sessionId, state.isLoading]);
+          aiService.setSessionId(
+            resolvedSessionId
+          );
 
-  // --- new chat ---
+          /* ---------------------------------------------------
+             ASSISTANT MESSAGE
+          ---------------------------------------------------- */
 
-  const startNewChat = useCallback(async () => {
-    abortRef.current?.abort();
-    const newSessionId = aiService.newSession();
-    setState({
-      sessionId: newSessionId,
-      messages: [],
-      isLoading: false,
-      error: null,
-    });
-    await loadSessions();
-  }, []);
+          const assistantMessage: Message = {
+  id: crypto.randomUUID(),
+  role: "assistant",
+  content: response.answer,
+  timestamp: new Date(),
+  metadata: response.metadata ?? undefined,
+};
 
-  // --- delete ---
+          /* ---------------------------------------------------
+             UPDATE CHAT
+          ---------------------------------------------------- */
 
-  const deleteConversation = useCallback(async (sessionId: string) => {
-    try {
-      await aiService.deleteConversation(sessionId);
-    } catch {
-      // best effort
-    }
+          setState((prev) => ({
+            ...prev,
+            sessionId:
+              resolvedSessionId,
+            messages: [
+              ...prev.messages,
+              assistantMessage,
+            ],
+            isLoading: false,
+            error: null,
+          }));
 
-    if (sessionId === state.sessionId) {
-      const newSessionId = aiService.newSession();
+          /* ---------------------------------------------------
+             REFRESH HISTORY
+          ---------------------------------------------------- */
+
+          await loadSessions();
+        } catch (error) {
+          if (axios.isCancel(error)) {
+            return;
+          }
+
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            error:
+              error instanceof Error
+                ? error.message
+                : "Failed to get a response.",
+          }));
+        }
+      },
+      [
+        state.isLoading,
+        loadSessions,
+      ]
+    );
+
+  /* =========================================================
+     START NEW CHAT
+  ========================================================= */
+
+  const startNewChat =
+    useCallback(() => {
+      /*
+       * Cancel active request.
+       */
+      abortRef.current?.abort();
+
+      /*
+       * Create completely independent
+       * session.
+       */
+      const newSessionId =
+        aiService.newSession();
+
+      sessionIdRef.current =
+        newSessionId;
+
       setState({
         sessionId: newSessionId,
         messages: [],
         isLoading: false,
         error: null,
       });
-    }
+    }, []);
 
-    await loadSessions();
-  }, [state.sessionId]);
+  /* =========================================================
+     DELETE CONVERSATION
+  ========================================================= */
 
-  // --- clear error ---
+  const deleteConversation =
+    useCallback(
+      async (sessionId: string) => {
+        /*
+         * Cancel current request if deleting
+         * the active conversation.
+         */
+        if (
+          sessionId ===
+          sessionIdRef.current
+        ) {
+          abortRef.current?.abort();
+        }
 
-  const clearError = useCallback(() => {
-    setState(prev => ({ ...prev, error: null }));
-  }, []);
+        try {
+          await aiService.deleteConversation(
+            sessionId
+          );
+        } catch {
+          /*
+           * Best effort.
+           */
+        }
+
+        /*
+         * If deleting the active conversation,
+         * immediately move the UI to a fresh chat.
+         */
+        if (
+          sessionId ===
+          sessionIdRef.current
+        ) {
+          const newSessionId =
+            aiService.newSession();
+
+          sessionIdRef.current =
+            newSessionId;
+
+          setState({
+            sessionId: newSessionId,
+            messages: [],
+            isLoading: false,
+            error: null,
+          });
+        }
+
+        /*
+         * Refresh sidebar.
+         */
+        await loadSessions();
+      },
+      [loadSessions]
+    );
+
+  /* =========================================================
+     CLEAR ERROR
+  ========================================================= */
+
+  const clearError =
+    useCallback(() => {
+      setState((prev) => ({
+        ...prev,
+        error: null,
+      }));
+    }, []);
+
+  /* =========================================================
+     RETURN
+  ========================================================= */
 
   return {
     state,
+
     sessionsState,
+
     sendMessage,
+
     startNewChat,
+
     loadConversation,
+
     deleteConversation,
+
     clearError,
   };
 }

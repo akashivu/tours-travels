@@ -1,25 +1,47 @@
-import { Sparkles } from 'lucide-react';
+import { Sparkles } from "lucide-react";
 
 export function TypingIndicator() {
   return (
-    <div className="flex items-start gap-2.5 mb-4 ai-fade-in">
-      <span
-        className="flex items-center justify-center rounded-full shrink-0"
-        style={{ width: 26, height: 26, background: 'var(--surface)', marginTop: 2 }}
-      >
-        <Sparkles size={12} strokeWidth={1.9} style={{ color: 'var(--ink-soft)' }} />
-      </span>
+    <div className="mb-5 flex items-center gap-2.5">
       <div
-        className="flex items-center gap-1.5 rounded-2xl rounded-tl-md px-4 py-3"
-        style={{ background: 'var(--surface)' }}
+        className="
+          flex
+          h-7
+          w-7
+          shrink-0
+          items-center
+          justify-center
+          rounded-full
+        "
+        style={{
+          background: "var(--ai-card-soft)",
+          color: "var(--ai-ink-soft)",
+        }}
       >
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            className="ai-typing-dot block w-1.5 h-1.5 rounded-full"
-            style={{ background: 'var(--muted)', animationDelay: `${i * 0.15}s` }}
-          />
-        ))}
+        <Sparkles size={13} strokeWidth={1.9} />
+      </div>
+
+      <div className="flex items-center gap-1 py-1">
+        <span
+          className="ai-typing-dot h-1.5 w-1.5 rounded-full"
+          style={{ background: "var(--ai-ink-soft)" }}
+        />
+
+        <span
+          className="ai-typing-dot h-1.5 w-1.5 rounded-full"
+          style={{
+            background: "var(--ai-ink-soft)",
+            animationDelay: "0.15s",
+          }}
+        />
+
+        <span
+          className="ai-typing-dot h-1.5 w-1.5 rounded-full"
+          style={{
+            background: "var(--ai-ink-soft)",
+            animationDelay: "0.3s",
+          }}
+        />
       </div>
     </div>
   );

@@ -30,26 +30,45 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 
 import AIAssistant from "./pages/AIAssistant";
-import { AIWidget } from "./components/ai/AIWidget";
 
+import WebsiteAIChat from "./components/ai/WebsiteAIChat";
 import CookieBanner from "./components/CookieBanner";
-
+import DestinationDetails from "./pages/DestinationDetails";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
-
+import Flights from "./pages/Flights/Flights";
 function AppContent() {
   const location = useLocation();
 
-  // Hide floating AI widget on AI Assistant page
-  const hideAIWidget = location.pathname === "/ai";
+
+  const hideWebsiteAI =
+  location.pathname === "/ai" ||
+  location.pathname.startsWith("/ai/");
 
   return (
     <>
       <Routes>
-        {/* Public Website */}
+
+        {/* ==========================
+             ElixWay V2 (New Homepage)
+        =========================== */}
         <Route element={<SiteLayout />}>
-          <Route path="/" element={<Home />} />
+  <Route
+    path="/destinations/:slug"
+    element={<DestinationDetails />}
+  />
+  <Route path="/" element={<Home />} />
+</Route>
+        <Route
+  path="/flights"
+  element={<Flights />}
+/>
+
+        {/* ==========================
+             Existing Website
+        =========================== */}
+        <Route element={<SiteLayout />}>
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/ai" element={<AIAssistant />} />
@@ -68,7 +87,9 @@ function AppContent() {
           <Route path="/cookie-policy" element={<CookiePolicy />} />
         </Route>
 
-        {/* User Dashboard */}
+        {/* ==========================
+             User Dashboard
+        =========================== */}
         <Route element={<ProtectedRoute />}>
           <Route path="/user" element={<UserDashboardLayout />}>
             <Route path="dashboard" element={<QuickBookingForm />} />
@@ -80,19 +101,24 @@ function AppContent() {
           </Route>
         </Route>
 
-        {/* Admin */}
+        {/* ==========================
+             Admin
+        =========================== */}
         <Route element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
 
-        {/* Account */}
+        {/* ==========================
+             Account
+        =========================== */}
         <Route path="/account" element={<AccountForm />} />
       </Routes>
 
-      
-      {!hideAIWidget && <AIWidget />}
+      {/* Temporarily disable while redesigning */}
 
-      <CookieBanner />
+     {!hideWebsiteAI && <WebsiteAIChat />}
+
+     <CookieBanner />
 
       <Toaster
         position="top-center"
