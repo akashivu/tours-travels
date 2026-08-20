@@ -51,12 +51,12 @@ function TrustBadge({
         items-center
         gap-1.5
         rounded-full
-        bg-[#eef4ff]
+        bg-[#f5f6f8]
         px-3
         py-1.5
         text-[12.5px]
         font-medium
-        text-[#2563eb]
+        text-[#475467]
       "
     >
       {icon}
@@ -143,7 +143,9 @@ export default function HotelSearchPanel({
             w-full
             flex-col
             rounded-[16px]
-            bg-[#f5f6f8]
+            border border-[#eef0f3]
+            bg-white
+            shadow-[0_8px_24px_rgba(16,24,40,0.06)]
             lg:flex-row
             lg:items-stretch
             lg:pr-[160px]
@@ -405,7 +407,7 @@ export default function HotelSearchPanel({
                   right-0
                   top-[calc(100%+8px)]
                   z-40
-                  w-[300px]
+                  w-[300px] max-w-[calc(100vw-2rem)]
                   rounded-[14px]
                   border
                   border-[#e4e7ec]
@@ -602,7 +604,7 @@ export default function HotelSearchPanel({
             items-center
             justify-center
             gap-1.5
-            rounded-full
+            rounded-[14px]
             bg-[#101828]
             px-8
             text-[15px]

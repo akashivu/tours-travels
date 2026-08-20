@@ -149,36 +149,34 @@ export async function getDestinations(): Promise<
     await response.json();
 
   return data.map(
-    (destination): Destination => ({
-      id: String(destination.id),
+  (destination): Destination => ({
+    id: String(destination.id),
 
-      name: destination.name,
+    name: destination.name,
 
-      slug: destination.slug,
+    slug: destination.slug,
 
-      country: destination.country,
+    country: destination.country,
 
-      coordinates: [
-        destination.longitude ?? 0,
-        destination.latitude ?? 0,
-      ],
+    coordinates: [
+      destination.longitude ?? 0,
+      destination.latitude ?? 0,
+    ],
 
-      category: isDestinationCategory(
-        destination.category,
-      )
-        ? destination.category
-        : "cities",
+    category: isDestinationCategory(
+      destination.category,
+    )
+      ? destination.category
+      : "cities",
 
-      image:
-        destination.heroImage ??
-        "",
+    image: `/image/destinations/${destination.slug}.jpg`,
 
-      description:
-        destination.description ??
-        destination.shortDescription ??
-        "",
-    }),
-  );
+    description:
+      destination.description ??
+      destination.shortDescription ??
+      "",
+  }),
+);
 }
 
 /*

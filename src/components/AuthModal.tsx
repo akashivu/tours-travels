@@ -27,6 +27,8 @@ export default function AuthModal({
 
   const [error, setError] = useState("");
 
+  // Body scroll lock is handled by Navbar (single owner, since it
+  // also locks for the sidebar). Only handle Escape here.
   useEffect(() => {
     if (!isOpen) return;
 
@@ -41,15 +43,11 @@ export default function AuthModal({
       handleEscape
     );
 
-    document.body.style.overflow = "hidden";
-
     return () => {
       document.removeEventListener(
         "keydown",
         handleEscape
       );
-
-      document.body.style.overflow = "";
     };
   }, [isOpen, onClose]);
 
@@ -182,16 +180,7 @@ export default function AuthModal({
     }
   };
 
-  /*
-   * ================================================
-   * EMAIL AUTHENTICATION
-   * ================================================
-   *
-   * Keep your existing AccountForm because it already
-   * handles login, registration, OTP and password reset.
-   *
-   * The email button opens that existing flow.
-   */
+  
   const handleEmailContinue = () => {
     onClose();
     navigate("/account");
@@ -222,44 +211,40 @@ export default function AuthModal({
           onClick={onClose}
           aria-label="Close authentication"
         >
-          <X size={25} strokeWidth={1.8} />
+          <X size={25} strokeWidth={2.5} />
         </button>
 
         {/* HEADER */}
-        <div className="auth-modal-header">
-          <h1 id="auth-title">
-            Hi there.
-            <br />
-            <span>
-              Nice to see you again
-              <b>.</b>
-            </span>
-          </h1>
+<div className="auth-modal-header">
+  <h1 id="auth-title">
+    Welcome to Elixway.
+    <br />
+    <span>
+      Let's make your next trip
+      <b>.</b>
+    </span>
+  </h1>
 
-          <p>
-            Sign up to get some great
-            benefits you're missing out
-            on right now:
-          </p>
-        </div>
+  <p>
+    Sign in or create your account to
+    make travel planning easier:
+  </p>
+</div>
 
-        {/* BENEFITS */}
-        <ul className="auth-benefits">
-          <li>
-            Cheaper prices with
-            member-only discounts
-          </li>
+{/* BENEFITS */}
+<ul className="auth-benefits">
+  <li>
+    Member-only travel deals and savings
+  </li>
 
-          <li>
-            Fast and easy booking with
-            saved details
-          </li>
+  <li>
+    Faster bookings with your details saved
+  </li>
 
-          <li>
-            Free trip planning, synced
-            to all your devices.
-          </li>
-        </ul>
+  <li>
+    Save and manage your trips across devices
+  </li>
+</ul>
 
         {/* ERROR */}
         {error && (

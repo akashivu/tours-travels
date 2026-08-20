@@ -551,8 +551,10 @@ return (
       className="
         relative
         h-[470px]
+        min-h-[470px]
         w-full
-        overflow-visible
+        overflow-hidden
+        sm:h-[470px]
       "
     >
       {/* Background image */}
@@ -600,10 +602,12 @@ return (
     max-w-[1280px]
     items-center
     px-5
-    ml-35
-    pb-28
-    sm:px-8
-    lg:px-10
+pb-24
+sm:px-8
+sm:pb-28
+lg:px-10
+lg:pb-28
+lg:ml-35
   "
 >
   <div className="max-w-[560px]">
@@ -615,7 +619,7 @@ return (
         font-medium
         tracking-[0.08em]
         text-white/90
-        drop-shadow-[0_1px_4px_rgba(0,0,0,0.25)]
+        drop-shadow-[0_1px_4px_rgba(0,0,0,0.35)]
         sm:text-[14px]
       "
     >
@@ -624,14 +628,15 @@ return (
 
     <h1
       className="
-        text-[38px]
+        
         font-semibold
         leading-[1.08]
         tracking-[-0.035em]
         text-white
         drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]
-        sm:text-[48px]
-        lg:text-[56px]
+       text-[32px]
+sm:text-[46px]
+lg:text-[56px]
       "
     >
       Your journey starts here.
@@ -666,12 +671,14 @@ return (
         relative
         z-30
         mx-auto
-        -mt-[123px]
-        w-full
-        max-w-[1240px]
-        px-4
-        sm:px-6
-        lg:px-8
+        -mt-[65px]
+w-full
+max-w-[1240px]
+px-3
+sm:-mt-[105px]
+sm:px-6
+lg:-mt-[123px]
+lg:px-8
       "
     >
 
@@ -685,6 +692,7 @@ return (
           flex
           items-end
           gap-2
+          px-1
           overflow-x-auto
           pb-0
           scrollbar-hide
@@ -701,7 +709,7 @@ return (
           className={`
             flex
             h-[45px]
-            min-w-[128px]
+            min-w-[112px]
             items-center
             justify-center
             gap-2.5
@@ -718,7 +726,7 @@ return (
               serviceTab === "flights"
                 ? `
                   bg-white
-                  text-[#2563eb]
+                  text-[#475467]
                   shadow-[0_-3px_15px_rgba(15,23,42,0.06)]
                 `
                 : `
@@ -749,7 +757,7 @@ return (
           className={`
             flex
             h-[45px]
-            min-w-[128px]
+            min-w-[112px]
             items-center
             justify-center
             gap-2.5
@@ -766,7 +774,7 @@ return (
               serviceTab === "hotels"
                 ? `
                   bg-white
-                  text-[#2563eb]
+                  text-[#475467]
                   shadow-[0_-3px_15px_rgba(15,23,42,0.06)]
                 `
                 : `
@@ -797,7 +805,7 @@ return (
           className={`
             flex
             h-[45px]
-            min-w-[128px]
+            min-w-[112px]
             items-center
             justify-center
             gap-2.5
@@ -814,7 +822,7 @@ return (
               serviceTab === "cabs"
                 ? `
                   bg-white
-                  text-[#2563eb]
+                  text-[#475467]
                   shadow-[0_-3px_15px_rgba(15,23,42,0.06)]
                 `
                 : `
@@ -926,7 +934,7 @@ return (
                   duration-200
                   ${
                     activeTab === "outstation"
-                      ? "border-2 border-gray-600 text-[#2563eb]"
+                      ? "border-2 border-[#475467] bg-[#f5f6f8] text-[#344054]"
                       : "border border-[#d0d5dd] text-[#344054] hover:border-[#98a2b3]"
                   }
                 `}
@@ -947,7 +955,7 @@ return (
                   duration-200
                   ${
                     activeTab === "airport"
-                      ? "border-2 border-[#0b0e13] text-[#2563eb]"
+                      ? "border-2 border-[#475467] bg-[#f5f6f8] text-[#344054]"
                       : "border border-[#d0d5dd] text-[#344054] hover:border-[#98a2b3]"
                   }
                 `}
@@ -1007,17 +1015,17 @@ return (
 
             {/* TRUST BADGES */}
             <div className="mb-4 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eef4ff] px-3 py-1.5 text-[12.5px] font-medium text-[#2563eb]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f5f6f8] px-3 py-1.5 text-[12.5px] font-medium text-[#475467]">
                 <ShieldCheck size={13} strokeWidth={2} />
                 Free Cancellation
               </span>
 
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eef4ff] px-3 py-1.5 text-[12.5px] font-medium text-[#2563eb]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f5f6f8] px-3 py-1.5 text-[12.5px] font-medium text-[#475467]">
                 <Tag size={13} strokeWidth={2} />
                 Transparent Fares
               </span>
 
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eef4ff] px-3 py-1.5 text-[12.5px] font-medium text-[#2563eb]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f5f6f8] px-3 py-1.5 text-[12.5px] font-medium text-[#475467]">
                 <Headphones size={13} strokeWidth={2} />
                 24/7 Support
               </span>
