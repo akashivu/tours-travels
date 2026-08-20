@@ -532,9 +532,7 @@ function AirportSuggestions({
 }
 
 export default function FlightSearchPanel({
-  isLoggedIn = false,
   onSearch,
-  onSignIn,
 }: FlightSearchPanelProps) {
   const [tripType, setTripType] =
     useState<TripType>("oneway");
