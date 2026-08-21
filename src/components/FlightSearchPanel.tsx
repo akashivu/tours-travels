@@ -922,20 +922,19 @@ export default function FlightSearchPanel({
                 absolute
                 z-10
                 flex
-                h-9
-                w-9
+                h-12
+                w-12
                 items-center
                 justify-center
-                rounded-full
-                border
-                border-[#e4e7ec]
-                bg-white
+              
+               
+               
                 text-[#475467]
-                shadow-[0_4px_12px_rgba(16,24,40,0.08)]
+                
                 transition-transform
                 duration-200
                 hover:rotate-180
-                hover:bg-[#f8f9fb]
+               
               "
             >
               <ArrowLeftRight
@@ -1337,49 +1336,44 @@ export default function FlightSearchPanel({
         </div>
 
         {/* SEARCH */}
-        <button
-          type="button"
-          onClick={handleSearch}
-          className="
-            group
-            mt-3
-            flex
-            h-[52px]
-            w-full
-            items-center
-            justify-center
-            gap-2
-            rounded-[14px]
-            bg-[#101828]
-            px-8
-            text-[15px]
-            font-semibold
-            text-white
-            shadow-[0_10px_24px_rgba(16,24,40,0.18)]
-            transition-colors
-            duration-200
-            hover:bg-black
-            lg:absolute
-            lg:right-2
-            lg:top-1/2
-            lg:mt-0
-            lg:w-auto
-            lg:-translate-y-1/2
-          "
-        >
-          <Search
-            size={17}
-            strokeWidth={2.2}
-          />
+<button
+  type="button"
+  onClick={handleSearch}
+  className="
+    group
+    mt-3
+    flex
+    h-[44px]
+    w-full
+    items-center
+    justify-center
+    gap-1.5
+    rounded-[12px]
+    bg-[#101828]
+    px-5
+    text-[12px]
+    font-semibold
+    text-white
+    shadow-[0_8px_18px_rgba(16,24,40,0.16)]
+    transition-colors
+    duration-200
+    hover:bg-black
+    lg:absolute
+    lg:right-2
+    lg:top-1/2
+    lg:mt-0
+    lg:h-[40px]
+    lg:w-auto
+    lg:-translate-y-1/2
+  "
+>
+  <Search
+    size={15}
+    strokeWidth={2.2}
+  />
 
-          Search Flights
-
-          <ChevronRight
-            size={18}
-            strokeWidth={2.2}
-            className="transition-transform duration-300 group-hover:translate-x-0.5"
-          />
-        </button>
+  Search Flights
+</button>
       </div>
 
       {/* Validation / informational message */}

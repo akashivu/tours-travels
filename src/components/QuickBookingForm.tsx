@@ -23,7 +23,7 @@ import {
 
 import toast from "react-hot-toast";
 
-import backgroundImage from "/image/elixx.png";
+import backgroundImage from "/image/elixc.png";
 
 interface BookingState {
   quotes: any;
@@ -677,7 +677,7 @@ max-w-[1240px]
 px-3
 sm:-mt-[105px]
 sm:px-6
-lg:-mt-[123px]
+lg:-mt-[180px]
 lg:px-8
       "
     >
@@ -725,7 +725,7 @@ lg:px-8
             ${
               serviceTab === "flights"
                 ? `
-                  bg-white
+                  bg-orange-400
                   text-[#475467]
                   shadow-[0_-3px_15px_rgba(15,23,42,0.06)]
                 `
