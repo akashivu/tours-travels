@@ -189,7 +189,7 @@ export async function getGooglePlaceDetails(
   slug: string,
 ): Promise<GooglePlaceDetails> {
   const response = await fetch(
-    `${API_BASE_URL}/destinations/${encodeURIComponent(
+    `${API_BASE_URL}/api/destinations/${encodeURIComponent(
       slug,
     )}/google-details`,
   );

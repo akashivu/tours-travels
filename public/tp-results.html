@@ -1,0 +1,86 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Flight Results</title>
+
+  <style>
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+
+      width: 100%;
+      min-width: 0;
+
+      background: #ffffff;
+
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    #tpwl-tickets {
+      width: 100%;
+      min-width: 0;
+
+      margin: 0;
+      padding: 0;
+
+      background: #ffffff;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="tpwl-tickets"></div>
+
+  <script>
+
+    /*
+     * Travelpayouts configuration.
+     *
+     * IMPORTANT:
+     *
+     * Do NOT set resultsURL here.
+     *
+     * We are already on the results document.
+     */
+
+    window.TPWL_CONFIGURATION = {
+      ...(window.TPWL_CONFIGURATION || {})
+    };
+
+  </script>
+
+  <script
+    async
+    type="module"
+    data-noptimize="1"
+    data-cfasync="false"
+    data-wpfc-render="false"
+    data-no-defer="1"
+    src="https://tpembd.com/wl_web/main.js?wl_id=21122"
+  ></script>
+
+</body>
+
+</html>

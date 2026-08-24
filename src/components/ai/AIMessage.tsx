@@ -666,11 +666,7 @@ function extractActions(
       prompt:
         "Give me a detailed budget breakdown for this trip.",
     },
-    {
-      label: "Find hotels",
-      prompt:
-        "Suggest good hotels for this itinerary.",
-    },
+    
   ];
 }
 

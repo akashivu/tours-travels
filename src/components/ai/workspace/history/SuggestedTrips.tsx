@@ -21,13 +21,7 @@ const suggestions = [
     prompt:
       "Find a flight from Bengaluru to Dubai",
   },
-  {
-    id: "nearby-hotels",
-    title:
-      "Find the best hotels near me",
-    prompt:
-      "Find the best hotels near my current location",
-  },
+  
   {
     id: "explore",
     title:

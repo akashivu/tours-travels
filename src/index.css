@@ -1,30 +1,84 @@
+/* =========================================================
+   TAILWIND
+   ========================================================= */
+
 @import "tailwindcss";
 
-html, body, #root {
+
+/* =========================================================
+   ELIXWAY BASE DOCUMENT
+   ========================================================= */
+
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-body {
-  @apply bg-gray-50;
-}
-body {
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  @apply font-bold;
-}
-
-button {
-  @apply rounded-lg px-4 py-2 font-medium transition;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+body {
+  @apply bg-gray-50;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+
+/* =========================================================
+   ELIXWAY DESIGN TOKENS
+   ========================================================= */
+
+:root {
+  --background: #ffffff;
+  --surface: #f8fafc;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+}
+
+
+
+
+/* Keep the application document stable */
+
+html,
+body {
+  line-height: 1.5;
+}
+
+
+/* Protect Elixway typography from Travelpayouts reset */
+
+#root {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+
+/*
+ * Travelpayouts sets body line-height: 1.
+ * Restore normal inherited line-height for the application.
+ *
+ * The Travelpayouts widget is explicitly excluded.
+ */
+
+#root :not(
+  #tpwl-search,
+  #tpwl-search *,
+  #tpwl-tickets,
+  #tpwl-tickets *,
+  #tpwl-modals,
+  #tpwl-modals *
+) {
+  line-height: inherit;
+}
+
+
+/* =========================================================
+   GOOGLE PLACES
+   ========================================================= */
 
 gmp-place-autocomplete {
   color-scheme: light !important;
@@ -32,25 +86,33 @@ gmp-place-autocomplete {
   width: 100% !important;
 }
 
-
 gmp-place-autocomplete input {
   background-color: #ffffff !important;
   background: #ffffff !important;
+
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
+
   border: 1px solid #d1d5db !important;
   border-radius: 6px !important;
+
   padding: 12px !important;
+
   font-size: 16px !important;
+
   box-shadow: none !important;
   outline: none !important;
+
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
 gmp-place-autocomplete input:focus {
   border: 1px solid #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+
   outline: none !important;
 }
 
@@ -58,25 +120,39 @@ gmp-place-autocomplete input:hover {
   border-color: #9ca3af !important;
 }
 
-/* Force all nested elements to use light theme */
 gmp-place-autocomplete,
 gmp-place-autocomplete * {
   color-scheme: light !important;
 }
+
+
+/* =========================================================
+   GOOGLE PLACES AUTOCOMPLETE DROPDOWN
+   ========================================================= */
+
 .pac-container {
   margin-top: 4px !important;
+
   border-radius: 12px !important;
   border: 1px solid #e5e7eb !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08) !important;
+
   overflow: hidden !important;
+
   font-family: inherit !important;
+
   z-index: 9999 !important;
 }
 
 .pac-item {
   padding: 10px 12px !important;
+
   font-size: 13px !important;
-  border-top: 1px solid #f3f4f6 !important;
+
+  border-top:
+    1px solid #f3f4f6 !important;
 }
 
 .pac-item:hover {
@@ -85,7 +161,9 @@ gmp-place-autocomplete * {
 
 .pac-item-query {
   font-size: 14px !important;
+
   font-weight: 500 !important;
+
   color: #111827 !important;
 }
 
@@ -93,13 +171,12 @@ gmp-place-autocomplete * {
   transform: scale(0.85);
   opacity: 0.65;
 }
-:root {
-  --background: #ffffff;
-  --surface: #f8fafc;
-  --text: #111827;
-  --text-secondary: #6b7280;
-  --border: #e5e7eb;
-}
+
+
+/* =========================================================
+   DESTINATION CARDS
+   ========================================================= */
+
 @keyframes destination-card-enter {
   from {
     opacity: 0;
@@ -113,8 +190,11 @@ gmp-place-autocomplete * {
 }
 
 .destination-card {
-  animation: destination-card-enter 600ms
-    cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation:
+    destination-card-enter
+    600ms
+    cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -125,6 +205,11 @@ gmp-place-autocomplete * {
   }
 }
 
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
 .scrollbar-none {
   scrollbar-width: none;
 }
@@ -132,6 +217,12 @@ gmp-place-autocomplete * {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+
+/* =========================================================
+   AI HOTEL CARD
+   ========================================================= */
+
 @keyframes ai-hotel-card-enter {
   from {
     opacity: 0;
@@ -146,7 +237,10 @@ gmp-place-autocomplete * {
 
 .ai-hotel-card {
   opacity: 0;
-  animation: ai-hotel-card-enter 650ms
+
+  animation:
+    ai-hotel-card-enter
+    650ms
     cubic-bezier(0.22, 1, 0.36, 1)
     forwards;
 }
@@ -157,6 +251,11 @@ gmp-place-autocomplete * {
     animation: none;
   }
 }
+
+
+/* =========================================================
+   AI FLIGHT CARD
+   ========================================================= */
 
 @keyframes ai-flight-card-enter {
   from {
@@ -172,7 +271,10 @@ gmp-place-autocomplete * {
 
 .ai-flight-card {
   opacity: 0;
-  animation: ai-flight-card-enter 600ms
+
+  animation:
+    ai-flight-card-enter
+    600ms
     cubic-bezier(0.22, 1, 0.36, 1)
     forwards;
 }
@@ -182,7 +284,14 @@ gmp-place-autocomplete * {
     opacity: 1;
     animation: none;
   }
-}@keyframes how-it-works-enter {
+}
+
+
+/* =========================================================
+   HOW IT WORKS
+   ========================================================= */
+
+@keyframes how-it-works-enter {
   from {
     opacity: 0;
     transform: translateY(28px);
@@ -195,7 +304,9 @@ gmp-place-autocomplete * {
 }
 
 .how-it-works-step {
-  animation: how-it-works-enter 650ms
+  animation:
+    how-it-works-enter
+    650ms
     cubic-bezier(0.22, 1, 0.36, 1)
     forwards;
 }
@@ -206,6 +317,12 @@ gmp-place-autocomplete * {
     animation: none;
   }
 }
+
+
+/* =========================================================
+   TRAVEL EXPERIENCE
+   ========================================================= */
+
 @keyframes travel-experience-enter {
   from {
     opacity: 0;
@@ -219,8 +336,11 @@ gmp-place-autocomplete * {
 }
 
 .travel-experience-content {
-  animation: travel-experience-enter 800ms
-    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation:
+    travel-experience-enter
+    800ms
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
 }
 
 .travel-experience-content:nth-child(2) {
@@ -242,5 +362,28 @@ gmp-place-autocomplete * {
 @media (prefers-reduced-motion: reduce) {
   .travel-experience-content {
     animation: none;
+  }
+}
+
+
+/* =========================================================
+   TRAVELPAYOUTS FLIGHT SEARCH
+   Keep Elixway styles untouched
+========================================================= */
+
+#tpwl-search {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Restore the desktop search layout */
+@media (min-width: 1024px) {
+  #tpwl-search .DefaultSearch-module__root__m4x21 {
+    width: 100%;
+  }
+
+  #tpwl-search .DefaultSearch-module__root__m4x21 > * {
+    width: auto;
+    max-width: none;
   }
 }

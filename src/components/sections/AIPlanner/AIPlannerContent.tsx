@@ -37,7 +37,7 @@ const AIPlannerContent = () => {
       <p className="mt-8 max-w-lg text-lg leading-8 text-gray-600">
         Simply describe where you want to go, your budget, and your travel
         style. Elixway's AI instantly builds a complete journey with the best
-        flights, hotels, airport transfers, and a personalized itinerary.
+        flights, airport transfers, and a personalized itinerary.
       </p>
 
       <div className="mt-10">

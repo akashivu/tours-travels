@@ -127,8 +127,8 @@ const Navbar = () => {
                 shrink-0
                 items-center
                 justify-center
-                rounded-full
-                text-neutral-800
+                rounded-2xl
+                text-neutral-500
                 transition-all
                 duration-200
                 hover:bg-neutral-100
@@ -137,9 +137,9 @@ const Navbar = () => {
               "
             >
               <span className="flex h-[17px] w-[22px] flex-col justify-between">
-                <span className="block h-[2px] w-[22px] rounded-full bg-neutral-800" />
-                <span className="block h-[2px] w-[22px] rounded-full bg-neutral-800" />
-                <span className="block h-[2px] w-[22px] rounded-full bg-neutral-800" />
+                <span className="block h-[1px] w-[22px] rounded-full bg-neutral-800" />
+                <span className="block h-[1px] w-[22px] rounded-full bg-neutral-800" />
+                <span className="block h-[1px] w-[22px] rounded-full bg-neutral-800" />
               </span>
             </button>
 

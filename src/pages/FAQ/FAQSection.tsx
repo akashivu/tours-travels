@@ -58,27 +58,27 @@ export default function FAQ() {
 
   return (
     <section
-  id="faqs"
-  className="w-full scroll-mt-24 bg-white text-neutral-950"
->
-      <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:py-28 lg:px-12 ">
+      id="faqs"
+      className="w-full scroll-mt-24 bg-white text-neutral-950"
+    >
+      <div className="mx-auto max-w-7xl px-6 py-10 sm:py-12 lg:px-12 lg:py-16">
         {/* =====================================================
             HEADER
         ====================================================== */}
-        <div className="grid gap-12 lg:grid-cols-[0.55fr_1.45fr] lg:gap-24">
+        <div className="grid gap-8 lg:grid-cols-[0.5fr_1.5fr] lg:gap-16">
           {/* Left */}
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">
               FAQ
             </p>
 
-            <h2 className="mt-6 max-w-sm text-4xl font-semibold leading-[1.05] tracking-[-0.045em] sm:text-5xl">
+            <h2 className="mt-3 max-w-sm text-2xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-3xl">
               Questions,
               <br />
               answered.
             </h2>
 
-            <p className="mt-7 max-w-xs text-sm leading-7 text-neutral-500">
+            <p className="mt-3 max-w-xs text-[13px] leading-6 text-neutral-500">
               Everything you need to know about Elixway and how the platform
               works.
             </p>
@@ -98,10 +98,10 @@ export default function FAQ() {
                     type="button"
                     onClick={() => toggleFAQ(index)}
                     aria-expanded={isOpen}
-                    className="group flex w-full items-center justify-between gap-8 py-7 text-left sm:py-8"
+                    className="group flex w-full items-center justify-between gap-6 py-4 text-left sm:py-4.5"
                   >
                     <span
-                      className={`text-base font-medium tracking-[-0.01em] transition-colors duration-200 sm:text-lg ${
+                      className={`text-[14px] font-medium tracking-[-0.01em] transition-colors duration-200 sm:text-[15px] ${
                         isOpen
                           ? "text-neutral-950"
                           : "text-neutral-700 group-hover:text-neutral-950"
@@ -111,14 +111,14 @@ export default function FAQ() {
                     </span>
 
                     <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                         isOpen
                           ? "rotate-45 border-neutral-950 bg-neutral-950 text-white"
                           : "border-neutral-200 text-neutral-500 group-hover:border-neutral-400"
                       }`}
                     >
                       <Plus
-                        className="h-4 w-4"
+                        className="h-3.5 w-3.5"
                         strokeWidth={1.7}
                       />
                     </span>
@@ -133,7 +133,7 @@ export default function FAQ() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="max-w-2xl pb-8 pr-12 text-sm leading-7 text-neutral-500 sm:text-[15px]">
+                      <div className="max-w-2xl pb-4 pr-10 text-[13px] leading-6 text-neutral-500">
                         {item.answer}
                       </div>
                     </div>

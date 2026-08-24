@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import {
   ArrowRight,
-  Hotel,
+
   Map,
   Plane,
   Sparkles,
@@ -26,12 +26,7 @@ const quickActions = [
     icon: Plane,
     prompt: "Find flights for my trip",
   },
-  {
-    label: "Find hotels",
-    description: "Discover places to stay",
-    icon: Hotel,
-    prompt: "Find hotels for my trip",
-  },
+  
   {
     label: "Plan a trip",
     description: "Build my itinerary",

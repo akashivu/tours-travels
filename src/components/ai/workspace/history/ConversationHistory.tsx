@@ -1,7 +1,6 @@
 import {
   Loader2,
   Plus,
-  Building2,
   Plane,
   MapPin,
 } from "lucide-react";
@@ -49,12 +48,7 @@ const quickStarts = [
     label: "Find flights to Delhi",
     prompt: "Find flights from Bengaluru to Delhi",
   },
-  {
-    id: "hotels-near-me",
-    icon: Building2,
-    label: "Hotels near me",
-    prompt: "Find the best hotels near my current location",
-  },
+  
 ];
 
 export function ConversationHistory({

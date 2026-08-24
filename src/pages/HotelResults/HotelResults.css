@@ -1,0 +1,139 @@
+.hotel-results-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #172033;
+  padding-bottom: 48px;
+}
+
+.hotel-results-header {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 32px 26px;
+  border-bottom: 1px solid #e8ebf0;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: none;
+  background: transparent;
+  color: #586174;
+
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  padding: 6px 0;
+  margin-bottom: 18px;
+}
+
+.back-button:hover {
+  color: #111827;
+}
+
+.results-eyebrow {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.hotel-results-header h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 650;
+  letter-spacing: -1.2px;
+  color: #172033;
+}
+
+.hotel-results-header h1 span {
+  color: #172033;
+}
+
+.search-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.summary-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 11px 16px;
+  border-radius: 999px;
+
+  background: #f5f6f8;
+  border: 1px solid #e7e9ee;
+
+  color: #465066;
+  font-size: 14px;
+}
+
+.stay22-results-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.stay22-results-heading {
+  margin-bottom: 20px;
+}
+
+.stay22-results-heading h2 {
+  margin: 0 0 7px;
+  font-size: 24px;
+  font-weight: 650;
+  color: #172033;
+}
+
+.stay22-results-heading p {
+  margin: 0;
+  color: #697386;
+  font-size: 15px;
+}
+
+.stay22-map-wrapper {
+  overflow: hidden;
+  border: 1px solid #e3e6eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+}
+
+.stay22-map-wrapper iframe {
+  display: block;
+  width: 100%;
+  border: none;
+}
+
+.booking-disclaimer {
+  margin: 14px 4px 0;
+  color: #8a93a3;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .hotel-results-header {
+    padding: 24px 16px 22px;
+  }
+
+  .stay22-results-container {
+    padding: 24px 16px;
+  }
+
+  .stay22-map-wrapper {
+    border-radius: 14px;
+  }
+
+  .stay22-map-wrapper iframe {
+    height: 620px;
+  }
+
+  .summary-item {
+    width: 100%;
+  }
+}

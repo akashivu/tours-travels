@@ -13,24 +13,24 @@ const TravelExperience = () => {
 
   return (
     <Section className="overflow-hidden bg-[#F7F7F5] !py-0">
-      <div className="grid min-h-[560px] grid-cols-1 lg:grid-cols-2">
+      <div className="grid min-h-[480px] grid-cols-1 lg:grid-cols-2">
 
         {/* =========================================
             LEFT — CONTENT
         ========================================== */}
 
         <div className="flex items-center bg-[#F7F7F5]">
-          <Container className="w-full py-20 lg:py-24">
-            <div className="mx-auto max-w-[520px] lg:ml-auto lg:mr-12">
+          <Container className="w-full py-10 lg:py-12">
+            <div className="mx-auto max-w-[500px] lg:ml-auto lg:mr-12">
 
               {/* Eyebrow */}
               <p
                 className="
                   travel-experience-content
-                  text-[11px]
+                  text-[10px]
                   font-medium
                   uppercase
-                  tracking-[0.24em]
+                  tracking-[0.22em]
                   text-gray-400
                 "
               >
@@ -41,13 +41,13 @@ const TravelExperience = () => {
               <h2
                 className="
                   travel-experience-content
-                  mt-5
-                  text-5xl
+                  mt-3
+                  text-4xl
                   font-semibold
-                  leading-[0.98]
+                  leading-[1]
                   tracking-[-0.045em]
                   text-gray-950
-                  sm:text-6xl
+                  sm:text-5xl
                 "
               >
                 Your next journey
@@ -59,9 +59,9 @@ const TravelExperience = () => {
               <div
                 className="
                   travel-experience-content
-                  mt-7
+                  mt-5
                   h-px
-                  w-12
+                  w-10
                   bg-gray-300
                 "
               />
@@ -70,12 +70,12 @@ const TravelExperience = () => {
               <p
                 className="
                   travel-experience-content
-                  mt-7
-                  max-w-[460px]
-                  text-base
-                  leading-7
+                  mt-5
+                  max-w-[440px]
+                  text-[15px]
+                  leading-6
                   text-gray-500
-                  sm:text-lg
+                  sm:text-base
                 "
               >
                 Tell Elixway where you want to go and
@@ -90,14 +90,14 @@ const TravelExperience = () => {
                 className="
                   travel-experience-content
                   group
-                  mt-9
+                  mt-6
                   inline-flex
                   items-center
-                  gap-4
+                  gap-3
                   rounded-full
                   bg-gray-950
                   px-6
-                  py-3.5
+                  py-3
                   text-sm
                   font-medium
                   text-white
@@ -111,7 +111,7 @@ const TravelExperience = () => {
 
                 <span
                   className="
-                    text-lg
+                    text-base
                     leading-none
                     transition-transform
                     duration-300
@@ -130,7 +130,7 @@ const TravelExperience = () => {
             RIGHT — IMAGE
         ========================================== */}
 
-        <div className="relative min-h-[420px] overflow-hidden lg:min-h-[560px]">
+        <div className="relative min-h-[380px] overflow-hidden lg:min-h-[480px]">
           <img
             src={backgroundImage}
             alt="Travel destination"
