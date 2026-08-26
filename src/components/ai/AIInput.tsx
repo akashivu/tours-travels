@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
-import { ArrowUp, Mic, Plus } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 interface Props {
   onSend: (message: string) => void;
@@ -89,14 +89,14 @@ export function AIInput({
       <div
         className="
           flex
-          min-h-[56px]
+          min-h-[68px]
           w-full
           items-center
           gap-2
           rounded-[var(--ai-radius-lg)]
           border
           px-3
-          py-2
+          py-3
           transition-all
           duration-200
         "
@@ -110,35 +110,6 @@ export function AIInput({
               : "transparent",
         }}
       >
-        {/* =================================================
-            ADD BUTTON
-        ================================================== */}
-
-        <button
-          type="button"
-          aria-label="Add attachment"
-          className="
-            flex
-            h-8
-            w-8
-            shrink-0
-            items-center
-            justify-center
-            rounded-full
-            transition-colors
-            duration-150
-            hover:bg-[var(--ai-card)]
-          "
-          style={{
-            color: "var(--ai-ink-soft)",
-          }}
-        >
-          <Plus
-            size={17}
-            strokeWidth={1.9}
-          />
-        </button>
-
         {/* =================================================
             TEXTAREA
         ================================================== */}
@@ -202,35 +173,6 @@ export function AIInput({
             maxHeight: 140,
           }}
         />
-
-        {/* =================================================
-            MIC BUTTON
-        ================================================== */}
-
-        <button
-          type="button"
-          aria-label="Voice input"
-          className="
-            flex
-            h-8
-            w-8
-            shrink-0
-            items-center
-            justify-center
-            rounded-full
-            transition-colors
-            duration-150
-            hover:bg-[var(--ai-card)]
-          "
-          style={{
-            color: "var(--ai-ink-soft)",
-          }}
-        >
-          <Mic
-            size={16}
-            strokeWidth={1.9}
-          />
-        </button>
 
         {/* =================================================
             SEND BUTTON

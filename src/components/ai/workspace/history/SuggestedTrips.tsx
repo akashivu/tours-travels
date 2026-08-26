@@ -4,6 +4,12 @@ import {
 
 interface SuggestedTripsProps {
   onSelect?: (prompt: string) => void;
+
+  /*
+   * Compact mode is used inside the
+   * floating website AI chat.
+   */
+  compact?: boolean;
 }
 
 const suggestions = [
@@ -21,7 +27,6 @@ const suggestions = [
     prompt:
       "Find a flight from Bengaluru to Dubai",
   },
-  
   {
     id: "explore",
     title:
@@ -33,21 +38,43 @@ const suggestions = [
 
 export function SuggestedTrips({
   onSelect,
+  compact = false,
 }: SuggestedTripsProps) {
   return (
-    <section className="w-full mt-25">
+    <section
+      className={
+        compact
+          ? "w-full"
+          : "mt-25 w-full"
+      }
+    >
       {/* =====================================================
           INTRO
       ====================================================== */}
 
-      <div className="mb-6 text-center">
+      <div
+        className={
+          compact
+            ? "mb-4 text-center"
+            : "mb-6 text-center"
+        }
+      >
         <p
-          className="
-            text-[14px]
-            font-medium
-            uppercase
-            tracking-[0.16em]
-          "
+          className={
+            compact
+              ? `
+                text-[10px]
+                font-semibold
+                uppercase
+                tracking-[0.14em]
+              `
+              : `
+                text-[14px]
+                font-medium
+                uppercase
+                tracking-[0.16em]
+              `
+          }
           style={{
             color: "var(--ai-accent)",
           }}
@@ -56,12 +83,21 @@ export function SuggestedTrips({
         </p>
 
         <h2
-          className="
-            mt-2
-            text-[35px]
-            font-semibold
-            tracking-[-0.025em]
-          "
+          className={
+            compact
+              ? `
+                mt-1.5
+                text-[23px]
+                font-semibold
+                tracking-[-0.025em]
+              `
+              : `
+                mt-2
+                text-[35px]
+                font-semibold
+                tracking-[-0.025em]
+              `
+          }
           style={{
             color: "var(--ai-ink)",
           }}
@@ -70,13 +106,23 @@ export function SuggestedTrips({
         </h2>
 
         <p
-          className="
-            mx-auto
-            mt-1.5
-            max-w-[430px]
-            text-[14px]
-            leading-[1.7]
-          "
+          className={
+            compact
+              ? `
+                mx-auto
+                mt-1
+                max-w-[330px]
+                text-[12px]
+                leading-[1.55]
+              `
+              : `
+                mx-auto
+                mt-1.5
+                max-w-[430px]
+                text-[14px]
+                leading-[1.7]
+              `
+          }
           style={{
             color: "var(--ai-muted)",
           }}
@@ -91,14 +137,24 @@ export function SuggestedTrips({
       ====================================================== */}
 
       <div
-        className="
-          mx-auto
-          flex
-          w-full
-          max-w-[560px]
-          flex-col
-          gap-1.5
-        "
+        className={
+          compact
+            ? `
+              mx-auto
+              flex
+              w-full
+              flex-col
+              gap-1.5
+            `
+            : `
+              mx-auto
+              flex
+              w-full
+              max-w-[560px]
+              flex-col
+              gap-1.5
+            `
+        }
       >
         {suggestions.map((suggestion) => (
           <button
@@ -107,19 +163,35 @@ export function SuggestedTrips({
             onClick={() =>
               onSelect?.(suggestion.prompt)
             }
-            className="
-              group
-              flex
-              items-center
-              gap-3
-              rounded-[var(--ai-radius-sm)]
-              border
-              px-4
-              py-3
-              text-left
-              transition-all
-              duration-200
-            "
+            className={
+              compact
+                ? `
+                  group
+                  flex
+                  items-center
+                  gap-2.5
+                  rounded-[var(--ai-radius-sm)]
+                  border
+                  px-3.5
+                  py-2.5
+                  text-left
+                  transition-all
+                  duration-200
+                `
+                : `
+                  group
+                  flex
+                  items-center
+                  gap-3
+                  rounded-[var(--ai-radius-sm)]
+                  border
+                  px-4
+                  py-3
+                  text-left
+                  transition-all
+                  duration-200
+                `
+            }
             style={{
               background: "var(--ai-card)",
               borderColor: "var(--ai-border)",
@@ -138,12 +210,21 @@ export function SuggestedTrips({
             }}
           >
             <span
-              className="
-                flex-1
-                text-[14.5px]
-                font-medium
-                leading-[1.4]
-              "
+              className={
+                compact
+                  ? `
+                    flex-1
+                    text-[12.5px]
+                    font-medium
+                    leading-[1.4]
+                  `
+                  : `
+                    flex-1
+                    text-[14.5px]
+                    font-medium
+                    leading-[1.4]
+                  `
+              }
               style={{
                 color: "var(--ai-ink)",
               }}
@@ -152,7 +233,7 @@ export function SuggestedTrips({
             </span>
 
             <ArrowUpRight
-              size={16}
+              size={compact ? 14 : 16}
               strokeWidth={1.9}
               className="
                 shrink-0

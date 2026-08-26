@@ -340,7 +340,7 @@ export default function QuickBookingForm() {
          OUTSTATION
       =================================================== */
 
-      const res = await axiosClient.post("/quotes", {
+      const res = await axiosClient.post("/api/quotes", {
         pickup,
         dropoff: drop,
         tripType,
@@ -382,40 +382,41 @@ export default function QuickBookingForm() {
       ================================================= */}
 
       <div
-        className="
-          relative
-          h-[470px]
-          min-h-[470px]
-          w-full
-          overflow-hidden
-          sm:h-[470px]
-        "
-      >
-        <img
-          src={backgroundImage}
-          alt=""
-          aria-hidden="true"
-          className="
-            absolute
-            inset-0
-            h-full
-            w-full
-            object-cover
-            object-center
-          "
-        />
+  className="
+    relative
+    hidden
+    h-[470px]
+    min-h-[470px]
+    w-full
+    overflow-hidden
+    sm:block
+  "
+>
+  <img
+    src={backgroundImage}
+    alt=""
+    aria-hidden="true"
+    className="
+      absolute
+      inset-0
+      h-full
+      w-full
+      object-cover
+      object-center
+    "
+  />
 
-        <div
-          className="
-            absolute
-            inset-0
-            bg-gradient-to-b
-            from-black/10
-            via-transparent
-            to-black/10
-          "
-        />
-      </div>
+  <div
+    className="
+      absolute
+      inset-0
+      bg-gradient-to-b
+      from-black/10
+      via-transparent
+      to-black/10
+    "
+  />
+</div>
 
       {/* =================================================
           BOOKING AREA
@@ -432,9 +433,10 @@ export default function QuickBookingForm() {
           sm:px-6
           lg:px-8
           pb-8
-          -mt-[65px]
-          sm:-mt-[105px]
-          lg:-mt-[380px]
+pt-6
+sm:pt-0
+sm:-mt-[120px]
+lg:-mt-[380px]
         "
       >
         {/* =================================================
@@ -443,36 +445,30 @@ export default function QuickBookingForm() {
             Flat icon + label, no pill / shadow
         ================================================= */}
 
-       <div className="relative z-30 mb-4 flex items-start gap-4 px-1 sm:gap-5">
+       <div className="relative z-30 mb-1.5 flex items-start gap-2 px-1 sm:gap-4">
   {/* FLIGHTS */}
   <button
     type="button"
     onClick={() => setServiceTab("flights")}
-    className="group flex flex-col items-center gap-2 outline-none"
+    className={`
+      group flex h-[45px] min-w-[120px] items-center justify-center gap-2.5
+
+      rounded-[10px] border transition-all duration-300 ease-out
+      ${
+        serviceTab === "flights"
+          ? "border-orange-400 bg-orange-500 text-white shadow-[0_12px_28px_rgba(249,115,22,0.35)]"
+          : "border-white/70 bg-white/95 text-[#475467] shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur-md hover:-translate-y-1 hover:border-[#d0d5dd] hover:shadow-[0_12px_28px_rgba(15,23,42,0.16)]"
+      }
+    `}
   >
-    <span
-      className={`
-        flex h-[66px] w-[66px] items-center justify-center rounded-[18px]
-        border transition-all duration-300 ease-out
-        ${
-          serviceTab === "flights"
-            ? "border-orange-500 bg-orange-500 text-white shadow-[0_10px_24px_rgba(249,115,22,0.28)]"
-            : "border-white/70 bg-white/95 text-[#475467] shadow-[0_6px_18px_rgba(15,23,42,0.10)] backdrop-blur-sm group-hover:-translate-y-0.5 group-hover:border-[#d0d5dd] group-hover:text-[#101828]"
-        }
-      `}
-    >
-      <Plane size={21} strokeWidth={1.8} />
-    </span>
+    <Plane size={23} strokeWidth={1.9} />
 
     <span
-      className={`
-        text-[13px] font-semibold tracking-[-0.01em] transition-colors duration-200
-        ${
-          serviceTab === "flights"
-            ? "text-[#101828]"
-            : "text-[#667085] group-hover:text-[#344054]"
-        }
-      `}
+      className={`text-[13px] font-semibold transition-colors ${
+        serviceTab === "flights"
+          ? "text-white"
+          : "text-[#475467] group-hover:text-[#101828]"
+      }`}
     >
       Flights
     </span>
@@ -482,68 +478,29 @@ export default function QuickBookingForm() {
   <button
     type="button"
     onClick={() => setServiceTab("cabs")}
-    className="group flex flex-col items-center gap-2 outline-none"
+    className={`
+      group flex h-[45px] min-w-[120px] items-center justify-center gap-2.5
+      rounded-[10px] border px-5 transition-all duration-300 ease-out
+      ${
+        serviceTab === "cabs"
+          ? "border-orange-400 bg-orange-500 text-white shadow-[0_12px_28px_rgba(249,115,22,0.35)]"
+          : "border-white/95 bg-white/95 text-[#475467] shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur-md hover:-translate-y-1 hover:border-[#d0d5dd] hover:shadow-[0_12px_28px_rgba(15,23,42,0.16)]"
+      }
+    `}
   >
-    <span
-      className={`
-        flex h-[66px] w-[66px] items-center justify-center rounded-[18px]
-        border transition-all duration-300 ease-out
-        ${
-          serviceTab === "cabs"
-            ? "border-orange-500 bg-orange-500 text-white shadow-[0_10px_24px_rgba(249,115,22,0.28)]"
-            : "border-white/70 bg-white/95 text-[#475467] shadow-[0_6px_18px_rgba(15,23,42,0.10)] backdrop-blur-sm group-hover:-translate-y-0.5 group-hover:border-[#d0d5dd] group-hover:text-[#101828]"
-        }
-      `}
-    >
-      <Car size={21} strokeWidth={1.8} />
-    </span>
+    <Car size={23} strokeWidth={1.9} />
 
     <span
-      className={`
-        text-[13px] font-semibold tracking-[-0.01em] transition-colors duration-200
-        ${
-          serviceTab === "cabs"
-            ? "text-[#101828]"
-            : "text-[#667085] group-hover:text-[#344054]"
-        }
-      `}
+      className={`text-[13px] font-semibold transition-colors ${
+        serviceTab === "cabs"
+          ? "text-white"
+          : "text-[#475467] group-hover:text-[#101828]"
+      }`}
     >
       Cabs
     </span>
   </button>
-
-
-          {/* =================================================
-              HOTELS — TEMPORARILY DISABLED
-              Logic is preserved above.
-          ================================================= */}
-
-          {/*
-          <button
-            type="button"
-            onClick={() => setServiceTab("hotels")}
-            className="flex flex-col items-center gap-1.5"
-          >
-            <span
-              className={`
-                flex h-11 w-11 items-center justify-center rounded-xl
-                transition-colors duration-150
-                ${
-                  serviceTab === "hotels"
-                    ? "bg-orange-500 text-white"
-                    : "border border-[#e4e7ec] bg-white text-[#667085] hover:border-[#98a2b3] hover:text-[#344054]"
-                }
-              `}
-            >
-              <Building2 size={19} strokeWidth={1.8} />
-            </span>
-            <span className="text-[13px] font-medium text-[#667085]">
-              Hotels
-            </span>
-          </button>
-          */}
-        </div>
-
+</div>
         {/* =================================================
             MAIN BOOKING CARD
         ================================================= */}

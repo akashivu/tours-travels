@@ -31,8 +31,12 @@ interface ConversationHistoryProps {
    * prompts send a message directly, the same
    * way SuggestedTrips does on the main pane.
    */
-
   onSelectPrompt?: (prompt: string) => void;
+
+  /*
+   * Opens the website authentication popup.
+   */
+  onSignIn?: () => void;
 }
 
 const quickStarts = [
@@ -59,6 +63,7 @@ export function ConversationHistory({
   onSelectConversation,
   onDeleteConversation,
   onSelectPrompt,
+  onSignIn,
 }: ConversationHistoryProps) {
   return (
     <aside
@@ -182,7 +187,7 @@ export function ConversationHistory({
           SIDEBAR FOOTER
       ====================================================== */}
 
-      <SidebarFooter />
+      <SidebarFooter onSignIn={onSignIn} />
     </aside>
   );
 }
@@ -290,7 +295,11 @@ function EmptyHistory({
    SIDEBAR FOOTER
 ========================================================= */
 
-function SidebarFooter() {
+function SidebarFooter({
+  onSignIn,
+}: {
+  onSignIn?: () => void;
+}) {
   return (
     <div
       className="shrink-0 border-t px-4 pb-4 pt-4"
@@ -331,9 +340,7 @@ function SidebarFooter() {
 
         <button
           type="button"
-          onClick={() => {
-            window.location.href = "/signin";
-          }}
+          onClick={onSignIn}
           className="
             mt-3
             h-[34px]
@@ -399,7 +406,7 @@ function SidebarFooter() {
             className="mt-0.5 text-[9px]"
             style={{ color: "var(--ai-muted)" }}
           >
-            AI travel planning
+            AI travel Intelligence
           </p>
         </div>
       </div>

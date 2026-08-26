@@ -13,6 +13,8 @@ import {
   type PlaceData,
 } from "./responses/AIResponse";
 
+import AIFlightResults from "./responses/AIFlightResults";
+
 interface Props {
   message: Message;
 }
@@ -174,9 +176,7 @@ function extractDaySection(
         new RegExp(
           `^##\\s*Day\\s*${dayNumber}\\s*:`,
           "i",
-        ).test(
-          line.trim(),
-        ),
+        ).test(line.trim()),
     );
 
   if (startIndex === -1) {
@@ -195,23 +195,15 @@ function extractDaySection(
     const line =
       lines[index];
 
-    /*
-     * Stop at next day.
-     */
     if (
       new RegExp(
         `^##\\s*Day\\s*${dayNumber + 1}\\s*:`,
         "i",
-      ).test(
-        line.trim(),
-      )
+      ).test(line.trim())
     ) {
       break;
     }
 
-    /*
-     * Stop at global sections.
-     */
     if (
       /^#{2,3}\s*(Approximate Budget|Budget|Summary)/i.test(
         line.trim(),
@@ -266,10 +258,6 @@ function buildDayItems(
       continue;
     }
 
-    /*
-     * Food Recommendations:
-     * Local Tips:
-     */
     const categoryMatch =
       line.match(
         /^###\s*(.+?)\s*:?\s*$/i,
@@ -284,9 +272,6 @@ function buildDayItems(
       continue;
     }
 
-    /*
-     * Ignore headings.
-     */
     if (
       /^#{1,3}\s*Day\s*\d+/i.test(
         line,
@@ -295,9 +280,6 @@ function buildDayItems(
       continue;
     }
 
-    /*
-     * Only process bullets.
-     */
     if (
       !line.startsWith("-") &&
       !line.startsWith("*")
@@ -312,14 +294,6 @@ function buildDayItems(
       continue;
     }
 
-    /*
-     * Main itinerary item.
-     *
-     * Morning:
-     * Afternoon:
-     * Evening:
-     * Night:
-     */
     const timeMatch =
       text.match(
         /^(Morning|Afternoon|Evening|Night)\s*:\s*(.*)$/i,
@@ -336,9 +310,6 @@ function buildDayItems(
       continue;
     }
 
-    /*
-     * Food / Local Tips.
-     */
     if (currentCategory) {
       items.push({
         title:
@@ -350,9 +321,6 @@ function buildDayItems(
       continue;
     }
 
-    /*
-     * Generic itinerary item.
-     */
     items.push({
       title: text,
     });
@@ -397,32 +365,11 @@ function convertPlaces(
 
 /* =========================================================
    EXTRACT BUDGET
-
-   Handles formats such as:
-
-   ### Approximate Budget:
-   - Water sports: ₹2500
-   - Lunch and dinner: ₹1500
-   - Shopping: ₹1000
-
-   AND:
-
-   ### Approximate Budget – Water sports: ₹2500
-   Lunch and dinner: ₹1500
-   Shopping: ₹1000
-
-   AND:
-
-   ### Approximate Budget
-   Total: ₹5000
 ========================================================= */
 
 function extractBudget(
   content: string,
 ) {
-  /*
-   * Find the budget heading.
-   */
   const startMatch =
     content.match(
       /^#{2,3}\s*Approximate\s+Budget\b[^\n]*$/im,
@@ -439,9 +386,6 @@ function extractBudget(
     return undefined;
   }
 
-  /*
-   * Get heading itself.
-   */
   const headingEnd =
     content.indexOf(
       "\n",
@@ -450,17 +394,12 @@ function extractBudget(
 
   const headingLine =
     headingEnd === -1
-      ? content.slice(
-          startIndex,
-        )
+      ? content.slice(startIndex)
       : content.slice(
           startIndex,
           headingEnd,
         );
 
-  /*
-   * Everything after heading.
-   */
   const bodyStart =
     headingEnd === -1
       ? content.length
@@ -471,9 +410,6 @@ function extractBudget(
       bodyStart,
     );
 
-  /*
-   * Stop at the next ## / ### section.
-   */
   const nextSection =
     remaining.match(
       /^#{2,3}\s+/m,
@@ -488,13 +424,6 @@ function extractBudget(
         )
       : remaining;
 
-  /*
-   * Budget text that may already
-   * exist on the heading line.
-   *
-   * Example:
-   * ### Approximate Budget – Water sports: ₹2500
-   */
   const headingContent =
     headingLine
       .replace(
@@ -503,55 +432,36 @@ function extractBudget(
       )
       .trim();
 
-  /*
-   * Clean body.
-   */
   const bodyContent =
     body
       .replace(/\*\*/g, "")
       .trim();
 
-  const section =
-    [
-      headingContent,
-      bodyContent,
-    ]
-      .filter(Boolean)
-      .join("\n")
-      .trim();
+  const section = [
+    headingContent,
+    bodyContent,
+  ]
+    .filter(Boolean)
+    .join("\n")
+    .trim();
 
   if (!section) {
     return undefined;
   }
 
-  /*
-   * Find all currency values.
-   *
-   * ₹2500
-   * ₹2,500
-   * ₹ 2,500
-   * $1200
-   * €900
-   * £800
-   * INR 2500
-   */
   const currencyMatches =
     section.match(
       /(?:₹|\$|€|£)\s?[\d,]+(?:\.\d+)?|\bINR\s?[\d,]+(?:\.\d+)?/gi,
     ) ?? [];
 
-  /*
-   * Convert amounts to numbers.
-   */
   const numericAmounts =
     currencyMatches
       .map((value) =>
         Number(
-          value
-            .replace(
-              /[^\d.]/g,
-              "",
-            ),
+          value.replace(
+            /[^\d.]/g,
+            "",
+          ),
         ),
       )
       .filter(
@@ -561,9 +471,6 @@ function extractBudget(
           ),
       );
 
-  /*
-   * Try to find an explicit total first.
-   */
   const totalMatch =
     section.match(
       /(?:total|estimated\s+total|trip\s+total|overall)\s*[:\-–—]?\s*((?:₹|\$|€|£)\s?[\d,]+(?:\.\d+)?|\bINR\s?[\d,]+(?:\.\d+)?)/i,
@@ -577,10 +484,6 @@ function extractBudget(
   } else if (
     numericAmounts.length > 0
   ) {
-    /*
-     * If there is no explicit total,
-     * sum the listed budget items.
-     */
     const total =
       numericAmounts.reduce(
         (
@@ -590,10 +493,6 @@ function extractBudget(
         0,
       );
 
-    /*
-     * Preserve the currency from
-     * the first amount.
-     */
     const firstCurrency =
       currencyMatches[0]?.match(
         /₹|\$|€|£|INR/i,
@@ -607,9 +506,6 @@ function extractBudget(
     amount = "Estimated";
   }
 
-  /*
-   * Clean individual budget lines.
-   */
   const description =
     section
       .split("\n")
@@ -642,10 +538,6 @@ function extractBudget(
 function extractActions(
   content: string,
 ) {
-  /*
-   * Only add itinerary suggestions
-   * to actual itinerary responses.
-   */
   const isItinerary =
     /^##\s*Day\s*1\s*:/im.test(
       content,
@@ -666,7 +558,6 @@ function extractActions(
       prompt:
         "Give me a detailed budget breakdown for this trip.",
     },
-    
   ];
 }
 
@@ -680,20 +571,12 @@ function buildResponseData(
   const visuals =
     message.metadata?.visuals;
 
-  /*
-   * If there are no visuals,
-   * use the existing Markdown renderer.
-   */
   if (!visuals) {
     return undefined;
   }
 
   const destination =
     visuals.destination;
-
-  /* =======================================================
-     TOTAL PLACE COUNT
-  ======================================================= */
 
   const totalPlaces =
     visuals.days?.reduce(
@@ -703,10 +586,6 @@ function buildResponseData(
           0),
       0,
     ) ?? 0;
-
-  /* =======================================================
-     TRIP SUMMARY
-  ======================================================= */
 
   const tripSummary =
     destination
@@ -727,10 +606,6 @@ function buildResponseData(
             totalPlaces,
         }
       : undefined;
-
-  /* =======================================================
-     DAY-BY-DAY ITINERARY
-  ======================================================= */
 
   const itinerary:
     ItineraryDayData[] =
@@ -753,42 +628,21 @@ function buildResponseData(
       }),
     ) ?? [];
 
-  /* =======================================================
-     GLOBAL PLACE LIST
-
-     Kept for compatibility.
-  ======================================================= */
-
   const places: PlaceData[] =
     itinerary.flatMap(
       (day) =>
         day.places ?? [],
     );
 
-  /* =======================================================
-     BUDGET
-
-     IMPORTANT:
-     Parse from original backend content.
-  ======================================================= */
-
   const budget =
     extractBudget(
       message.content,
     );
 
-  /* =======================================================
-     SUGGESTIONS
-  ======================================================= */
-
   const actions =
     extractActions(
       message.content,
     );
-
-  /* =======================================================
-     EMPTY CHECK
-  ======================================================= */
 
   if (
     !tripSummary &&
@@ -798,10 +652,6 @@ function buildResponseData(
   ) {
     return undefined;
   }
-
-  /* =======================================================
-     FINAL RESPONSE DATA
-  ======================================================= */
 
   return {
     tripSummary,
@@ -846,14 +696,16 @@ export function AIMessage({
               leading-[1.55]
             "
             style={{
-  background: "#F1F1F1",
+              background:
+                "#F1F1F1",
 
-  color: "#171717",
+              color:
+                "#171717",
 
-  fontFamily:
-    '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-}}
->
+              fontFamily:
+                '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            }}
+          >
             {message.content}
           </div>
 
@@ -888,6 +740,9 @@ export function AIMessage({
       message,
     );
 
+  const flightSearch =
+    message.metadata?.flight_search;
+
   return (
     <div
       className="
@@ -898,7 +753,7 @@ export function AIMessage({
       "
       style={{
         fontFamily:
-  '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
       {/* Assistant logo */}
@@ -935,6 +790,10 @@ export function AIMessage({
           sm:max-w-[85%]
         "
       >
+        {/* -------------------------------------------------
+            AI TEXT / ITINERARY RESPONSE
+        -------------------------------------------------- */}
+
         {responseData ? (
           <AIResponse
             content={
@@ -962,7 +821,22 @@ export function AIMessage({
           </div>
         )}
 
-        {/* Timestamp */}
+        {/* -------------------------------------------------
+            FLIGHT SEARCH
+        -------------------------------------------------- */}
+
+        {flightSearch?.status ===
+          "ready" && (
+          <AIFlightResults
+            request={
+              flightSearch.request
+            }
+          />
+        )}
+
+        {/* -------------------------------------------------
+            TIMESTAMP
+        -------------------------------------------------- */}
 
         {message.timestamp && (
           <p

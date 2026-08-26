@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FOOTER_LINKS } from "./footer.constants";
+
+const NAVBAR_OFFSET = 80;
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -153,6 +155,26 @@ const FooterColumn = ({
   title,
   links,
 }: FooterColumnProps) => {
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+
+    if (!element) {
+      return;
+    }
+
+    const position =
+      element.getBoundingClientRect().top +
+      window.scrollY -
+      NAVBAR_OFFSET;
+
+    window.scrollTo({
+      top: position,
+      behavior: "smooth",
+    });
+  };
+
   const handleSectionClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string
@@ -161,27 +183,38 @@ const FooterColumn = ({
       return;
     }
 
+    event.preventDefault();
+
     const [, hash] = href.split("#");
 
-    // Already on homepage — smooth scroll directly.
-    if (window.location.pathname === "/" && hash) {
-      const element = document.getElementById(hash);
-
-      if (element) {
-        event.preventDefault();
-
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-
-        window.history.pushState(
-          null,
-          "",
-          `/#${hash}`
-        );
-      }
+    if (!hash) {
+      return;
     }
+
+    /*
+     * Already on the homepage:
+     * smoothly scroll directly to the section.
+     */
+    if (window.location.pathname === "/") {
+      scrollToSection(hash);
+
+      window.history.pushState(
+        null,
+        "",
+        `/#${hash}`
+      );
+
+      return;
+    }
+
+    /*
+     * From another page:
+     * navigate to homepage with the hash.
+     *
+     * Home.tsx should detect the hash after rendering
+     * and scroll to the requested section.
+     */
+    navigate(`/#${hash}`);
   };
 
   return (

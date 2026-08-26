@@ -1,20 +1,15 @@
-import {
-  Minus,
-  Plus,
-  X,
-  
-} from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 
 interface AIWorkspaceHeaderProps {
   onNewChat?: () => void;
+  onMinimize?: () => void;
   onClose?: () => void;
-  onThemeClick?: () => void;
 }
 
 export function AIWorkspaceHeader({
   onNewChat,
+  onMinimize,
   onClose,
-  onThemeClick,
 }: AIWorkspaceHeaderProps) {
   return (
     <header
@@ -33,8 +28,9 @@ export function AIWorkspaceHeader({
         borderColor: "var(--ai-border)",
       }}
     >
-    
-
+      {/* =====================================================
+          LEFT — BRAND
+      ====================================================== */}
       <div className="flex min-w-0 items-center gap-2.5">
         <p
           className="
@@ -53,15 +49,11 @@ export function AIWorkspaceHeader({
         </p>
       </div>
 
-
-
-      
-
       {/* =====================================================
           RIGHT — ACTIONS
       ====================================================== */}
-
       <div className="ml-auto flex items-center gap-2">
+        {/* NEW TRIP */}
         <button
           type="button"
           onClick={onNewChat}
@@ -86,18 +78,16 @@ export function AIWorkspaceHeader({
             color: "var(--ai-ink)",
           }}
         >
-          <Plus
-            size={16}
-            strokeWidth={2}
-          />
-
+          <Plus size={16} strokeWidth={2} />
           New trip
         </button>
 
+        {/* MINIMIZE — RETURN HOME BUT KEEP AI AVAILABLE */}
         <button
           type="button"
-          onClick={onThemeClick}
-          aria-label="Minimize"
+          onClick={onMinimize}
+          aria-label="Minimize AI"
+          title="Minimize"
           className="
             hidden
             h-8
@@ -114,38 +104,32 @@ export function AIWorkspaceHeader({
             color: "var(--ai-muted)",
           }}
         >
-          <Minus
-            size={16}
-            strokeWidth={2}
-          />
+          <Minus size={16} strokeWidth={2} />
         </button>
 
-        {onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="
-              flex
-              h-8
-              w-8
-              items-center
-              justify-center
-              rounded-full
-              transition-colors
-              duration-150
-              hover:bg-[var(--ai-card-soft)]
-            "
-            style={{
-              color: "var(--ai-muted)",
-            }}
-          >
-            <X
-              size={17}
-              strokeWidth={1.8}
-            />
-          </button>
-        )}
+        {/* CLOSE — CLOSE AI AND RETURN HOME */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close AI"
+          title="Close"
+          className="
+            flex
+            h-8
+            w-8
+            items-center
+            justify-center
+            rounded-full
+            transition-colors
+            duration-150
+            hover:bg-[var(--ai-card-soft)]
+          "
+          style={{
+            color: "var(--ai-muted)",
+          }}
+        >
+          <X size={17} strokeWidth={1.8} />
+        </button>
       </div>
     </header>
   );

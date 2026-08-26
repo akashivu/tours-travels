@@ -103,7 +103,7 @@ const Destinations = () => {
         overflow-hidden
         bg-white
         py-12
-        lg:py-16
+        lg:py-20
       "
     >
       <Container>
@@ -120,22 +120,11 @@ const Destinations = () => {
           "
         >
           <div>
-            <p
-              className="
-                mb-2
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-[0.2em]
-                text-gray-400
-              "
-            >
-              Discover the world
-            </p>
+           
 
             <h2
               className="
-                text-2xl
+                text-xl
                 font-semibold
                 tracking-[-0.03em]
                 text-gray-950

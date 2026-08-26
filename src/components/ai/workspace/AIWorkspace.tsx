@@ -1,5 +1,9 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { AIWorkspaceHeader } from "./AIWorkspaceHeader";
 import { ConversationHistory } from "./history/ConversationHistory";
+import AuthModal from "../../AuthModal";
 
 import type { Session } from "../../../types/ai";
 
@@ -14,8 +18,21 @@ interface AIWorkspaceProps {
 
   onNewChat?: () => void;
 
+  /*
+   * Optional callback for when AI is minimized.
+   * The parent can use this if additional state needs updating.
+   */
+  onMinimize?: () => void;
+
+  /*
+   * Existing close callback.
+   */
   onClose?: () => void;
 
+  /*
+   * Theme callback.
+   * Kept for compatibility with AIChatWindow.
+   */
   onThemeClick?: () => void;
 
   onSelectConversation?: (
@@ -23,14 +40,13 @@ interface AIWorkspaceProps {
   ) => void;
 
   onDeleteConversation?: (
-  conversation: Session
-) => void;
+    conversation: Session
+  ) => void;
 
   /*
    * Passed straight through to the sidebar's
    * empty-state quick-start prompts.
    */
-
   onSelectPrompt?: (prompt: string) => void;
 }
 
@@ -40,11 +56,56 @@ export function AIWorkspace({
   sessions,
   isLoadingSessions = false,
   onNewChat,
+  onMinimize,
   onClose,
-  onThemeClick,
- onSelectConversation,
-onSelectPrompt,
+  onSelectConversation,
+  onDeleteConversation,
+  onSelectPrompt,
 }: AIWorkspaceProps) {
+  const navigate = useNavigate();
+
+  /* =========================================================
+     AUTH MODAL
+  ========================================================= */
+
+  const [authOpen, setAuthOpen] = useState(false);
+
+  const handleSignIn = () => {
+    setAuthOpen(true);
+  };
+
+  /*
+   * MINIMIZE
+   * Return to homepage but keep AI available
+   * through the floating "Ask Elixway AI" button.
+   */
+  const handleMinimize = () => {
+    sessionStorage.setItem(
+      "elixway-ai-minimized",
+      "true"
+    );
+
+    // Allow optional parent logic
+    onMinimize?.();
+
+    navigate("/");
+  };
+
+  /*
+   * CLOSE
+   * Return to homepage and remove minimized state.
+   */
+  const handleClose = () => {
+    sessionStorage.removeItem(
+      "elixway-ai-minimized"
+    );
+
+    // Run any existing close functionality
+    onClose?.();
+
+    navigate("/");
+  };
+
   return (
     <div
       className="
@@ -67,8 +128,9 @@ onSelectPrompt,
       <div className="shrink-0">
         <AIWorkspaceHeader
           onNewChat={onNewChat}
-          onClose={onClose}
-          onThemeClick={onThemeClick}
+          onMinimize={handleMinimize}
+          onClose={handleClose}
+          
         />
       </div>
 
@@ -98,7 +160,11 @@ onSelectPrompt,
           onSelectConversation={
             onSelectConversation
           }
+          onDeleteConversation={
+            onDeleteConversation
+          }
           onSelectPrompt={onSelectPrompt}
+          onSignIn={handleSignIn}
         />
 
         {/* ===================================================
@@ -116,13 +182,21 @@ onSelectPrompt,
             overflow-hidden
           "
           style={{
-            background:
-              "var(--ai-canvas)",
+            background: "var(--ai-canvas)",
           }}
         >
           {children}
         </main>
       </div>
+
+      {/* =====================================================
+          AUTHENTICATION MODAL
+      ====================================================== */}
+
+      <AuthModal
+        isOpen={authOpen}
+        onClose={() => setAuthOpen(false)}
+      />
     </div>
   );
 }

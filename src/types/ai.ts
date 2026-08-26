@@ -25,6 +25,7 @@ export interface ChatVisuals {
 
 export interface ChatMetadata {
   visuals?: ChatVisuals;
+  flight_search?: AIFlightSearch;
   [key: string]: unknown;
 }
 
@@ -71,4 +72,24 @@ export interface ChatResponse {
 export interface SuggestedQuestion {
   id: string;
   question: string;
+}
+
+export type AIFlightTripType =
+  | "oneway"
+  | "roundtrip";
+
+export interface AIFlightSearchRequest {
+  origin: string;
+  destination: string;
+  departure_date: string;
+  return_date?: string | null;
+  passengers?: number;
+  trip_type?: AIFlightTripType;
+  cabin_class?: string;
+  currency?: string;
+}
+
+export interface AIFlightSearch {
+  status: "ready" | "missing_information";
+  request: AIFlightSearchRequest;
 }

@@ -4,10 +4,7 @@ export const FOOTER_LINKS = {
       label: "Destinations",
       href: "/#destinations",
     },
-    {
-      label: "Hotels",
-      href: "/#cabs",
-    },
+    
     {
       label: "Flights",
       href: "/#cabs",
@@ -31,10 +28,7 @@ export const FOOTER_LINKS = {
       label: "Contact",
       href: "/contact",
     },
-    {
-      label: "Careers",
-      href: "/contact",
-    },
+    
   ],
 
   support: [

@@ -7,14 +7,20 @@ import { SuggestedTrips } from "./history/SuggestedTrips";
 interface AIConversationPaneProps {
   state: ChatState;
   onSend: (message: string) => void;
+
+  /*
+   * Compact mode is used by the floating
+   * website AI chat without affecting /ai.
+   */
+  compact?: boolean;
 }
 
 export function AIConversationPane({
   state,
   onSend,
+  compact = false,
 }: AIConversationPaneProps) {
-  const hasMessages =
-    state.messages.length > 0;
+  const hasMessages = state.messages.length > 0;
 
   return (
     <div
@@ -28,8 +34,7 @@ export function AIConversationPane({
         overflow-hidden
       "
       style={{
-        background:
-          "var(--ai-canvas)",
+        background: "var(--ai-canvas)",
       }}
     >
       {/* =====================================================
@@ -46,45 +51,64 @@ export function AIConversationPane({
       >
         {!hasMessages ? (
           <div
-            className="
-              flex
-              min-h-full
-              w-full
-              items-center
-              justify-center
-              px-5
-              py-8
-              sm:px-8
-              lg:px-10
-            "
+            className={
+              compact
+                ? `
+                  flex
+                  min-h-full
+                  w-full
+                  items-center
+                  justify-center
+                  px-4
+                  py-5
+                `
+                : `
+                  flex
+                  min-h-full
+                  w-full
+                  items-center
+                  justify-center
+                  px-5
+                  py-8
+                  sm:px-8
+                  lg:px-10
+                `
+            }
           >
             <div
-              className="
-                w-full
-                max-w-[900px]
-              "
+              className={
+                compact
+                  ? "w-full"
+                  : "w-full max-w-[900px]"
+              }
             >
               <SuggestedTrips
-                onSelect={onSend}
-              />
+  onSelect={onSend}
+  compact={compact}
+/>
             </div>
           </div>
         ) : (
           <div
-            className="
-              mx-auto
-              w-full
-              
-              px-4
-              py-4
-             
-            "
+            className={
+              compact
+                ? `
+                  mx-auto
+                  w-full
+                  px-3
+                  py-3
+                `
+                : `
+                  mx-auto
+                  w-full
+                  px-4
+                  py-4
+                `
+            }
           >
             <AIMessageList
               messages={state.messages}
-              isLoading={
-                state.isLoading
-              }
+              isLoading={state.isLoading}
               error={state.error}
               onSend={onSend}
             />
@@ -97,31 +121,37 @@ export function AIConversationPane({
       ====================================================== */}
 
       <div
-        className="
-          shrink-0
-          px-4
-          pb-3
-          pt-2
-          sm:px-6
-          sm:pb-4
-        "
+        className={
+          compact
+            ? `
+              shrink-0
+              px-3
+              pb-3
+              pt-2
+            `
+            : `
+              shrink-0
+              px-4
+              pb-3
+              pt-2
+              sm:px-6
+              sm:pb-4
+            `
+        }
         style={{
-          background:
-            "var(--ai-canvas)",
+          background: "var(--ai-canvas)",
         }}
       >
         <div
-          className="
-            mx-auto
-            w-full
-            max-w-[900px]
-          "
+          className={
+            compact
+              ? "mx-auto w-full"
+              : "mx-auto w-full max-w-[900px]"
+          }
         >
           <AIInput
             onSend={onSend}
-            disabled={
-              state.isLoading
-            }
+            disabled={state.isLoading}
           />
         </div>
       </div>
