@@ -21,271 +21,276 @@ export default function WebsiteAIChat() {
           CLOSED AI PROMPT
       ===================================================== */}
       {!visible && (
-  <button
-    type="button"
-    onClick={() => setVisible(true)}
-    aria-label="Open Elixway AI"
-    className="
-      group
-      fixed
-      bottom-5
-      left-2
-      z-[9999]
-      flex
-      h-[58px]
-      w-[min(380px,calc(100vw-24px))]
-      items-center
-      gap-3.5
-      overflow-hidden
-      rounded-xl
-      border
-      border-violet-200/70
-      bg-white
-      px-5
-      text-left
-      shadow-[0_10px_35px_rgba(76,29,149,0.12)]
-      transition-all
-      duration-300
-      hover:-translate-y-0.5
-      hover:border-violet-300
-      hover:shadow-[0_14px_42px_rgba(76,29,149,0.20)]
-      active:scale-[0.99]
-    "
-  >
-    {/* Subtle premium glow */}
-    <span
-      className="
-        pointer-events-none
-        absolute
-        inset-0
-        rounded-full
-        bg-gradient-to-r
-        from-violet-500/[0.04]
-        via-fuchsia-500/[0.03]
-        to-indigo-500/[0.04]
-        opacity-0
-        transition-opacity
-        duration-300
-        group-hover:opacity-100
-      "
-    />
+        <button
+          type="button"
+          onClick={() => setVisible(true)}
+          aria-label="Open Elixway AI"
+          className="
+            group
+            fixed
+            bottom-5
+            left-2
+            z-[9999]
+            flex
+            h-[58px]
+            w-[min(380px,calc(100vw-24px))]
+            items-center
+            gap-3.5
+            overflow-hidden
+            rounded-xl
+            border
+            border-violet-200/70
+            bg-white
+            px-5
+            text-left
+            shadow-[0_10px_35px_rgba(76,29,149,0.12)]
+            transition-all
+            duration-300
+            hover:-translate-y-0.5
+            hover:border-violet-300
+            hover:shadow-[0_14px_42px_rgba(76,29,149,0.20)]
+            active:scale-[0.99]
+          "
+        >
+          {/* Subtle premium glow */}
+          <span
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              rounded-full
+              bg-gradient-to-r
+              from-violet-500/[0.04]
+              via-fuchsia-500/[0.03]
+              to-indigo-500/[0.04]
+              opacity-0
+              transition-opacity
+              duration-300
+              group-hover:opacity-100
+            "
+          />
 
-    {/* AI ICON */}
-    <span
-      className="
-        relative
-        flex
-        h-9
-        w-9
-        shrink-0
-        items-center
-        justify-center
-        rounded-full
-        bg-gradient-to-br
-        from-violet-600
-        via-purple-600
-        to-indigo-600
-        text-white
-        shadow-[0_6px_18px_rgba(124,58,237,0.30)]
-        transition-all
-        duration-300
-        group-hover:scale-105
-        group-hover:shadow-[0_8px_22px_rgba(124,58,237,0.40)]
-      "
-    >
-      <Sparkles
-        size={17}
-        strokeWidth={1.9}
-      />
+          {/* AI ICON */}
+          <span
+            className="
+              relative
+              flex
+              h-9
+              w-9
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              bg-gradient-to-br
+              from-violet-600
+              via-purple-600
+              to-indigo-600
+              text-white
+              shadow-[0_6px_18px_rgba(124,58,237,0.30)]
+              transition-all
+              duration-300
+              group-hover:scale-105
+              group-hover:shadow-[0_8px_22px_rgba(124,58,237,0.40)]
+            "
+          >
+            <Sparkles size={17} strokeWidth={1.9} />
 
-      {/* tiny AI glow */}
-      <span
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          rounded-full
-          bg-white/10
-          opacity-0
-          blur-sm
-          transition-opacity
-          duration-300
-          group-hover:opacity-100
-        "
-      />
-    </span>
+            <span
+              className="
+                pointer-events-none
+                absolute
+                inset-0
+                rounded-full
+                bg-white/10
+                opacity-0
+                blur-sm
+                transition-opacity
+                duration-300
+                group-hover:opacity-100
+              "
+            />
+          </span>
 
-    {/* TEXT */}
-    <span
-      className="
-        relative
-        min-w-0
-        flex-1
-        overflow-hidden
-        whitespace-nowrap
-        text-[15px]
-        font-medium
-        tracking-[-0.01em]
-        text-neutral-800
-      "
-    >
-      <span className="ai-typing-text">
-        Ask Elixway AI
-      </span>
+          {/* TEXT */}
+          <span
+            className="
+              relative
+              min-w-0
+              flex-1
+              overflow-hidden
+              whitespace-nowrap
+              text-[15px]
+              font-medium
+              tracking-[-0.01em]
+              text-neutral-800
+            "
+          >
+            <span className="ai-typing-text">
+              Ask Elixway AI
+            </span>
 
-      <span
-        className="
-          ml-1
-          inline-block
-          align-middle
-          text-violet-500
-          opacity-0
-          transition-opacity
-          duration-300
-          group-hover:opacity-100
-        "
-      >
-        ✦
-      </span>
-    </span>
+            <span
+              className="
+                ml-1
+                inline-block
+                align-middle
+                text-violet-500
+                opacity-0
+                transition-opacity
+                duration-300
+                group-hover:opacity-100
+              "
+            >
+              ✦
+            </span>
+          </span>
 
-    {/* ARROW */}
-    <span
-      className="
-        relative
-        flex
-        h-8
-        w-8
-        shrink-0
-        items-center
-        justify-center
-        rounded-full
-        bg-neutral-100
-        text-[17px]
-        font-medium
-        text-neutral-400
-        transition-all
-        duration-300
-        group-hover:bg-violet-50
-        group-hover:text-violet-600
-        group-hover:translate-x-0.5
-      "
-    >
-      →
-    </span>
-  </button>
-)}
+          {/* ARROW */}
+          <span
+            className="
+              relative
+              flex
+              h-8
+              w-8
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              bg-neutral-100
+              text-[17px]
+              font-medium
+              text-neutral-400
+              transition-all
+              duration-300
+              group-hover:translate-x-0.5
+              group-hover:bg-violet-50
+              group-hover:text-violet-600
+            "
+          >
+            →
+          </span>
+        </button>
+      )}
+
       {/* =====================================================
           OPEN AI CHAT
       ===================================================== */}
       {visible && (
-  <div
-  className="
-    ai-root
-    website-ai-chat
-    fixed
-    bottom-0
-    right-0
-    z-[9999]
-    flex
-    h-[600px]
-    w-[420px]
-    max-h-[calc(100vh-40px)]
-    max-w-[calc(100vw-24px)]
-    flex-col
-    overflow-hidden
-    rounded-[12px]
-    border
-    border-black/[0.08]
-    bg-white
-    shadow-[0_20px_70px_rgba(0,0,0,0.16)]
-  "
->
-    {/* HEADER */}
-    <div
-      className="
-        relative
-        z-20
-        flex
-        h-[56px]
-        shrink-0
-        items-center
-        justify-between
-        border-b
-        border-black/[0.07]
-        bg-white
-        px-4
-      "
-    >
-      <div className="flex items-center gap-2">
-        <img
-          src="/image/elixicon.png"
-          alt="Elixway AI"
-          className="h-6 w-6 shrink-0 object-contain"
-        />
-
-        <p className="text-[16px] font-semibold tracking-[-0.01em] text-neutral-950">
-          Elixway AI
-        </p>
-      </div>
-
-      <div className="flex items-center gap-1">
-        <button
-          type="button"
-          onClick={() => navigate("/ai")}
-          aria-label="Expand Elixway AI"
+        <div
           className="
+            ai-root
+            website-ai-chat
+            fixed
+            bottom-3
+            left-3
+            right-3
+            z-[9999]
             flex
-            h-8
-            w-8
-            items-center
-            justify-center
-            rounded-full
-            text-neutral-700
-            transition-all
-            hover:bg-neutral-100
+            h-[min(600px,calc(100dvh-24px))]
+            min-h-0
+            w-auto
+            flex-col
+            overflow-hidden
+            rounded-[12px]
+            border
+            border-black/[0.08]
+            bg-white
+            shadow-[0_20px_70px_rgba(0,0,0,0.16)]
+
+            sm:bottom-5
+            sm:left-auto
+            sm:right-5
+            sm:h-[600px]
+            sm:max-h-[calc(100dvh-40px)]
+            sm:w-[420px]
           "
         >
-          <Maximize2 size={16} strokeWidth={2} />
-        </button>
+          {/* HEADER */}
+          <div
+            className="
+              relative
+              z-20
+              flex
+              h-[56px]
+              shrink-0
+              items-center
+              justify-between
+              border-b
+              border-black/[0.07]
+              bg-white
+              px-4
+            "
+          >
+            <div className="flex min-w-0 items-center gap-2">
+              <img
+                src="/image/elixicon.png"
+                alt="Elixway AI"
+                className="h-6 w-6 shrink-0 object-contain"
+              />
 
-        <button
-          type="button"
-          onClick={() => setVisible(false)}
-          aria-label="Close Elixway AI"
-          className="
-            flex
-            h-8
-            w-8
-            items-center
-            justify-center
-            rounded-full
-            text-neutral-700
-            transition-all
-            hover:bg-neutral-100
-          "
-        >
-          <X size={17} strokeWidth={2} />
-        </button>
-      </div>
-    </div>
+              <p className="truncate text-[16px] font-semibold tracking-[-0.01em] text-neutral-950">
+                Elixway AI
+              </p>
+            </div>
 
-    {/* CHAT — takes remaining height only */}
-    <div
-      className="
-        min-h-0
-        flex-1
-        overflow-hidden
-      "
-    >
-      <AIConversationPane
-        state={state}
-        onSend={sendMessage}
-        compact
-      />
-    </div>
-  </div>
-)}
+            <div className="flex shrink-0 items-center gap-1">
+              <button
+                type="button"
+                onClick={() => navigate("/ai")}
+                aria-label="Expand Elixway AI"
+                className="
+                  flex
+                  h-8
+                  w-8
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-neutral-700
+                  transition-all
+                  hover:bg-neutral-100
+                "
+              >
+                <Maximize2 size={16} strokeWidth={2} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setVisible(false)}
+                aria-label="Close Elixway AI"
+                className="
+                  flex
+                  h-8
+                  w-8
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-neutral-700
+                  transition-all
+                  hover:bg-neutral-100
+                "
+              >
+                <X size={17} strokeWidth={2} />
+              </button>
+            </div>
+          </div>
+
+          {/* CHAT */}
+          <div
+            className="
+              min-h-0
+              min-w-0
+              flex-1
+              overflow-hidden
+            "
+          >
+            <AIConversationPane
+              state={state}
+              onSend={sendMessage}
+              compact
+            />
+          </div>
+        </div>
+      )}
 
       {/* =====================================================
           TYPING + CURSOR ANIMATION

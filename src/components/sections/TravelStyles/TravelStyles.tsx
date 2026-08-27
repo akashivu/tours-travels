@@ -107,18 +107,13 @@ const TravelStyles = () => {
   };
 
   const handleStyleClick = (style: TravelStyle) => {
-    navigate("/ai", {
-      state: {
-        source: "travel-style",
-
-        travelStyle: {
-          title: style.title,
-          description: style.description,
-          image: style.image,
-        },
-      },
-    });
-  };
+  navigate("/ai", {
+    state: {
+      source: "travel-style",
+      message: `I want to plan a ${style.title.toLowerCase()} trip. ${style.description} Please help me find the best destination and plan my journey.`,
+    },
+  });
+};
 
   const handleAskElixway = () => {
     navigate("/ai", {

@@ -2,7 +2,6 @@
 import {
   Home,
   Car,
-  Briefcase,
   Bot,
   Phone,
   X,
@@ -36,11 +35,7 @@ const Sidebar = ({
       label: "Our Cars",
       path: "/vehicle",
     },
-    {
-      icon: Briefcase,
-      label: "Packages",
-      path: "/holiday-packages",
-    },
+    
     {
       icon: Bot,
       label: "AI Assistant",

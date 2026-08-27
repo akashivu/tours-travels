@@ -47,6 +47,7 @@ import CookiePolicy from "./pages/CookiePolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import HotelResults from "./pages/HotelResults";
 import FlightResultsPage from "./pages/FlightResultsPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 function AppContent() {
@@ -329,7 +330,7 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-
+        <ScrollToTop />
       <AIWidgetProvider>
 
         <AppContent />
