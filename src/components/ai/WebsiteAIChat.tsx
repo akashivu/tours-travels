@@ -18,7 +18,117 @@ export default function WebsiteAIChat() {
       <AIThemeStyles />
 
       {/* =====================================================
-          CLOSED AI PROMPT
+          MOBILE AI BUTTON
+          
+          Mobile:
+          - Never show floating chat box
+          - Navigate directly to /ai
+      ===================================================== */}
+      <button
+        type="button"
+        onClick={() => navigate("/ai")}
+        aria-label="Open Elixway AI"
+        className="
+          group
+          fixed
+          bottom-5
+          left-3
+          right-3
+          z-[9999]
+          flex
+          h-[58px]
+          items-center
+          gap-3.5
+          overflow-hidden
+          rounded-xl
+          border
+          border-violet-200/70
+          bg-white
+          px-5
+          text-left
+          shadow-[0_10px_35px_rgba(76,29,149,0.12)]
+          transition-all
+          duration-300
+          active:scale-[0.99]
+
+          sm:hidden
+        "
+      >
+        {/* Subtle background */}
+        <span
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            bg-gradient-to-r
+            from-violet-500/[0.04]
+            via-fuchsia-500/[0.03]
+            to-indigo-500/[0.04]
+          "
+        />
+
+        {/* AI Icon */}
+        <span
+          className="
+            relative
+            flex
+            h-9
+            w-9
+            shrink-0
+            items-center
+            justify-center
+            rounded-full
+            bg-gradient-to-br
+            from-violet-600
+            via-purple-600
+            to-indigo-600
+            text-white
+            shadow-[0_6px_18px_rgba(124,58,237,0.30)]
+          "
+        >
+          <Sparkles size={17} strokeWidth={1.9} />
+        </span>
+
+        {/* Text */}
+        <span
+          className="
+            relative
+            min-w-0
+            flex-1
+            overflow-hidden
+            whitespace-nowrap
+            text-[15px]
+            font-medium
+            tracking-[-0.01em]
+            text-neutral-800
+          "
+        >
+          Ask Elixway AI
+        </span>
+
+        {/* Arrow */}
+        <span
+          className="
+            relative
+            flex
+            h-8
+            w-8
+            shrink-0
+            items-center
+            justify-center
+            rounded-full
+            bg-neutral-100
+            text-[17px]
+            font-medium
+            text-violet-600
+          "
+        >
+          →
+        </span>
+      </button>
+
+      {/* =====================================================
+          DESKTOP CLOSED AI PROMPT
       ===================================================== */}
       {!visible && (
         <button
@@ -31,7 +141,7 @@ export default function WebsiteAIChat() {
             bottom-5
             left-2
             z-[9999]
-            flex
+            hidden
             h-[58px]
             w-[min(380px,calc(100vw-24px))]
             items-center
@@ -50,15 +160,14 @@ export default function WebsiteAIChat() {
             hover:border-violet-300
             hover:shadow-[0_14px_42px_rgba(76,29,149,0.20)]
             active:scale-[0.99]
+            sm:flex
           "
         >
-          {/* Subtle premium glow */}
           <span
             className="
               pointer-events-none
               absolute
               inset-0
-              rounded-full
               bg-gradient-to-r
               from-violet-500/[0.04]
               via-fuchsia-500/[0.03]
@@ -70,7 +179,7 @@ export default function WebsiteAIChat() {
             "
           />
 
-          {/* AI ICON */}
+          {/* AI Icon */}
           <span
             className="
               relative
@@ -90,28 +199,12 @@ export default function WebsiteAIChat() {
               transition-all
               duration-300
               group-hover:scale-105
-              group-hover:shadow-[0_8px_22px_rgba(124,58,237,0.40)]
             "
           >
             <Sparkles size={17} strokeWidth={1.9} />
-
-            <span
-              className="
-                pointer-events-none
-                absolute
-                inset-0
-                rounded-full
-                bg-white/10
-                opacity-0
-                blur-sm
-                transition-opacity
-                duration-300
-                group-hover:opacity-100
-              "
-            />
           </span>
 
-          {/* TEXT */}
+          {/* Text */}
           <span
             className="
               relative
@@ -128,24 +221,9 @@ export default function WebsiteAIChat() {
             <span className="ai-typing-text">
               Ask Elixway AI
             </span>
-
-            <span
-              className="
-                ml-1
-                inline-block
-                align-middle
-                text-violet-500
-                opacity-0
-                transition-opacity
-                duration-300
-                group-hover:opacity-100
-              "
-            >
-              ✦
-            </span>
           </span>
 
-          {/* ARROW */}
+          {/* Arrow */}
           <span
             className="
               relative
@@ -173,7 +251,7 @@ export default function WebsiteAIChat() {
       )}
 
       {/* =====================================================
-          OPEN AI CHAT
+          DESKTOP OPEN AI CHAT ONLY
       ===================================================== */}
       {visible && (
         <div
@@ -181,14 +259,14 @@ export default function WebsiteAIChat() {
             ai-root
             website-ai-chat
             fixed
-            bottom-3
-            left-3
-            right-3
+            bottom-5
+            right-5
             z-[9999]
-            flex
-            h-[min(600px,calc(100dvh-24px))]
+            hidden
+            h-[600px]
+            w-[420px]
+            max-h-[calc(100dvh-40px)]
             min-h-0
-            w-auto
             flex-col
             overflow-hidden
             rounded-[12px]
@@ -196,13 +274,7 @@ export default function WebsiteAIChat() {
             border-black/[0.08]
             bg-white
             shadow-[0_20px_70px_rgba(0,0,0,0.16)]
-
-            sm:bottom-5
-            sm:left-auto
-            sm:right-5
-            sm:h-[600px]
-            sm:max-h-[calc(100dvh-40px)]
-            sm:w-[420px]
+            sm:flex
           "
         >
           {/* HEADER */}
@@ -234,6 +306,7 @@ export default function WebsiteAIChat() {
             </div>
 
             <div className="flex shrink-0 items-center gap-1">
+              {/* Expand to full AI page */}
               <button
                 type="button"
                 onClick={() => navigate("/ai")}
@@ -253,6 +326,7 @@ export default function WebsiteAIChat() {
                 <Maximize2 size={16} strokeWidth={2} />
               </button>
 
+              {/* Close desktop chat */}
               <button
                 type="button"
                 onClick={() => setVisible(false)}
@@ -293,7 +367,7 @@ export default function WebsiteAIChat() {
       )}
 
       {/* =====================================================
-          TYPING + CURSOR ANIMATION
+          DESKTOP TYPING ANIMATION
       ===================================================== */}
       <style>
         {`
@@ -328,24 +402,6 @@ export default function WebsiteAIChat() {
 
             50% {
               border-color: transparent;
-            }
-          }
-
-          @media (max-width: 640px) {
-            .ai-typing-text {
-              animation:
-                aiTypingMobile 2.2s steps(15, end) forwards,
-                aiCaret 0.75s step-end infinite;
-            }
-          }
-
-          @keyframes aiTypingMobile {
-            from {
-              width: 0;
-            }
-
-            to {
-              width: 15ch;
             }
           }
         `}

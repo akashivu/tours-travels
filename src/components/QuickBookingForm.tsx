@@ -111,7 +111,7 @@ export default function QuickBookingForm() {
       setFlightResults(response.data?.flights ?? []);
     } catch (error) {
       console.error("Flight search failed:", error);
-      toast.error("Unable to search flights. Please try again.");
+      
     }
   };
 
