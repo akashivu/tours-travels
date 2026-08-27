@@ -30,6 +30,37 @@ const Navbar = () => {
     };
   }, []);
 
+    /*
+   * Automatically show the Sign In modal after
+   * 10 seconds on the website.
+   *
+   * sessionStorage prevents it from appearing again
+   * while the user navigates around the website.
+   */
+  useEffect(() => {
+    const hasSeenPopup =
+      sessionStorage.getItem(
+        "elixway-signin-popup-shown"
+      );
+
+    if (hasSeenPopup) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setAuthOpen(true);
+
+      sessionStorage.setItem(
+        "elixway-signin-popup-shown",
+        "true"
+      );
+    }, 10000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, []);
+
   useEffect(() => {
     document.body.style.overflow =
       sidebarOpen || authOpen ? "hidden" : "";

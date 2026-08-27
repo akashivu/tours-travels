@@ -11,7 +11,32 @@ export default function WebsiteAIChat() {
 
   const [visible, setVisible] = useState(true);
 
-  const { state, sendMessage } = useAIChat();
+  const { state } = useAIChat();
+
+  /*
+   * Handles messages sent from the desktop
+   * compact AI chat.
+   *
+   * Instead of responding inside the floating
+   * chat, navigate to the full AI workspace and
+   * pass the user's prompt through navigation state.
+   */
+  const handleDesktopSend = (
+    message: string
+  ) => {
+    const trimmedMessage = message.trim();
+
+    if (!trimmedMessage) {
+      return;
+    }
+
+    navigate("/ai", {
+      state: {
+        message: trimmedMessage,
+        source: "website-chat",
+      },
+    });
+  };
 
   return (
     <>
@@ -19,7 +44,7 @@ export default function WebsiteAIChat() {
 
       {/* =====================================================
           MOBILE AI BUTTON
-          
+
           Mobile:
           - Never show floating chat box
           - Navigate directly to /ai
@@ -50,7 +75,6 @@ export default function WebsiteAIChat() {
           transition-all
           duration-300
           active:scale-[0.99]
-
           sm:hidden
         "
       >
@@ -359,7 +383,7 @@ export default function WebsiteAIChat() {
           >
             <AIConversationPane
               state={state}
-              onSend={sendMessage}
+              onSend={handleDesktopSend}
               compact
             />
           </div>
