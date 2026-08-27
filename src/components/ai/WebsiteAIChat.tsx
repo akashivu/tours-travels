@@ -34,7 +34,7 @@ export default function WebsiteAIChat() {
           bottom-5
           left-3
           right-3
-          z-[9999]
+          z-[60]
           flex
           h-[58px]
           items-center
@@ -140,7 +140,7 @@ export default function WebsiteAIChat() {
             fixed
             bottom-5
             left-2
-            z-[9999]
+            z-[60]
             hidden
             h-[58px]
             w-[min(380px,calc(100vw-24px))]
@@ -261,7 +261,7 @@ export default function WebsiteAIChat() {
             fixed
             bottom-5
             right-5
-            z-[9999]
+            z-[60]
             hidden
             h-[600px]
             w-[420px]

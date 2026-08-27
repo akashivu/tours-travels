@@ -37,7 +37,7 @@ const Navbar = () => {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [sidebarOpen]);
+  }, [sidebarOpen, authOpen]);
 
   const openAuth = () => {
     setSidebarOpen(false);
@@ -69,6 +69,8 @@ const Navbar = () => {
           top-0
           z-50
           w-full
+          max-w-full
+          overflow-hidden
           transition-all
           duration-500
           ${
@@ -83,8 +85,11 @@ const Navbar = () => {
             flex
             h-[58px]
             w-full
+            max-w-full
+            min-w-0
             items-center
             justify-between
+            overflow-hidden
             px-3
 
             sm:h-[60px]
@@ -107,9 +112,10 @@ const Navbar = () => {
             className="
               flex
               min-w-0
-              shrink
+              flex-1
               items-center
               gap-1.5
+              overflow-hidden
               sm:gap-2
               md:gap-3
             "
@@ -150,6 +156,7 @@ const Navbar = () => {
               aria-label="Elixway home"
               className="
                 min-w-0
+                max-w-full
                 shrink
                 cursor-pointer
                 overflow-hidden
@@ -171,6 +178,7 @@ const Navbar = () => {
               shrink-0
               items-center
               gap-0.5
+              whitespace-nowrap
               sm:gap-1
               md:gap-2
             "
@@ -186,6 +194,7 @@ const Navbar = () => {
                 flex
                 h-10
                 w-10
+                shrink-0
                 items-center
                 justify-center
                 gap-1.5
@@ -211,7 +220,6 @@ const Navbar = () => {
                 strokeWidth={1.8}
               />
 
-              {/* Hidden on mobile */}
               <span
                 className="
                   hidden
@@ -238,6 +246,7 @@ const Navbar = () => {
                 flex
                 h-10
                 w-10
+                shrink-0
                 items-center
                 justify-center
                 gap-1.5
@@ -263,7 +272,6 @@ const Navbar = () => {
                 strokeWidth={1.8}
               />
 
-              {/* Hidden on mobile */}
               <span
                 className="
                   hidden
@@ -286,9 +294,11 @@ const Navbar = () => {
               onClick={() => navigate("/bookingform")}
               className="
                 ml-0.5
+                shrink-0
+                whitespace-nowrap
                 rounded-full
                 bg-black
-                px-3.5
+                px-3
                 py-2.5
                 text-[12px]
                 font-semibold

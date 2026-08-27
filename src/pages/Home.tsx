@@ -46,29 +46,64 @@ const Home = () => {
   }, [location.hash]);
 
   return (
-    <main className="pt-10">
-
+    <main
+      className="
+        w-full
+        max-w-full
+        overflow-x-hidden
+        pt-10
+      "
+    >
       {/* Cabs */}
-      <section id="cabs" className="scroll-mt-24">
+      <section
+        id="cabs"
+        className="
+          w-full
+          max-w-full
+          scroll-mt-24
+        "
+      >
         <QuickBookingForm />
       </section>
 
-      <section id="destinations" className="scroll-mt-20">
+      <section
+        id="destinations"
+        className="
+          w-full
+          max-w-full
+          scroll-mt-20
+        "
+      >
         <Destinations />
       </section>
 
-      <TravelStyles />
+      <div className="w-full max-w-full">
+        <TravelStyles />
+      </div>
 
       {/* AI Planner */}
-      <section id="ai-planner" className="scroll-mt-24">
+      <section
+        id="ai-planner"
+        className="
+          w-full
+          max-w-full
+          scroll-mt-24
+        "
+      >
         <AIPlanner />
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-24">
+      <section
+        id="faq"
+        className="
+          w-full
+          max-w-full
+          scroll-mt-24
+        "
+      >
         <FAQSection />
       </section>
-
     </main>
   );
 };
