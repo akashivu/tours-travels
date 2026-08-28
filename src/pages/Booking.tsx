@@ -64,7 +64,7 @@ export default function Booking() {
         fare: totalFare,
       };
 
-      await axiosClient.post("/bookings/confirm", booking);
+      await axiosClient.post("/api/bookings/confirm", booking);
       toast.success("Booking confirmed! Details sent to admin.", {
         duration: 4000,
         style: {
