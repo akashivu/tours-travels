@@ -96,7 +96,7 @@ export default function AccountForm() {
 
       if (isLogin) {
         const res = await axiosClient.post(
-          "/account/login",
+          "/api/account/login",
           {
             email,
             password,
@@ -110,7 +110,7 @@ export default function AccountForm() {
         if (!fullName.trim()) return;
 
         await axiosClient.post(
-          "/account/register",
+          "/api/account/register",
           {
             fullName,
             email,
@@ -141,7 +141,7 @@ export default function AccountForm() {
       setLoading(true);
 
       const res = await axiosClient.post(
-        "/account/verify-otp",
+        "/api/account/verify-otp",
         {
           email,
           otp,
@@ -177,7 +177,7 @@ export default function AccountForm() {
       setLoading(true);
 
       await axiosClient.post(
-        "/account/forgot-password",
+        "/api/account/forgot-password",
         {
           email,
         }
@@ -207,7 +207,7 @@ export default function AccountForm() {
       setLoading(true);
 
       await axiosClient.post(
-        "/account/verify-forgot-password-otp",
+        "/api/account/verify-forgot-password-otp",
         {
           email,
           otp: forgotOtp,
@@ -248,7 +248,7 @@ export default function AccountForm() {
       setLoading(true);
 
       await axiosClient.post(
-        "/account/reset-password",
+        "/api/account/reset-password",
         {
           email,
           newPassword,
@@ -287,7 +287,7 @@ export default function AccountForm() {
       setResending(true);
 
       await axiosClient.post(
-        `/account/resend-otp?email=${encodeURIComponent(
+        `/api/account/resend-otp?email=${encodeURIComponent(
           email
         )}`
       );

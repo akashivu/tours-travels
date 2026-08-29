@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import type {
   AIFlightSearchRequest,
@@ -15,6 +16,8 @@ interface AIFlightResultsProps {
 export default function AIFlightResults({
   request,
 }: AIFlightResultsProps) {
+  const navigate = useNavigate();
+
   const [loading, setLoading] =
     useState(false);
 
@@ -26,7 +29,11 @@ export default function AIFlightResults({
       setLoading(true);
       setError(null);
 
-      await openAIFlightSearch(request);
+      // Resolve airports and build the flight results URL.
+      const url = await openAIFlightSearch(request);
+
+      // Navigate inside the React application.
+      navigate(url);
     } catch (err) {
       setLoading(false);
 
@@ -129,8 +136,7 @@ export default function AIFlightResults({
             </p>
 
             <p className="mt-1 text-sm font-semibold text-[#101828]">
-              {request.trip_type ===
-              "roundtrip"
+              {request.trip_type === "roundtrip"
                 ? "Round trip"
                 : "One way"}
             </p>

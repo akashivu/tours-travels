@@ -41,7 +41,7 @@ async function resolveAirport(
 
 export async function openAIFlightSearch(
   request: AIFlightSearchRequest,
-): Promise<void> {
+): Promise<string> {
   const tripType =
     request.trip_type ?? "oneway";
 
@@ -76,12 +76,8 @@ export async function openAIFlightSearch(
     originAirport,
     destinationAirport,
   ] = await Promise.all([
-    resolveAirport(
-      request.origin,
-    ),
-    resolveAirport(
-      request.destination,
-    ),
+    resolveAirport(request.origin),
+    resolveAirport(request.destination),
   ]);
 
   if (!originAirport.code) {
@@ -98,24 +94,14 @@ export async function openAIFlightSearch(
 
   const url =
     buildFlightResultsUrl({
-      fromCode:
-        originAirport.code,
-
-      toCode:
-        destinationAirport.code,
-
-      departureDate:
-        request.departure_date,
-
-      returnDate:
-        request.return_date ??
-        "",
-
-      passengers:
-        request.passengers ?? 1,
-
+      fromCode: originAirport.code,
+      toCode: destinationAirport.code,
+      departureDate: request.departure_date,
+      returnDate: request.return_date ?? "",
+      passengers: request.passengers ?? 1,
       tripType,
     });
 
-  window.location.assign(url);
+  // Return the internal URL. React Router handles navigation.
+  return url;
 }
